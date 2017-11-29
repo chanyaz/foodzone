@@ -1,4 +1,4 @@
-package com.test.foodzone.apis;
+package com.test.foodzone.apis.volley;
 
 import android.app.ProgressDialog;
 import android.content.Context;

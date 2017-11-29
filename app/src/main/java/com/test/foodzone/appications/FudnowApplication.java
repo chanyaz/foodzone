@@ -1,6 +1,5 @@
 package com.test.foodzone.appications;
 
-import android.app.Application;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
@@ -10,7 +9,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.FirebaseApp;
-import com.test.foodzone.apis.LruBitmapCache;
+import com.test.foodzone.apis.volley.LruBitmapCache;
 
 /**
  * Created by home on 11/29/2017.

@@ -1,4 +1,4 @@
-package com.test.foodzone.apis;
+package com.test.foodzone.apis.volley;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;

@@ -1,4 +1,4 @@
-package com.test.foodzone.apis;
+package com.test.foodzone.apis.http;
 
 import android.content.SharedPreferences;
 import android.util.Log;
