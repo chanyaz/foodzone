@@ -6,8 +6,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.test.foodzone.R;
+import com.test.foodzone.constants.Constants;
+
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +30,16 @@ public class IntroFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    @BindView(R.id.tvHead)
+    TextView tvHead;
+
+    @BindView(R.id.tvMessage)
+    TextView tvMessage;
+
+    @BindView(R.id.imgAbout)
+    ImageView imageAbout;
+
 
 
     public IntroFragment() {
@@ -60,7 +77,25 @@ public class IntroFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_intro, container, false);
+        View view =  inflater.inflate(R.layout.fragment_intro, container, false);
+        ButterKnife.bind(this,view);
+        if(mParam2!=null)
+        {
+            try
+            {
+                int value = Integer.parseInt(mParam2);
+                imageAbout.setImageResource(Constants.imagesIntro[value]);
+                tvHead.setText(Constants.introTitles[value]);
+                tvMessage.setText(Constants.introTitlesContent[value]);
+
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        return view;
     }
 
 }

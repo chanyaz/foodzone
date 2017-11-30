@@ -1,5 +1,7 @@
 package com.test.foodzone.activities;
 
+import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -7,6 +9,7 @@ import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator;
 import com.flaviofaria.kenburnsview.Transition;
 import com.test.foodzone.R;
+import com.test.foodzone.constants.Constants;
 
 import java.util.Random;
 
@@ -17,7 +20,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @BindView(R.id.kenBurnsView)
     KenBurnsView kenBurnsView;
-    int images[]= {R.drawable.d1,R.drawable.d2,R.drawable.d3};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
         AccelerateDecelerateInterpolator accelerateDecelerateInterpolator = new AccelerateDecelerateInterpolator();
         RandomTransitionGenerator generator = new RandomTransitionGenerator(5000, accelerateDecelerateInterpolator);
         kenBurnsView.setTransitionGenerator(generator);
-        kenBurnsView.setImageResource(images[(new Random().nextInt(3))]);
+        kenBurnsView.setImageResource(Constants.imagesSplash[(new Random().nextInt(3))]);
         kenBurnsView.setTransitionListener(new KenBurnsView.TransitionListener()
         {
             @Override
@@ -41,6 +44,17 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Intent intent=new Intent(SplashActivity.this,StartActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        },1500);
 
     }
 }

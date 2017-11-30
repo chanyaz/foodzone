@@ -1,13 +1,79 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.test.foodzone.fragments.start.StartFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v4.view.ViewPager
+        android:layout_above="@+id/tab_layout"
+        android:id="@+id/view_pager"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
-</FrameLayout>
+    </android.support.v4.view.ViewPager>
+    <android.support.design.widget.TabLayout
+        android:layout_above="@+id/llhead"
+        app:tabIndicatorColor="@android:color/transparent"
+        android:id="@+id/tab_layout"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        app:tabBackground="@drawable/tab_selected"
+        app:tabGravity="center"
+        android:layout_height="25dp">
+
+    </android.support.design.widget.TabLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llhead"
+        android:layout_above="@+id/rlHead"
+        android:background="@color/hashpool"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:layout_height="1dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+    <RelativeLayout
+
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/rlHead"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/get_started_full"
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/tvhead"
+            android:textStyle="normal"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GET STARTED"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_marginRight="15dp"
+            android:id="@+id/imgSideArrow"
+            android:tint="@color/white"
+            android:rotation="180"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_arrow_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

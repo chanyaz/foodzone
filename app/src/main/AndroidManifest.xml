@@ -21,7 +21,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.StartActivity"></activity>
+        <activity android:name=".activities.StartActivity" android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.HomeScreenActivity">
+
+        </activity>
     </application>
 
 </manifest>
