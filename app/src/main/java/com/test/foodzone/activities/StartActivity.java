@@ -162,7 +162,7 @@ public class StartActivity extends AppCompatActivity implements IActivity,IStart
                 String phoneNumberString = phoneNumber.toString();
                 // Get email
                 String email = account.getEmail();
-                showSnackBar(phoneNumberString+" "+email+" "+accountKitId, 2);
+                showSnackBar(phoneNumberString+" "+email+" "+accountKitId + " "+account, 2);
                 Logger.d("DATA",phoneNumberString+" "+email+" "+accountKitId);
 
             }
