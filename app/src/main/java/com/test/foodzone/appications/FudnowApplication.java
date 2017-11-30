@@ -8,8 +8,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.FacebookSdk;
+import com.facebook.accountkit.AccountKit;
 import com.google.firebase.FirebaseApp;
 import com.test.foodzone.apis.volley.LruBitmapCache;
+import com.test.foodzone.utils.Logger;
 
 /**
  * Created by home on 11/29/2017.
@@ -28,6 +31,17 @@ public class FudnowApplication extends MultiDexApplication
     {
         super.onCreate();
         FirebaseApp.initializeApp(getApplicationContext());
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AccountKit.InitializeCallback callback=new AccountKit.InitializeCallback() {
+            @Override
+            public void onInitialized()
+            {
+                Logger.d("INTIALIZED ACCOUNT KIT");
+
+            }
+        };
+        AccountKit.initialize(getApplicationContext(),callback);
 
         mInstance = this;
     }

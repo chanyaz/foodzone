@@ -15,6 +15,10 @@ import android.widget.TextView;
 
 import com.test.foodzone.R;
 import com.test.foodzone.adapters.start.IntroAdapter;
+import com.test.foodzone.constants.Constants;
+import com.test.foodzone.interfaces.activities.IActivity;
+import com.test.foodzone.interfaces.activities.IStartActivity;
+import com.test.foodzone.utils.Utility;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +50,10 @@ public class StartFragment extends Fragment
 
     IntroAdapter adapter;
 
+    IActivity iActivity;
+
+    IStartActivity iStartActivity;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -54,7 +62,8 @@ public class StartFragment extends Fragment
     private String mParam2;
 
 
-    public StartFragment() {
+    public StartFragment()
+    {
         // Required empty public constructor
     }
 
@@ -91,6 +100,8 @@ public class StartFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_start, container, false);
         ButterKnife.bind(this,view);
+        iActivity = (IActivity)getActivity();
+        iStartActivity =(IStartActivity)getActivity();
         tabDots.setupWithViewPager(pager);
         adapter=new IntroAdapter(getActivity().getSupportFragmentManager());
         pager.setPageTransformer(true, new DepthPageTransformer());
@@ -121,6 +132,14 @@ public class StartFragment extends Fragment
             {
                 if(tabDots.getSelectedTabPosition()==tabDots.getTabCount()-1)
                 {
+                    if(Utility.isNetworkAvailable(iActivity.getActivity()))
+                    {
+                        iStartActivity.doAccountKitLogin();
+                    }
+                    else
+                    {
+                        iActivity.showSnackBar(Constants.PLEASE_CHECK_INTERNET,2);
+                    }
 
                 }
             }
@@ -144,14 +163,14 @@ public class StartFragment extends Fragment
         {
             case 0:
                 rlHead.setBackgroundResource(R.drawable.get_started_normal);
-                tvhead.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-                imgSideArrow.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
+                tvhead.setTextColor(ContextCompat.getColor(iActivity.getActivity(), R.color.colorPrimary));
+                imgSideArrow.setColorFilter(ContextCompat.getColor(iActivity.getActivity(), R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
                 break;
 
             case 1:
                 rlHead.setBackgroundResource(R.drawable.get_started_full);
-                tvhead.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
-                imgSideArrow.setColorFilter(ContextCompat.getColor(getActivity(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                tvhead.setTextColor(ContextCompat.getColor(iActivity.getActivity(), R.color.white));
+                imgSideArrow.setColorFilter(ContextCompat.getColor(iActivity.getActivity(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
                 break;
 
         }

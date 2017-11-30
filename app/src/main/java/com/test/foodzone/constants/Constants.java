@@ -10,7 +10,18 @@ public class Constants
 {
     public static final String CONNECTION_ERROR="Network Error";
 
+    public static final String PLEASE_CHECK_INTERNET="Please Check Internet";
+
     public static final String PREFS ="com.test.foodzone.PREFS";
+
+    public static final int ACCOUNT_KIT_REQUEST_CODE = 14141;
+
+    public static final String SOMETHING_WENT_WRONG = "Something Went Wrong";
+
+    public static final String ERROR= "Error";
+
+    public static final String INVALID_OPERATION = "Invalid Operation";
+
 
     public static final int SECOND_MILLIS = 1000;
 
@@ -27,6 +38,8 @@ public class Constants
     public static final String introTitles[] = {"Get Memories","Get Chat","Get Notify"};
 
     public static final String introTitlesContent[] = {"even bittersweet ones\nare better than nothing","permanent testimony of\n relationship","Always stay notified\n instantly"};
+
+
 
 
 }

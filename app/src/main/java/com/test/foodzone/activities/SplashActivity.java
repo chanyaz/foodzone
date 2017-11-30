@@ -1,5 +1,6 @@
 package com.test.foodzone.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +11,14 @@ import com.flaviofaria.kenburnsview.RandomTransitionGenerator;
 import com.flaviofaria.kenburnsview.Transition;
 import com.test.foodzone.R;
 import com.test.foodzone.constants.Constants;
+import com.test.foodzone.interfaces.activities.IActivity;
 
 import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements IActivity{
 
     @BindView(R.id.kenBurnsView)
     KenBurnsView kenBurnsView;
@@ -56,5 +58,20 @@ public class SplashActivity extends AppCompatActivity {
             }
         },1500);
 
+    }
+
+    @Override
+    public void changeTitle(String title) {
+
+    }
+
+    @Override
+    public void showSnackBar(String snackBarText, int type) {
+
+    }
+
+    @Override
+    public Activity getActivity() {
+        return SplashActivity.this;
     }
 }
