@@ -86,66 +86,61 @@ public class StartActivity extends AppCompatActivity implements IActivity,IStart
     private void login()
     {
 
-        final Intent intent = new Intent(this, AccountKitActivity.class);
-        AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
-                new AccountKitConfiguration.AccountKitConfigurationBuilder(
-                        LoginType.PHONE,
-                        AccountKitActivity.ResponseType.CODE).setReadPhoneStateEnabled(true);
-        UIManager uiManager;
+            final Intent intent = new Intent(this, AccountKitActivity.class);
+            AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
+            new AccountKitConfiguration.AccountKitConfigurationBuilder(
+            LoginType.PHONE,
+            AccountKitActivity.ResponseType.CODE).setReadPhoneStateEnabled(true);
+            UIManager uiManager;
 
-        // Skin is CLASSIC, CONTEMPORARY, or TRANSLUCENT
+            // Skin is CLASSIC, CONTEMPORARY, or TRANSLUCENT
 
-        uiManager = new SkinManager(
-                SkinManager.Skin.CLASSIC, ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-
-        configurationBuilder.setUIManager(uiManager);
-        // or .ResponseType.TOKEN
-        // ... perform additional configuration ...
-        intent.putExtra(
-                AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
-                configurationBuilder.build());
-        startActivityForResult(intent, Constants.ACCOUNT_KIT_REQUEST_CODE);
+            uiManager = new SkinManager(
+            SkinManager.Skin.CLASSIC, ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+            configurationBuilder.setUIManager(uiManager);
+            intent.putExtra(
+            AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
+            configurationBuilder.build());
+            startActivityForResult(intent, Constants.ACCOUNT_KIT_REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, data);
-        Logger.d("ACTIVITY RESULT");
+            super.onActivityResult(requestCode, resultCode, data);
+            Logger.d("ACTIVITY RESULT");
 
-        if (requestCode == Constants.ACCOUNT_KIT_REQUEST_CODE)
-        { // confirm that this response matches your request
-            AccountKitLoginResult loginResult = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
+            if (requestCode == Constants.ACCOUNT_KIT_REQUEST_CODE)
+            {
+            // confirm that this response matches your request
+                    AccountKitLoginResult loginResult = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
 
-            String toastMessage;
-            if (loginResult.getError() != null)
-            {
-                toastMessage = loginResult.getError().getErrorType().getMessage();
-            }
-            else if (loginResult.wasCancelled())
-            {
-                toastMessage = "Login Cancelled";
-            }
-            else
-            {
-                if (loginResult.getAccessToken() != null)
-                {
-                    toastMessage = "Success:" + loginResult.getAccessToken().getAccountId();
-                    getAccount();
-                }
-                else
-                {
-                    toastMessage = String.format(
-                            "Token Null Success:%s... ",
-                            loginResult.getAuthorizationCode().toString());
-                    Logger.d(loginResult.getAuthorizationCode().toString());
-                }
-            }
+                    String toastMessage;
+                    if (loginResult.getError() != null)
+                    {
+                    toastMessage = loginResult.getError().getErrorType().getMessage();
+                    }
+                    else if (loginResult.wasCancelled())
+                    {
+                    toastMessage = "Login Cancelled";
+                    showSnackBar(toastMessage,2);
+                    }
+                    else
+                    {
+                        if(loginResult.getAuthorizationCode()!= null)
+                        {
+                            toastMessage = String.format(loginResult.getAuthorizationCode().toString());
+                            Logger.d(loginResult.getAuthorizationCode().toString());
+                        }
+                        else
+                        {
+                            toastMessage = "Login Cancelled";
+                            showSnackBar(toastMessage,2);
+                        }
+                    }
 
-            // Surface the result to your user in an appropriate way.
-           //showSnackBar(toastMessage,2);
-           Logger.d("DATA",toastMessage);
-        }
+                    Logger.d("DATA",toastMessage);
+            }
     }
 
 
