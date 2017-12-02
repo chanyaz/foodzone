@@ -4,31 +4,34 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/home"
+        android:icon="@drawable/ic_home"
         android:title="Home"
 
         app:showAsAction="always|withText"/>
 
     <item
+        android:id="@+id/navigation_notification"
+        android:icon="@drawable/ic_offers"
+        android:title="Notification"
+        app:showAsAction="always|withText"/>
+
+    <item
         android:id="@+id/navigation_favourates"
-        android:icon="@drawable/fav"
+        android:icon="@drawable/ic_heart"
         android:title="WishList"
         app:showAsAction="always|withText"/>
     <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:showAsAction="always|withText"/>
+    <item
         android:id="@+id/navigation_cart"
-        android:icon="@drawable/ic_arrow_back"
+        android:icon="@drawable/ic_cart"
         android:title="Cart"
         app:showAsAction="always|withText"/>
-    <item
-        android:id="@+id/navigation_notification"
-        android:icon="@drawable/ic_arrow_back"
-        android:title="Notification"
-        app:showAsAction="always|withText"/>
-    <item
-        android:id="@+id/navigation_options"
-        android:icon="@drawable/ic_arrow_back"
-        android:title="Other"
-        app:showAsAction="always|withText"/>
+
+
 
 
 </menu>
