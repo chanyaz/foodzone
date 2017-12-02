@@ -52,7 +52,7 @@ public class SplashActivity extends AppCompatActivity implements IActivity{
             @Override
             public void run()
             {
-                Intent intent=new Intent(SplashActivity.this,StartActivity.class);
+                Intent intent=new Intent(SplashActivity.this,HomeScreenActivity.class);
                 startActivity(intent);
                 finish();
             }

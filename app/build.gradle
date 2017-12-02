@@ -59,6 +59,7 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.2.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.flaviofaria:kenburnsview:1.0.7'
+    compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
