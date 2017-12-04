@@ -5,6 +5,7 @@
     android:background="@color/whiter"
     app:contentInsetLeft="15dp"
     app:contentInsetStart="15dp"
+
     android:titleTextColor="@color/text_black_light"
     app:contentInsetStartWithNavigation="15dp"
     xmlns:android="http://schemas.android.com/apk/res/android"

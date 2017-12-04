@@ -6,11 +6,17 @@ import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.test.foodzone.R;
@@ -28,6 +34,18 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+
+
+    @BindView(R.id.fragment_bottom_sheet)
+    FrameLayout bottomSheetLayout;
+
+
+    BottomSheetBehavior bottomSheetBehavior;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +55,16 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity {
         navigation.enableShiftingMode(false);
         navigation.enableItemShiftingMode(false);
         navigation.setTextVisibility(false);
+
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+        bottomSheetBehavior.setHideable(true);
+        bottomSheetBehavior.setPeekHeight(300);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
         toolbar.setTitle("Fudnow");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.parseColor("#909090"));
+
 
 
 
@@ -57,8 +82,31 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+
+            case R.id.menu_more:
+                drawer.openDrawer(Gravity.RIGHT);
+                return true;
+            case R.id.menu_profile:
+                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                }
+                else if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+                }
+                else if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+                }
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override

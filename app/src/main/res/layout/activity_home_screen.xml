@@ -5,9 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.test.foodzone.activities.HomeScreenActivity">
+    <android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+
     <include
         layout="@layout/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
       />
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:fitsSystemWindows="true"
+            app:menu="@menu/side_nav_menu"
+            />
+
+    </android.support.v4.widget.DrawerLayout>
+    <FrameLayout
+        android:background="@color/white"
+        android:id="@+id/fragment_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:behavior_hideable="true"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarMenu"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whiter"
+            app:contentInsetLeft="15dp"
+            app:title="Profile"
+            app:contentInsetStart="15dp"
+            android:titleTextColor="@color/text_black_light"
+            app:contentInsetStartWithNavigation="15dp"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            />
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -7,4 +7,6 @@
     <string name="facebook_app_id">1834887266797123</string>
     <string name="FACEBOOK_APP_ID">1834887266797123</string>
     <string name="ACCOUNT_KIT_CLIENT_TOKEN">da8f035ab59063e20415a6e4958b5fb5</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_orders"
+        android:icon="@drawable/ic_history"
+        android:title="Previous Orders"
+        app:showAsAction="always|withText"/>
+
+    <item
+        android:id="@+id/nav_coupen"
+        android:icon="@drawable/ic_coupon"
+        android:title="Coupons"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/nav_change_location"
+        android:icon="@drawable/ic_location"
+        android:title="Change Location"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/nav_transactions"
+        android:icon="@drawable/ic_transactions"
+        android:title="Transactions"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/nav_notification"
+        android:icon="@drawable/ic_notification"
+        android:title="Notifications"
+        app:showAsAction="always|withText"/>
+</menu>
