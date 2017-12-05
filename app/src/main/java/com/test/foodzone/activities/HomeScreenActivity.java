@@ -7,6 +7,7 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -16,11 +17,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.test.foodzone.R;
+import com.test.foodzone.fragments.home.ProfileFragment;
 import com.test.foodzone.interfaces.activities.IActivity;
+import com.test.foodzone.utils.Utility;
 
 import java.lang.reflect.Field;
 
@@ -44,6 +50,15 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity {
     @BindView(R.id.fragment_bottom_sheet)
     FrameLayout bottomSheetLayout;
 
+    @BindView(R.id.imgClose)
+    ImageView imgClose;
+
+    @BindView(R.id.tvTitle)
+    TextView tvTitle;
+
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+
 
     BottomSheetBehavior bottomSheetBehavior;
     @Override
@@ -58,17 +73,32 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity {
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
         bottomSheetBehavior.setHideable(true);
-        bottomSheetBehavior.setPeekHeight(300);
+        bottomSheetBehavior.setPeekHeight(0);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         toolbar.setTitle("Fudnow");
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.parseColor("#909090"));
+        bottomSheetLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutOther, ProfileFragment.newInstance(null,null)).commit();
 
 
 
 
-
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
 
 
 
@@ -91,17 +121,19 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity {
                 drawer.openDrawer(Gravity.RIGHT);
                 return true;
             case R.id.menu_profile:
-                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-                }
-                else if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+                {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
                 }
-                else if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                else if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN)
+                {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
+                }
+                else
+                {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 }
                 return true;
             default:
@@ -116,12 +148,25 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity {
 
     @Override
     public void showSnackBar(String snackBarText, int type) {
-
+        Utility.showSnackBar(this,coordinatorLayout,snackBarText,type);
     }
 
     @Override
     public Activity getActivity()
     {
         return HomeScreenActivity.this;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        }
+        else
+        {
+            finish();
+        }
     }
 }

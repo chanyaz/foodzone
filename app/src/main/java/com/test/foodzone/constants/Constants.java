@@ -8,6 +8,18 @@ import com.test.foodzone.R;
 
 public class Constants
 {
+    public static final String FIRST_NAME = "first_name";
+
+    public static final String LAST_NAME = "last_name";
+
+    public static final String COUNTRY_PREFIX = "country_prefix";
+
+    public static final String USER_PHONE_NUMBER = "user_phone_number";
+
+    public static final String U_UID = "u_uid";
+
+    public static final String USER_EMAIL =  "user_email";
+
     public static final String CONNECTION_ERROR="Network Error";
 
     public static final String PLEASE_CHECK_INTERNET="Please Check Internet";

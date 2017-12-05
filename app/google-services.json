@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "212042664787-hskt8ru0mmis0c0irftose606h4fq77b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.test.foodzone",
+            "certificate_hash": "1562034df7afd8218204382534a94bf597b398f5"
+          }
+        },
+        {
           "client_id": "212042664787-cqur97mhmrac6upbbqf1vboqpgist3om.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212042664787-cqur97mhmrac6upbbqf1vboqpgist3om.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
