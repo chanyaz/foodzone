@@ -6,4 +6,6 @@ package com.test.foodzone.interfaces.activities;
 
 public interface IHomeScreenActivity
 {
+    public void expandBottomSheet();
+    public void hiddenBottomSheet();
 }

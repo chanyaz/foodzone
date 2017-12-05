@@ -215,6 +215,11 @@ public class Utility
 
     }
 
+    public static void showToast(Context c, String s, boolean duration) {
+        if (c == null) return;
+        Toast tst = Toast.makeText(c, s, duration ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        tst.show();
+    }
     public static void showToast(Context c, String t, String s, boolean duration) {
         if (c == null) return;
         Toast tst = Toast.makeText(c, t, duration ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);

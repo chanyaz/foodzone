@@ -35,6 +35,7 @@ import com.google.android.gms.common.api.Status;
 import com.test.foodzone.R;
 import com.test.foodzone.constants.Constants;
 import com.test.foodzone.interfaces.activities.IActivity;
+import com.test.foodzone.interfaces.activities.IHomeScreenActivity;
 import com.test.foodzone.utils.Logger;
 import com.test.foodzone.utils.Utility;
 
@@ -63,6 +64,7 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
     private String mParam2;
 
     IActivity iActivity;
+    IHomeScreenActivity iHomeScreenActivity;
 
     @BindView(R.id.gmail)
     Button gmail;
@@ -136,6 +138,7 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_profile, container, false);
         iActivity = (IActivity)getActivity();
+        iHomeScreenActivity = (IHomeScreenActivity)getActivity();
         callbackManager = CallbackManager.Factory.create();
         PREFS = iActivity.getActivity().getSharedPreferences(Constants.PREFS, Context.MODE_PRIVATE);
         ButterKnife.bind(this,view);
@@ -200,7 +203,7 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
 
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,first_name,last_name");
+                parameters.putString("fields", "id,name,link,gender,birthday,email,first_name,last_name,cover,picture.type(large)");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -216,7 +219,7 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
             }
             private void showAlert()
             {
-              //iActivity.showSnackBar("Not Granted Permission",2);
+                Utility.showToast(iActivity.getActivity(), "Not Granted Permission", false);
             }
         };
 
@@ -246,23 +249,27 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
         super.onActivityResult(requestCode, resultCode, data);
         //iActivity.showSnackBar("Checking",2);
         //If signin
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN)
+        {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+            return;
         }
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
     }
 
 
-    private void signIn() {
+    private void signIn()
+    {
         //Creating an intent
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         //Starting intent for result
         this.startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signOut() {
+    private void signOut()
+    {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
@@ -299,6 +306,8 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
         {
             //If login fails
            // iActivity.showSnackBar("Login Failed",2);
+            Utility.showToast(iActivity.getActivity(), "Login Failed ", false);
+
         }
     }
 
@@ -310,6 +319,9 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
         tvUserName.setText(Utility.getCamelCase(PREFS.getString(Constants.FIRST_NAME,"")+ " "+PREFS.getString(Constants.LAST_NAME,"") ));
 
         tvEmail.setText(PREFS.getString(Constants.USER_EMAIL,"").toLowerCase());
+        iHomeScreenActivity.hiddenBottomSheet();
+        iActivity.showSnackBar("Profile is Updated",2);
+
 
 
 

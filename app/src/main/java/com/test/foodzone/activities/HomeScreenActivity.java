@@ -26,6 +26,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.test.foodzone.R;
 import com.test.foodzone.fragments.home.ProfileFragment;
 import com.test.foodzone.interfaces.activities.IActivity;
+import com.test.foodzone.interfaces.activities.IHomeScreenActivity;
 import com.test.foodzone.utils.Utility;
 
 import java.lang.reflect.Field;
@@ -33,7 +34,7 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeScreenActivity extends AppCompatActivity implements IActivity {
+public class HomeScreenActivity extends AppCompatActivity implements IActivity, IHomeScreenActivity {
 
     @BindView(R.id.navigation)
     BottomNavigationViewEx navigation;
@@ -167,6 +168,33 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity {
         else
         {
             finish();
+        }
+    }
+
+    @Override
+    public void expandBottomSheet()
+    {
+        if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN)
+        {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        }
+        else
+        {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+    }
+
+    @Override
+    public void hiddenBottomSheet()
+    {
+        if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        }
+        else
+        {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
 }
