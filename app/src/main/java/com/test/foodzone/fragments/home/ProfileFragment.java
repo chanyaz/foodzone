@@ -22,6 +22,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -191,6 +192,9 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
                                     Utility.set(PREFS,Constants.USER_EMAIL,"");
 
 
+
+                                signOutFacebook();
+
                                 updateUI();
 
                             }
@@ -268,17 +272,6 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
         this.startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signOut()
-    {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status)
-                    {
-
-                    }
-                });
-    }
 
     // Google Details
 
@@ -297,7 +290,7 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
 
 
 
-            signOut();
+            signOutGmail();
             updateUI();
 
 
@@ -320,11 +313,30 @@ public class ProfileFragment extends Fragment implements GoogleApiClient.OnConne
 
         tvEmail.setText(PREFS.getString(Constants.USER_EMAIL,"").toLowerCase());
         iHomeScreenActivity.hiddenBottomSheet();
-        iActivity.showSnackBar("Profile is Updated",2);
+        //iActivity.showSnackBar("Profile is Updated",2);
 
 
 
 
     }
+
+    public void signOutGmail()
+    {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status)
+                    {
+
+                    }
+                });
+    }
+    public void signOutFacebook()
+    {
+        LoginManager.getInstance().logOut();
+    }
+
+
+
 
 }

@@ -1,6 +1,7 @@
 package com.test.foodzone.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
@@ -60,6 +61,8 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity, 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
 
+    ProfileFragment profileFragment;
+
 
     BottomSheetBehavior bottomSheetBehavior;
     @Override
@@ -88,7 +91,8 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity, 
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutOther, ProfileFragment.newInstance(null,null)).commit();
+        profileFragment = ProfileFragment.newInstance(null,null);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutOther, profileFragment).commit();
 
 
 
@@ -196,5 +200,12 @@ public class HomeScreenActivity extends AppCompatActivity implements IActivity, 
         {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(profileFragment!=null)
+         profileFragment.onActivityResult(requestCode, resultCode, data);
     }
 }
