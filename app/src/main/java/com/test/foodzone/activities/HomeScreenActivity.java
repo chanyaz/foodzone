@@ -3,14 +3,9 @@ package com.test.foodzone.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,12 +20,10 @@ import android.widget.TextView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.test.foodzone.R;
-import com.test.foodzone.fragments.home.ProfileFragment;
+import com.test.foodzone.fragments.home.profile.ProfileFragment;
 import com.test.foodzone.interfaces.activities.IActivity;
 import com.test.foodzone.interfaces.activities.IHomeScreenActivity;
 import com.test.foodzone.utils.Utility;
-
-import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
