@@ -1,7 +1,9 @@
 package com.test.foodzone.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import com.flaviofaria.kenburnsview.Transition;
 import com.test.foodzone.R;
 import com.test.foodzone.constants.Constants;
 import com.test.foodzone.interfaces.activities.IActivity;
+import com.test.foodzone.utils.Utility;
 
 import java.util.Random;
 
@@ -23,11 +26,21 @@ public class SplashActivity extends AppCompatActivity implements IActivity{
     @BindView(R.id.kenBurnsView)
     KenBurnsView kenBurnsView;
 
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(1);
         getWindow().setFlags(1024, 1024);
+        sharedPreferences = getSharedPreferences(Constants.PREFS, Context.MODE_PRIVATE);
+        if(!sharedPreferences.contains(Constants.U_UID))
+        {
+            Intent intent=new Intent(SplashActivity.this,StartActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
         setContentView(R.layout.splash_activity);
         ButterKnife.bind(this);
         AccelerateDecelerateInterpolator accelerateDecelerateInterpolator = new AccelerateDecelerateInterpolator();

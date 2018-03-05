@@ -10,6 +10,7 @@ import com.test.foodzone.utils.Utility;
 
 public class MainActivity extends AppCompatActivity implements IActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

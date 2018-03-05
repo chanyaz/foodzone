@@ -59,7 +59,7 @@ public class StartActivity extends AppCompatActivity implements IActivity,IStart
     @Override
     public void showSnackBar(String snackBarText,int type)
     {
-        Utility.showSnackBar(this,coordinatorLayout,snackBarText,type);
+        //Utility.showSnackBar(this,coordinatorLayout,snackBarText,type);
     }
 
     @Override

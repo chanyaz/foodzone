@@ -27,6 +27,7 @@
 
     </style>
     <style name="SplashTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@drawable/app_main_background</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -42,7 +43,7 @@
 
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
-        <item name="color">@color/black</item>
+        <item name="color">@color/white</item>
     </style>
 
     <style name="AppLoginTheme" parent="Theme.AccountKit" >
