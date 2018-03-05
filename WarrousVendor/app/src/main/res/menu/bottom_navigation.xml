@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/bt_notification"
+        android:title="Notifications"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/navigation_location"
+        android:icon="@drawable/bt_location"
+        android:title="Location"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/navigation_scan"
+        android:icon="@drawable/bt_barcode"
+        android:title="Scan Code"
+        app:showAsAction="always|withText"/>
+
+    <item
+        android:id="@+id/navigation_messages"
+        android:icon="@drawable/bt_message"
+        android:title="Messages"
+        app:showAsAction="always|withText"/>
+
+
+
+
+
+
+</menu>

@@ -1,0 +1,190 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.maya.wadmin.fragments.testdrive.add.AssignRouteFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+  <android.support.design.widget.CoordinatorLayout
+      android:id="@+id/coordinatorLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+      <com.google.android.gms.maps.MapView
+          android:id="@+id/mapView"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+      </com.google.android.gms.maps.MapView>
+
+          <LinearLayout
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+              <LinearLayout
+                  android:weightSum="2"
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="99dp">
+                  <LinearLayout
+                      android:orientation="horizontal"
+                      android:layout_weight="1"
+                      android:elevation="4dp"
+                      android:layout_marginTop="10dp"
+                      android:layout_marginLeft="7dp"
+                      android:layout_marginRight="3dp"
+                      android:background="@drawable/corner_radius_white_8"
+                      android:layout_width="match_parent"
+                      android:layout_height="85dp">
+
+                      <ImageView
+                          android:id="@+id/imgVehicle"
+                          android:layout_marginLeft="20dp"
+                          android:gravity="center_vertical"
+                          android:layout_gravity="center_vertical"
+                          android:layout_width="54dp"
+                          android:layout_height="35dp" />
+                      <com.maya.wadmin.customviews.SFMediumTextView
+                          android:id="@+id/tvVehicleCount"
+                          android:textSize="16sp"
+                          android:textColor="#5c5c5c"
+                          android:layout_margin="10dp"
+                          android:layout_gravity="center_vertical"
+                          android:text="1 Vehicle Selected"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content" />
+
+                  </LinearLayout>
+                  <LinearLayout
+                      android:orientation="horizontal"
+                      android:layout_weight="1"
+                      android:elevation="4dp"
+                      android:layout_marginTop="10dp"
+                      android:layout_marginLeft="3dp"
+                      android:layout_marginRight="7dp"
+                      android:background="@drawable/corner_radius_white_8"
+                      android:layout_width="match_parent"
+                      android:layout_height="85dp">
+                      <android.support.v7.widget.CardView
+                          android:layout_gravity="center_vertical"
+                          app:cardElevation="8dp"
+                          app:cardCornerRadius="26.5dp"
+                          android:layout_marginLeft="8dp"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content">
+                          <com.maya.wadmin.customviews.CircularView
+                              android:id="@+id/imgSalesPerson"
+                              android:src="@color/app_hash_pool"
+                              android:layout_width="53dp"
+                              android:layout_height="53dp" />
+                      </android.support.v7.widget.CardView>
+                      <LinearLayout
+                          android:layout_marginLeft="10dp"
+                          android:layout_marginRight="10dp"
+                          android:layout_weight="1"
+                          android:layout_gravity="center"
+                          android:orientation="vertical"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content">
+
+                          <com.maya.wadmin.customviews.SFMediumTextView
+                              android:id="@+id/tvSalesPerson"
+                              android:maxLines="1"
+                              android:textSize="16sp"
+                              android:textColor="#5C5C5C"
+                              android:text="Kassandra K"
+                              android:textStyle="bold"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content" />
+                          <com.maya.wadmin.customviews.SFRegularTextView
+                              android:id="@+id/tvRole"
+                              android:maxLines="1"
+                              android:layout_marginTop="2dp"
+                              android:textSize="14sp"
+                              android:textColor="#C45C5C5C"
+                              android:text="Salesperson"
+                              android:textStyle="bold"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content" />
+
+                      </LinearLayout>
+
+                  </LinearLayout>
+              </LinearLayout>
+
+              <LinearLayout
+                  android:orientation="horizontal"
+                  android:layout_marginBottom="5dp"
+                  android:layout_weight="1"
+                  android:elevation="4dp"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginLeft="7dp"
+                  android:layout_marginRight="7dp"
+                  android:background="@drawable/corner_radius_white_8"
+                  android:layout_width="match_parent"
+                  android:layout_height="58dp">
+                  <com.maya.wadmin.customviews.SFMediumTextView
+                      android:id="@+id/tvCustomerName"
+                      android:maxLines="1"
+                      android:layout_margin="17dp"
+                      android:layout_gravity="center_vertical"
+                      android:textSize="18sp"
+                      android:textColor="#5C5C5C"
+                      android:layout_weight="1"
+                      android:text="Gokul Maya"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content" />
+                  <com.maya.wadmin.customviews.SFRegularTextView
+                      android:id="@+id/tvCustomerPhone"
+                      android:maxLines="1"
+                      android:layout_margin="17dp"
+                      android:gravity="right"
+                      android:layout_gravity="center_vertical"
+                      android:textSize="15sp"
+                      android:layout_weight="1"
+                      android:text="7207824353"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content" />
+
+
+              </LinearLayout>
+          </LinearLayout>
+
+
+          <com.maya.wadmin.customviews.BoldTextView
+              android:elevation="8dp"
+              android:textAlignment="center"
+              android:gravity="center"
+              android:textColor="@color/mainColorPrimary"
+              android:text="Route A"
+              android:layout_marginBottom="23dp"
+              android:layout_marginRight="14dp"
+              android:layout_marginLeft="14dp"
+              android:paddingLeft="14dp"
+              android:paddingRight="14dp"
+              android:layout_alignParentRight="true"
+              android:layout_alignParentBottom="true"
+              android:id="@+id/tvRouteName"
+              android:textSize="20sp"
+              android:background="@drawable/corner_radius_white_12"
+              android:layout_width="wrap_content"
+              android:layout_height="40dp" />
+
+          <ProgressBar
+              android:layout_alignParentTop="true"
+              android:id="@+id/progressBar"
+              style="?android:attr/progressBarStyleHorizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:indeterminateTint="@color/mainColorPrimary"
+              android:indeterminate="true"/>
+
+
+      </RelativeLayout>
+
+  </android.support.design.widget.CoordinatorLayout>
+
+</FrameLayout>

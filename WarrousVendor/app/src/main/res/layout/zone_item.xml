@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <com.maya.wadmin.customviews.SFBoldTextView
+                android:layout_weight="1"
+                android:id="@+id/tvTitle"
+                android:maxLines="1"
+                android:textSize="16sp"
+                android:textColor="#58595B"
+                android:text="Zones JJs"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <com.maya.wadmin.customviews.SFMediumTextView
+                android:layout_weight="1"
+                android:id="@+id/tvLocation"
+                android:maxLines="1"
+                android:textSize="15sp"
+                android:textColor="#C45C5C5C"
+                android:text="jnsdjns, sndns, snjdns, snjdns"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+            <com.maya.wadmin.customviews.SFMediumTextView
+                android:layout_marginTop="7dp"
+                android:layout_weight="1"
+                android:id="@+id/tvKeywords"
+                android:maxLines="1"
+                android:textSize="14sp"
+                android:textColor="#875C5C5C"
+                android:layout_marginBottom="15dp"
+                android:text="jnsdjns, sndns, snjdns, snjdns"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llhead"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/imgClick"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_options"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/bottomView"
+        android:layout_marginLeft="20dp"
+        android:background="#E3E5EC"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </View>
+
+</LinearLayout>

@@ -1,0 +1,45 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+  <android.support.design.widget.CoordinatorLayout
+      android:id="@+id/coordinatorLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <android.support.v4.widget.SwipeRefreshLayout
+          android:id="@+id/swipeRefreshLayout"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:elevation="4dp"
+            android:background="@drawable/corner_radius_white_8"
+            android:layout_margin="7dp"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+      </android.support.v4.widget.SwipeRefreshLayout>
+
+  </android.support.design.widget.CoordinatorLayout>
+        <ProgressBar
+            android:layout_alignParentTop="true"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/mainColorPrimary"
+            android:indeterminate="true"/>
+    </RelativeLayout>
+
+</FrameLayout>

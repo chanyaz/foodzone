@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="7dp"
+    android:layout_marginRight="9dp"
+    android:layout_marginBottom="15dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:layout_height="54dp">
+    <LinearLayout
+    android:id="@+id/llhead"
+    android:background="@drawable/corner_radius_hash_pool_6"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.maya.wadmin.customviews.SFBoldTextView
+    android:id="@+id/tvCountVehicles"
+    android:textColor="#C458595B"
+    android:layout_marginLeft="10dp"
+    android:layout_gravity="center_vertical"
+    android:textStyle="bold"
+    android:textSize="31sp"
+    android:text="311"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    <com.maya.wadmin.customviews.SFRegularTextView
+    android:id="@+id/tvVehiclesContent"
+    android:maxLines="2"
+    android:layout_marginRight="10dp"
+    android:textColor="#58595B"
+    android:layout_marginLeft="10dp"
+    android:layout_gravity="center_vertical"
+    android:textStyle="normal"
+    android:textSize="14sp"
+    android:text="New vehicle nh nh  hd"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

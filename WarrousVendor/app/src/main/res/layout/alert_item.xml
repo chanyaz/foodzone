@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="#FFEAC2"
+    android:layout_margin="5dp"
+    app:elevation="4dp"
+    android:id="@+id/cardView"
+    android:foreground="?android:attr/selectableItemBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="7dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.maya.wadmin.customviews.SFSemiBoldTextView
+            android:id="@+id/tvTitle"
+            android:textColor="#5C5C5C"
+            android:textSize="18sp"
+            android:text="Exile"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        <com.maya.wadmin.customviews.SFMediumTextView
+            android:layout_centerVertical="true"
+            android:id="@+id/tvSubTitle"
+            android:textColor="#875C5C5C"
+            android:textSize="16sp"
+            android:maxLines="2"
+            android:text="Alert when a car speed exceed the 90mph inside city"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <ImageView
+                android:visibility="visible"
+                android:rotation="90"
+                android:tint="#B8BECF"
+                android:layout_margin="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="54dp"
+            android:background="#54B8BECF"
+            android:layout_width="match_parent"
+            android:layout_height="1dp">
+
+        </View>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:visibility="visible"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.maya.wadmin.customviews.SFMediumTextView
+                    android:id="@+id/tvVehiclesContent"
+                    android:layout_weight="1"
+                    android:textColor="#875C5C5C"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    android:text="All Vehicles"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgMessage"
+                    android:src="@drawable/alert_message"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+                <ImageView
+                    android:id="@+id/imgCall"
+                    android:src="@drawable/alert_unselect_call"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+                <ImageView
+                    android:padding="1dp"
+                    android:id="@+id/imgMail"
+                    android:src="@drawable/alert_unselect_mail"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+                <ImageView
+                    android:id="@+id/imgNoti"
+                    android:src="@drawable/alert_noti"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llhead"
+                android:gravity="right"
+                android:layout_width="34dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:src="@drawable/ic_options"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
