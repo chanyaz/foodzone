@@ -3,6 +3,7 @@ package com.maya.wadmin.fragments.delivery.view;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
@@ -26,6 +27,7 @@ import com.maya.wadmin.adapters.fragments.delivery.VehicleArrivalAdapter;
 import com.maya.wadmin.adapters.fragments.testdrive.AssignCustomerAdapter;
 import com.maya.wadmin.apis.volley.VolleyHelperLayer;
 import com.maya.wadmin.constants.Constants;
+import com.maya.wadmin.interfaces.adapters.delivery.IVehicleArrivalAdapter;
 import com.maya.wadmin.interfaces.fragments.IFragment;
 import com.maya.wadmin.models.Customer;
 import com.maya.wadmin.models.Vehicle;
@@ -41,7 +43,7 @@ import java.util.List;
  * Use the {@link AllDeliveryVehiclesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AllDeliveryVehiclesFragment extends Fragment implements IFragment{
+public class AllDeliveryVehiclesFragment extends Fragment implements IFragment, IVehicleArrivalAdapter {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,6 +60,7 @@ public class AllDeliveryVehiclesFragment extends Fragment implements IFragment{
     ProgressBar progressBar;
     VehicleArrivalAdapter vehicleArrivalAdapter;
     List<Vehicle> list, finalList;
+    IVehicleArrivalAdapter iVehicleArrivalAdapter;
 
 
     public AllDeliveryVehiclesFragment() {
@@ -96,6 +99,9 @@ public class AllDeliveryVehiclesFragment extends Fragment implements IFragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_delivery_vehicles, container, false);
+
+        iVehicleArrivalAdapter = this;
+
         coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -169,7 +175,7 @@ public class AllDeliveryVehiclesFragment extends Fragment implements IFragment{
                 if(list!=null && list.size()>0)
                 {
                     finalList = list;
-                    vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list);
+                    vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list,iVehicleArrivalAdapter);
                     recyclerView.setAdapter(vehicleArrivalAdapter);
                 }
 
@@ -217,7 +223,7 @@ public class AllDeliveryVehiclesFragment extends Fragment implements IFragment{
                 if (subList.size() > 0)
                 {
                     list = subList;
-                    vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list);
+                    vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list,iVehicleArrivalAdapter);
                     recyclerView.setAdapter(vehicleArrivalAdapter);
                 }
                 else
@@ -229,7 +235,7 @@ public class AllDeliveryVehiclesFragment extends Fragment implements IFragment{
             {
                 //Utility.hideKeyboard(activity());
                 list = finalList;
-                vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list);
+                vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list,iVehicleArrivalAdapter);
                 recyclerView.setAdapter(vehicleArrivalAdapter);
             }
         }
@@ -238,4 +244,15 @@ public class AllDeliveryVehiclesFragment extends Fragment implements IFragment{
 
     }
 
+    @Override
+    public void itemClick(Vehicle vehicle, int position)
+    {
+        if(vehicle!=null)
+        {
+            Intent intent = new Intent(activity(),HelperActivity.class);
+            intent.putExtra(Constants.FRAGMENT_KEY,111);
+            intent.putExtra("vehicle",vehicle);
+            startActivity(intent);
+        }
+    }
 }

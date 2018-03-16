@@ -163,7 +163,7 @@ public class ViolationVehiclesFragment extends Fragment implements IFragment {
                 if(list!=null && list.size()>0)
                 {
                     finalList = list;
-                    vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list);
+                    vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list,null);
                     recyclerView.setAdapter(vehicleArrivalAdapter);
                 }
 
@@ -211,7 +211,7 @@ public class ViolationVehiclesFragment extends Fragment implements IFragment {
                 if (subList.size() > 0)
                 {
                     list = subList;
-                    vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list);
+                    vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list,null);
                     recyclerView.setAdapter(vehicleArrivalAdapter);
                 }
                 else
@@ -223,7 +223,7 @@ public class ViolationVehiclesFragment extends Fragment implements IFragment {
             {
                 //Utility.hideKeyboard(activity());
                 list = finalList;
-                vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list);
+                vehicleArrivalAdapter = new VehicleArrivalAdapter(1,activity(),list,null);
                 recyclerView.setAdapter(vehicleArrivalAdapter);
             }
         }

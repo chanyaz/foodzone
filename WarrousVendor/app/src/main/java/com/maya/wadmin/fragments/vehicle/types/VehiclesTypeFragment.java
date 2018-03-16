@@ -626,7 +626,11 @@ public class VehiclesTypeFragment extends Fragment implements IFragment, ITestDr
         }
     }
 
-
+    @Override
+    public void openOptions(Vehicle vehicle, int position)
+    {
+        ((HelperActivity)activity()).openOptions(vehicle.Status.equalsIgnoreCase(Constants.ON_LOT)? 1 : 2 ,vehicle);
+    }
 
 
     public void updateVehiclesBySearch(String content)

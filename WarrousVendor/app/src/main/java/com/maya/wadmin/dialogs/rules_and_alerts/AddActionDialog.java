@@ -142,7 +142,7 @@ public class AddActionDialog extends Dialog
             {
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    String date = String.valueOf(monthOfYear) + "-" + String.valueOf(dayOfMonth) + "-"+ String.valueOf(year) + " " +simpleDateFormat.format(calendar.getTime());
+                    String date = String.valueOf(monthOfYear+1) + "-" + String.valueOf(dayOfMonth) + "-"+ String.valueOf(year) + " " +simpleDateFormat.format(calendar.getTime());
                     tvFrom.setText("From: "+date);
                     fromDate = date;
                 }
@@ -163,7 +163,7 @@ public class AddActionDialog extends Dialog
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
                 {
-                    String date = String.valueOf(monthOfYear) + "-" + String.valueOf(dayOfMonth) + "-"+ String.valueOf(year) + " " +simpleDateFormat.format(calendar.getTime());
+                    String date = String.valueOf(monthOfYear+1) + "-" + String.valueOf(dayOfMonth) + "-"+ String.valueOf(year) + " " +simpleDateFormat.format(calendar.getTime());
                     tvTo.setText("To: "+date);
                     toDate = date;
                 }

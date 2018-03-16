@@ -13,8 +13,12 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,10 +30,18 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.maya.wadmin.R;
+import com.maya.wadmin.apis.volley.VolleyHelperLayer;
+import com.maya.wadmin.constants.Constants;
 import com.maya.wadmin.interfaces.fragments.IFragment;
 import com.maya.wadmin.models.Vehicle;
+import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,6 +63,7 @@ public class VehicleLocationFragment extends Fragment implements IFragment ,OnMa
     Vehicle vehicle = null;
     TextView tvModel, tvVin, tvMake, tvYear;
     CoordinatorLayout coordinatorLayout;
+    ProgressBar progressBar;
 
     public VehicleLocationFragment() {
         // Required empty public constructor
@@ -125,6 +138,8 @@ public class VehicleLocationFragment extends Fragment implements IFragment ,OnMa
         tvMake = view.findViewById(R.id.tvMake);
         tvYear = view.findViewById(R.id.tvYear);
         coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -166,15 +181,68 @@ public class VehicleLocationFragment extends Fragment implements IFragment ,OnMa
             tvVin.setText(vehicle.Vin);
             tvYear.setText(vehicle.Year);
 
-            MarkerOptions truck = new MarkerOptions();
-            truck.title("Current");
-            truck.icon(getBitmapDescriptor(R.drawable.ic_direction,200,200));
-            truck.anchor(.5f, .5f);
-            truck.position(new LatLng(Double.parseDouble(vehicle.Latitude),Double.parseDouble(vehicle.Longitude)));
-            googleMap.addMarker(truck);
-            zoomToPostion(new LatLng(Double.parseDouble(vehicle.Latitude),Double.parseDouble(vehicle.Longitude)),(float) 12.5);
+            if(vehicle.Latitude!=null)
+            {
+                MarkerOptions truck = new MarkerOptions();
+                truck.title("Current");
+                truck.icon(getBitmapDescriptor(R.drawable.ic_direction, 200, 200));
+                truck.anchor(.5f, .5f);
+                truck.position(new LatLng(Double.parseDouble(vehicle.Latitude), Double.parseDouble(vehicle.Longitude)));
+                googleMap.addMarker(truck);
+                zoomToPostion(new LatLng(Double.parseDouble(vehicle.Latitude), Double.parseDouble(vehicle.Longitude)), (float) 12.5);
+            }
+            else
+            {
+                fetchVehicleLocation();
+            }
 
         }
+
+    }
+
+    private void fetchVehicleLocation()
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        String URL = Constants.URL_VEHICLES_DETAILS + vehicle.VehicleId;
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        final Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response) {
+                Logger.d("[response]", response);
+
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<Vehicle>>() {
+                }.getType();
+                List<Vehicle> vehicleList = gson.fromJson(response, type);
+                if(vehicleList!=null && vehicleList.size()>0)
+                {
+                    if(vehicleList.get(0).Latitude!=null)
+                    {
+                        MarkerOptions truck = new MarkerOptions();
+                        truck.title("Current");
+                        truck.icon(getBitmapDescriptor(R.drawable.ic_direction, 200, 200));
+                        truck.anchor(.5f, .5f);
+                        truck.position(new LatLng(Double.parseDouble(vehicleList.get(0).Latitude), Double.parseDouble(vehicleList.get(0).Longitude)));
+                        googleMap.addMarker(truck);
+                        zoomToPostion(new LatLng(Double.parseDouble(vehicleList.get(0).Latitude), Double.parseDouble(vehicleList.get(0).Longitude)), (float) 12.5);
+                    }
+                }
+                progressBar.setVisibility(View.GONE);
+
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+                progressBar.setVisibility(View.GONE);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
 
     }
 

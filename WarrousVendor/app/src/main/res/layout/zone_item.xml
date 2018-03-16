@@ -36,10 +36,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <com.maya.wadmin.customviews.SFMediumTextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:id="@+id/tvLocation"
                 android:maxLines="1"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textColor="#C45C5C5C"
                 android:text="jnsdjns, sndns, snjdns, snjdns"
                 android:textStyle="bold"

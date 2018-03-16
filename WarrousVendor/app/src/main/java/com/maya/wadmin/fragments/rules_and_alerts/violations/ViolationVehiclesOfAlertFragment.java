@@ -172,7 +172,7 @@ public class ViolationVehiclesOfAlertFragment extends Fragment implements IFragm
                 list = gson.fromJson(response, type);
                 if(list!=null && list.size()>0)
                 {
-                    vehicleArrivalAdapter = new VehicleArrivalAdapter(2,activity(),list);
+                    vehicleArrivalAdapter = new VehicleArrivalAdapter(2,activity(),list,null);
                     recyclerView.setAdapter(vehicleArrivalAdapter);
                 }
 

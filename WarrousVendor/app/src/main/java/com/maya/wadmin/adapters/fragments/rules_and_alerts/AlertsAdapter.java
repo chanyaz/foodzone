@@ -48,6 +48,11 @@ public class AlertsAdapter extends RecyclerView.Adapter<AlertsAdapter.ViewHolder
         holder.tvVehiclesContent.setText(list.get(position).VehicleCount +" vehicles");
         holder.cardView.setCardBackgroundColor(position%2==0 ? Color.parseColor("#C9F0D9") : Color.parseColor("#FFEAC2"));
         holder.llhead.setOnClickListener(click -> {iAlertsAdapter.openPopUpOptions(click,list.get(position),position);});
+
+        holder.imgMessage.setImageResource(list.get(position).isSMS ? R.drawable.alert_message : R.drawable.alert_unselect_message);
+        holder.imgCall.setImageResource(list.get(position).isCall ? R.drawable.alert_call : R.drawable.alert_unselect_call);
+        holder.imgMail.setImageResource(list.get(position).isEmail ? R.drawable.alert_mail : R.drawable.alert_unselect_mail);
+        holder.imgNoti.setImageResource(list.get(position).isPush ? R.drawable.alert_noti : R.drawable.alert_unselect_noti);
     }
 
     @Override

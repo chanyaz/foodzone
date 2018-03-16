@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -132,8 +133,62 @@ public class ZonesHomeFragment extends Fragment implements IFragment, ITopBarAda
         });
         llTopBarPanel.setVisibility(View.GONE);
 
+        llMainHead.setOnClickListener(click -> {
+            appBar.setExpanded(true,true);
+        });
+
+        llMainHead.setOnTouchListener((v, event) -> {
+            appBar.setExpanded(true,true);
+            return false;
+        });
+
+        changeListener();
 
         return view;
+    }
+
+
+    public void changeListener()
+    {
+
+        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener()
+        {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                float percentage = ((float)Math.abs(verticalOffset)/appBarLayout.getTotalScrollRange());
+                Logger.d("Percentage" , ""+ percentage);
+                float value = (int) (percentage * 10);
+                int width = activity().getResources().getDisplayMetrics().widthPixels - Utility.dpSize(activity(),50);
+
+                if(value!= 0)
+                {
+                    RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(
+
+                            Math.round(
+                                    width /(value) > Utility.dpSize(activity(),100)
+                                            ?  Math.round(width /(value)) : Utility.dpSize(activity(),100))
+
+                            ,Math.round(
+                            Utility.dpSize(activity(),50) /(value) > Utility.dpSize(activity(),5)
+                                    ? Utility.dpSize(activity(),50) /(value) : Utility.dpSize(activity(),5)));
+
+                    params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+                    params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                    llMainHead.setLayoutParams(params);
+                    tvTopBarItem.setVisibility(View.GONE);
+
+                }
+                else
+                {
+                    RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams( width , Utility.dpSize(activity(),50));
+                    params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+                    params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                    llMainHead.setLayoutParams(params);
+                    tvTopBarItem.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
     private void goToCreateZone()

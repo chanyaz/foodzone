@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -219,10 +220,61 @@ public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBa
             }
         });
 
+
+
+
+        llMainHead.setOnClickListener(click -> {
+            appBar.setExpanded(true,true);
+        });
+
+        llMainHead.setOnTouchListener((v, event) -> {
+            appBar.setExpanded(true,true);
+            return false;
+        });
+
+        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener()
+        {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                float percentage = ((float)Math.abs(verticalOffset)/appBarLayout.getTotalScrollRange());
+                Logger.d("Percentage" , ""+ percentage);
+                float value = (int) (percentage * 10);
+                int width = activity().getResources().getDisplayMetrics().widthPixels - Utility.dpSize(activity(),50);
+
+                if(value!= 0)
+                {
+                    RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(
+
+                            Math.round(
+                                    width /(value) > Utility.dpSize(activity(),100)
+                                            ?  Math.round(width /(value)) : Utility.dpSize(activity(),100))
+
+                            ,Math.round(
+                            Utility.dpSize(activity(),50) /(value) > Utility.dpSize(activity(),5)
+                                    ? Utility.dpSize(activity(),50) /(value) : Utility.dpSize(activity(),5)));
+
+                    params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+                    params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                    llMainHead.setLayoutParams(params);
+                    tvTopBarItem.setVisibility(View.GONE);
+
+                }
+                else
+                {
+                    RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams( width , Utility.dpSize(activity(),50));
+                    params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+                    params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                    llMainHead.setLayoutParams(params);
+                    tvTopBarItem.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
     public void updateTab(int position)
     {
+        appBar.setExpanded(true,true);
         tvAssignTestDrive.setVisibility(position==0?View.VISIBLE:View.GONE);
         try {
 
@@ -242,8 +294,7 @@ public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBa
         }
         catch (Exception e)
         {
-            e.printStackTrace();;
-            activity().finish();
+            e.printStackTrace();
         }
     }
 
@@ -331,6 +382,35 @@ public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBa
 
                 progressBar.setVisibility(View.GONE);
 
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                progressBar.setVisibility(View.GONE);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+
+    }
+
+
+    public void deleteVehicleFromLot(Vehicle vehicle)
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        String URL = Constants.URL_DELETE_TEST_DRIVE + vehicle.VehicleId;
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        final Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response) {
+                Logger.d("[response]", response);
+                progressBar.setVisibility(View.GONE);
+                showSnackBar("Updating Vehicles",1);
+                fetchVehiclesOfTestDrive();
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener()

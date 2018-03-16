@@ -47,7 +47,7 @@ public class AlertsAndRulesFragment extends Fragment implements IFragment {
 
     IAlertsAndRulesFragment iAlertsAndRulesFragment;
     TabLayout tabLayout;
-    ViewPager viewPager;
+    public ViewPager viewPager;
     CoordinatorLayout coordinatorLayout;
     List<String> list = new ArrayList<>();
     TextView tvAddAlert;

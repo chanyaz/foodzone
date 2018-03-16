@@ -264,8 +264,17 @@ public class PdiFormFragment extends Fragment implements IFragment , IPDIInspect
                 pdiPreparation = gson.fromJson(response, type);
                 if(pdiPreparation!=null)
                 {
+                    if(tvSave.getVisibility()==View.GONE)
+                    {
+                        pdiPreparation.InspectionValues = Constants.ALL_TRUE_INSPECTION;
+                    }
                     list = Utility.getListInspectionWithChecklist(pdiPreparation);
-                    recyclerView.setAdapter(pdiInspectionAdapter = new PDIInspectionAdapter(list,activity(),ipdiInspectionAdapter));
+                    pdiInspectionAdapter = new PDIInspectionAdapter(list,activity(),ipdiInspectionAdapter);
+                    if(tvSave.getVisibility()==View.GONE)
+                    {
+                        pdiInspectionAdapter.isClickable = false;
+                    }
+                    recyclerView.setAdapter(pdiInspectionAdapter);
                 }
 
             }

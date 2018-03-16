@@ -33,6 +33,7 @@ public class PDIInspectionAdapter extends RecyclerView.Adapter<PDIInspectionAdap
     IPDIInspectionAdapter ipdiInspectionAdapter;
     PDIChecklistAdapter pdiChecklistAdapter;
     IPDIChecklistAdapter ipdiChecklistAdapter;
+    public boolean isClickable = true;
 
     public PDIInspectionAdapter(List<Inspection> list, Context context,IPDIInspectionAdapter ipdiInspectionAdapter) {
         this.list = list;
@@ -55,10 +56,27 @@ public class PDIInspectionAdapter extends RecyclerView.Adapter<PDIInspectionAdap
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         holder.recyclerView.setFocusable(false);
         holder.recyclerView.setFocusableInTouchMode(false);
-        holder.recyclerView.setAdapter(pdiChecklistAdapter = new PDIChecklistAdapter(list.get(position).checkLists,context,position,ipdiChecklistAdapter));
+
+        int triggerInspected = 0;
+        for(int i =0;i<list.get(position).checkLists.size();i++)
+        {
+            if(list.get(position).checkLists.get(i).value==-1)
+            {
+                triggerInspected++;
+            }
+        }
+        holder.tvSelect.setText(""+(list.get(position).checkLists.size()-triggerInspected));
+        holder.tvUnSelect.setText("" + triggerInspected);
+
+        pdiChecklistAdapter = new PDIChecklistAdapter(list.get(position).checkLists,context,position,ipdiChecklistAdapter);
+        pdiChecklistAdapter.isClickable = isClickable;
+
+        holder.recyclerView.setAdapter(pdiChecklistAdapter);
 
         holder.llClick.setOnClickListener(click -> {ipdiInspectionAdapter.ItemClick(list.get(position),position);});
+
         holder.tvTitle.setOnClickListener(click -> {ipdiInspectionAdapter.ItemClick(list.get(position),position);});
+
 
         if(list.get(position).isOpenFlag)
         {
@@ -94,6 +112,7 @@ public class PDIInspectionAdapter extends RecyclerView.Adapter<PDIInspectionAdap
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView tvTitle;
+        TextView tvSelect, tvUnSelect;
         RecyclerView recyclerView;
         LinearLayout llClick,llhead,llhead1;
         ImageView imgClick;
@@ -107,6 +126,8 @@ public class PDIInspectionAdapter extends RecyclerView.Adapter<PDIInspectionAdap
             llhead = itemView.findViewById(R.id.llhead);
             llhead1 = itemView.findViewById(R.id.llhead1);
             imgClick = itemView.findViewById(R.id.imgClick);
+            tvUnSelect = itemView.findViewById(R.id.tvUnSelect);
+            tvSelect = itemView.findViewById(R.id.tvSelect);
         }
     }
 }

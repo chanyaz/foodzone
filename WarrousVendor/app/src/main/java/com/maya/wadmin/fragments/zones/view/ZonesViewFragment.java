@@ -122,6 +122,7 @@ public class ZonesViewFragment extends Fragment implements IFragment ,IZonesView
             @Override
             public void onRefresh()
             {
+                ((HelperActivity) activity()).clearSearchText();
                 if(Utility.isNetworkAvailable(activity()))
                 {
                     fetchAllZones();
@@ -235,35 +236,39 @@ public class ZonesViewFragment extends Fragment implements IFragment ,IZonesView
     @Override
     public void openPopUp(View view, Zone zone,final int position)
     {
-        PopupMenu popup = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
-        {
-            popup = new PopupMenu(activity(),view, Gravity.END);
-        }
-        else
-        {
-            popup = new PopupMenu(activity(),view);
-        }
-        // Inflate the menu from xml
-        popup.inflate(R.menu.zone_options);
-        // Setup menu item selection
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item)
-            {
-                switch (item.getItemId())
-                {
-                    case R.id.nav_edit:
-                        editZone(zone,position);
-                        return true;
-                    case R.id.nav_delete:
-                        deleteZone(zone,position);
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-        popup.show();
+        ((HelperActivity) activity()).openOptionsForZone(11,zone);
+
+
+
+//        PopupMenu popup = null;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
+//        {
+//            popup = new PopupMenu(activity(),view, Gravity.END);
+//        }
+//        else
+//        {
+//            popup = new PopupMenu(activity(),view);
+//        }
+//        // Inflate the menu from xml
+//        popup.inflate(R.menu.zone_options);
+//        // Setup menu item selection
+//        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            public boolean onMenuItemClick(MenuItem item)
+//            {
+//                switch (item.getItemId())
+//                {
+//                    case R.id.nav_edit:
+//                        editZone(zone,position);
+//                        return true;
+//                    case R.id.nav_delete:
+//                        deleteZone(zone,position);
+//                        return true;
+//                    default:
+//                        return false;
+//                }
+//            }
+//        });
+//        popup.show();
 
     }
 

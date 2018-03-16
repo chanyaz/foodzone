@@ -17,4 +17,5 @@ public interface ITestDriveVehiclesAdapter
     public void goToAssignPreparation();
     public void openPDIForm(Vehicle vehicle,int position);
     public void openLOTForm(Vehicle vehicle,int position);
+    public void openOptions(Vehicle vehicle,int position);
 }

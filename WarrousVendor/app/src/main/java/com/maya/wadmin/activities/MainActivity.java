@@ -2,6 +2,7 @@ package com.maya.wadmin.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.BottomNavigationView;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements IActivity
         tvCurrentPlatform = headerLayout.findViewById(R.id.tvCurrentPlatform);
         nestedScrollView = headerLayout.findViewById(R.id.nestedScrollView);
         tvSignout = headerLayout.findViewById(R.id.tvSignOut);
+        tvUserProfile = headerLayout.findViewById(R.id.tvUserProfile);
 
 
 
@@ -96,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements IActivity
             }
         });
 
-        addBadgeAt(0, 6);
-        addBadgeAt(3, 6);
+        addBadgeAt(0, 4);
+        addBadgeAt(3, 9);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, HomeFragment.newInstance(null,null)).commit();
 
         tvSignout.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +109,22 @@ public class MainActivity extends AppCompatActivity implements IActivity
                 openLogoutDialog();
             }
         });
+
+        tvUserProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                openUserProfile();
+            }
+        });
+    }
+
+    private void openUserProfile()
+    {
+        drawer.closeDrawers();
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,8);
+        startActivity(intent);
     }
 
     private void openLogoutDialog()
@@ -142,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements IActivity
                         {
 
                         }
-                          //  Toast.makeText(BadgeViewActivity.this, R.string.tips_badge_removed, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -1,6 +1,7 @@
 package com.maya.wadmin.adapters.fragments.delivery;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.maya.wadmin.R;
+import com.maya.wadmin.activities.HelperActivity;
+import com.maya.wadmin.constants.Constants;
+import com.maya.wadmin.interfaces.adapters.delivery.IVehicleArrivalAdapter;
 import com.maya.wadmin.models.Vehicle;
 import com.maya.wadmin.utilities.Utility;
 
@@ -26,6 +30,7 @@ public class VehicleArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     Context context;
     List<Vehicle> list;
     int type = 0;
+    IVehicleArrivalAdapter iVehicleArrivalAdapter = null;
 
     public VehicleArrivalAdapter(Context context, List<Vehicle> list)
     {
@@ -33,11 +38,12 @@ public class VehicleArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.list = list;
     }
 
-    public VehicleArrivalAdapter(int type,Context context, List<Vehicle> list)
+    public VehicleArrivalAdapter(int type,Context context, List<Vehicle> list,IVehicleArrivalAdapter iVehicleArrivalAdapter)
     {
         this.type = type;
         this.context = context;
         this.list = list;
+        this.iVehicleArrivalAdapter = iVehicleArrivalAdapter;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -92,6 +98,15 @@ public class VehicleArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     } else {
                         holder.bottomView.setVisibility(View.VISIBLE);
                     }
+
+
+                    holder.itemView.setOnClickListener(click ->
+                    {
+                        Intent intent = new Intent(context,HelperActivity.class);
+                        intent.putExtra(Constants.FRAGMENT_KEY,111);
+                        intent.putExtra("vehicle",list.get(position));
+                        context.startActivity(intent);
+                    });
         }
         else if(type==1)
         {
@@ -131,6 +146,13 @@ public class VehicleArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     } else {
                         holder.bottomView.setVisibility(View.VISIBLE);
                     }
+
+                    holder.itemView.setOnClickListener(click -> {
+                        if(iVehicleArrivalAdapter!=null)
+                        {
+                            iVehicleArrivalAdapter.itemClick(list.get(position),position);
+                        }
+                    });
         }
         else if(type==2)
         {
@@ -160,6 +182,14 @@ public class VehicleArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 {
                     holder.bottomView.setVisibility(View.VISIBLE);
                 }
+
+
+            holder.itemView.setOnClickListener(click -> {
+                if(iVehicleArrivalAdapter!=null)
+                {
+                    iVehicleArrivalAdapter.itemClick(list.get(position),position);
+                }
+            });
         }
         else
         {

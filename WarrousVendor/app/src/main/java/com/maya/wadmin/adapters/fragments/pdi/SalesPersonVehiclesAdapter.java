@@ -179,6 +179,11 @@ public class SalesPersonVehiclesAdapter extends RecyclerView.Adapter<SalesPerson
         context.startActivity(intent);
     }
 
+    @Override
+    public void openOptions(Vehicle vehicle, int position) {
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView tvSalesPerson;

@@ -79,6 +79,7 @@
         </LinearLayout>
 
         <ImageView
+            android:visibility="gone"
             android:scaleType="fitXY"
             android:id="@+id/imgClick"
             android:layout_marginLeft="5dp"
@@ -87,6 +88,17 @@
             android:src="@drawable/ic_arrow_down"
             android:layout_width="24dp"
             android:layout_height="24dp" />
+        <ImageView
+            android:visibility="visible"
+            android:id="@+id/imgOption"
+            android:paddingLeft="11dp"
+            android:paddingRight="11dp"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_options"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/llhead1"

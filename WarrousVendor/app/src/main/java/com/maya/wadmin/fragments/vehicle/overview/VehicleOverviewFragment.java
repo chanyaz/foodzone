@@ -239,6 +239,7 @@ public class VehicleOverviewFragment extends Fragment implements IFragment {
             tvVin.setText(vehicle.Vin);
             tvMake.setText(vehicle.Make);
             tvYear.setText(vehicle.Year);
+
         }
     }
 
@@ -391,7 +392,7 @@ public class VehicleOverviewFragment extends Fragment implements IFragment {
                 Type type = new TypeToken<List<Vehicle>>() {
                 }.getType();
                 List<Vehicle> vehicleList = gson.fromJson(response, type);
-                if(vehicleList!=null)
+                if(vehicleList!=null && vehicleList.size()>0)
                 {
                   updateUI(vehicleList.get(0));
                 }
@@ -423,6 +424,8 @@ public class VehicleOverviewFragment extends Fragment implements IFragment {
         tvOdometerStatus.setText(vehicle.OdometerStatus);
         tvTransmissionType.setText(vehicle.TransmissionType);
         tvDoorQuantity.setText(vehicle.DoorsQuantity);
+        this.vehicle.Type = vehicle.VehicleType;
+        tvStatus.setText(this.vehicle.Type);
     }
 
 

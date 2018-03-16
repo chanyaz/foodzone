@@ -15,6 +15,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,8 @@ public class VehicleDeliveryFragment extends Fragment implements IFragment,ITopB
     AppBarLayout appBar;
     float before = -1;
     ViewGroup.LayoutParams layoutParams;
+
+
 
 
 
@@ -194,6 +197,15 @@ public class VehicleDeliveryFragment extends Fragment implements IFragment,ITopB
             llTopBarPanel.setVisibility(View.GONE);
         });
 
+        llMainHead.setOnClickListener(click -> {
+            appBar.setExpanded(true,true);
+        });
+
+        llMainHead.setOnTouchListener((v, event) -> {
+            appBar.setExpanded(true,true);
+            return false;
+        });
+
         changeListener();
 
         return view;
@@ -221,27 +233,46 @@ public class VehicleDeliveryFragment extends Fragment implements IFragment,ITopB
             }
         });
 
-        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener()
+        {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 float percentage = ((float)Math.abs(verticalOffset)/appBarLayout.getTotalScrollRange());
-                //tvTopBarItem.setAlpha();
                     Logger.d("Percentage" , ""+ percentage);
+                    float value = (int) (percentage * 10);
+                    int width = activity().getResources().getDisplayMetrics().widthPixels - Utility.dpSize(activity(),50);
 
-                    int value = (int) (percentage * 10);
+                    if(value!= 0)
+                    {
 
-//
-//                    if(value!= 0)
-//                    {
-//                        Logger.d("content " , "" + value + " " +layoutParams.width/value + " "  +layoutParams.height/value);
-//                        Logger.d("real content " , "" + value + " " +layoutParams.width + " "  +layoutParams.height);
-//
-//                        llMainHead.setLayoutParams(new RelativeLayout.LayoutParams(layoutParams.width,  Utility.dpSize(activity(),50)/value));
-//                    }
-//                    else
-//                    {
-//                        llMainHead.setLayoutParams(new RelativeLayout.LayoutParams(layoutParams.width, Utility.dpSize(activity(),50)));
-//                    }
+                            RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(
+
+                                            Math.round(
+                                                    width /(value) > Utility.dpSize(activity(),100)
+                                                    ?  Math.round(width /(value)) : Utility.dpSize(activity(),100))
+
+                                            ,Math.round(
+                                                    Utility.dpSize(activity(),50) /(value) > Utility.dpSize(activity(),5)
+                                                    ? Utility.dpSize(activity(),50) /(value) : Utility.dpSize(activity(),5)));
+
+                            params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+                            params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                            llMainHead.setLayoutParams(params);
+                            tvTopBarItem.setVisibility(View.GONE);
+
+                    }
+                    else
+                    {
+                        RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams( width , Utility.dpSize(activity(),50));
+                        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+                        params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                        llMainHead.setLayoutParams(params);
+                        tvTopBarItem.setVisibility(View.VISIBLE);
+                    }
+
+
+
+
 
             }
         });
@@ -250,6 +281,7 @@ public class VehicleDeliveryFragment extends Fragment implements IFragment,ITopB
 
     public void updateTab(int position)
     {
+        appBar.setExpanded(true,true);
         for (int i = 0; i < tabLayout.getTabCount(); i++)
         {
 

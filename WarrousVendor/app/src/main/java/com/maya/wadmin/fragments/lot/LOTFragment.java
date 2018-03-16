@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -324,10 +325,59 @@ public class LOTFragment extends Fragment implements IFragment , ITopBarAdapter 
             }
         });
 
+
+        llMainHead.setOnClickListener(click -> {
+            appBar.setExpanded(true,true);
+        });
+
+        llMainHead.setOnTouchListener((v, event) -> {
+            appBar.setExpanded(true,true);
+            return false;
+        });
+
+        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener()
+        {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                float percentage = ((float)Math.abs(verticalOffset)/appBarLayout.getTotalScrollRange());
+                Logger.d("Percentage" , ""+ percentage);
+                float value = (int) (percentage * 10);
+                int width = activity().getResources().getDisplayMetrics().widthPixels - Utility.dpSize(activity(),50);
+
+                if(value!= 0)
+                {
+                    RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams(
+
+                            Math.round(
+                                    width /(value) > Utility.dpSize(activity(),100)
+                                            ?  Math.round(width /(value)) : Utility.dpSize(activity(),100))
+
+                            ,Math.round(
+                            Utility.dpSize(activity(),50) /(value) > Utility.dpSize(activity(),5)
+                                    ? Utility.dpSize(activity(),50) /(value) : Utility.dpSize(activity(),5)));
+
+                    params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+                    params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                    llMainHead.setLayoutParams(params);
+                    tvTopBarItem.setVisibility(View.GONE);
+
+                }
+                else
+                {
+                    RelativeLayout.LayoutParams params =  new RelativeLayout.LayoutParams( width , Utility.dpSize(activity(),50));
+                    params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+                    params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                    llMainHead.setLayoutParams(params);
+                    tvTopBarItem.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
     public void updateTab(int position)
     {
+        appBar.setExpanded(true,true);
         tvAssign.setVisibility(position==0?View.VISIBLE:View.GONE);
         try {
 

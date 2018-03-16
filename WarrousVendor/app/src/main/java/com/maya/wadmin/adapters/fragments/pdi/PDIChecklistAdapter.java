@@ -27,6 +27,7 @@ public class PDIChecklistAdapter extends RecyclerView.Adapter<PDIChecklistAdapte
     Context context;
     int inspectionPosition = -1;
     IPDIChecklistAdapter iPdiChecklistAdapter;
+    public boolean isClickable = true;
 
     public PDIChecklistAdapter(List<CheckList> lists, Context context, int inspectionPosition,IPDIChecklistAdapter iPdiChecklistAdapter ) {
         this.lists = lists;
@@ -94,9 +95,18 @@ public class PDIChecklistAdapter extends RecyclerView.Adapter<PDIChecklistAdapte
                 break;
         }
 
-        holder.tvFail.setOnClickListener(click -> {iPdiChecklistAdapter.changeValue(lists.get(position),inspectionPosition,position,0);});
-        holder.tvPass.setOnClickListener(click -> {iPdiChecklistAdapter.changeValue(lists.get(position),inspectionPosition,position,1);});
-        holder.tvInspected.setOnClickListener(click -> {iPdiChecklistAdapter.changeValue(lists.get(position),inspectionPosition,position,-1);});
+        if(isClickable)
+        {
+            holder.tvFail.setOnClickListener(click -> {
+                iPdiChecklistAdapter.changeValue(lists.get(position), inspectionPosition, position, 0);
+            });
+            holder.tvPass.setOnClickListener(click -> {
+                iPdiChecklistAdapter.changeValue(lists.get(position), inspectionPosition, position, 1);
+            });
+            holder.tvInspected.setOnClickListener(click -> {
+                iPdiChecklistAdapter.changeValue(lists.get(position), inspectionPosition, position, -1);
+            });
+        }
 
 
         holder.llhead.setBackgroundColor(Color.parseColor(position%2==0?"#F7F8FB":"#FFFFFF"));

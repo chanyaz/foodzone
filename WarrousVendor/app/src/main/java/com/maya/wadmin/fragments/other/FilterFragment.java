@@ -367,7 +367,7 @@ public class FilterFragment extends Fragment implements IFragment,IFilterAdapter
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
                 {
-                    String date = String.valueOf(monthOfYear) + "-" + String.valueOf(dayOfMonth) + "-"+ String.valueOf(year);
+                    String date = String.valueOf(monthOfYear+1) + "-" + String.valueOf(dayOfMonth) + "-"+ String.valueOf(year);
                     tvFrom.setText(date);
                     fromDate = date;
                 }
@@ -385,7 +385,7 @@ public class FilterFragment extends Fragment implements IFragment,IFilterAdapter
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
                 {
-                    String date = String.valueOf(monthOfYear) + "-" + String.valueOf(dayOfMonth) + "-"+ String.valueOf(year);
+                    String date = String.valueOf(monthOfYear+1) + "-" + String.valueOf(dayOfMonth) + "-"+ String.valueOf(year);
                     tvTo.setText(date);
                     toDate = date;
                 }

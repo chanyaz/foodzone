@@ -140,6 +140,10 @@ public class TestDriveVehiclesAdapter extends RecyclerView.Adapter<RecyclerView.
                         }
                     });
 
+                    holder.imgOption.setOnClickListener(click ->{
+                        iTestDriveVehiclesAdapter.openOptions(list.get(position),position);
+                    });
+
 
                     if (list.get(position).viewFullDetails) {
                         holder.llhead.setBackgroundResource(R.drawable.test_drive_item_selected);
@@ -708,7 +712,7 @@ public class TestDriveVehiclesAdapter extends RecyclerView.Adapter<RecyclerView.
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView tvVin, tvMake, tvSalesPerson,tvOther, tvCustomerName, tvCustomerPhone;
-        ImageView imgVehicle, imgClick, imgSalesPerson;
+        ImageView imgVehicle, imgOption,imgClick, imgSalesPerson;
         View bottomView;
         LinearLayout llhead,llhead1;
 
@@ -724,6 +728,7 @@ public class TestDriveVehiclesAdapter extends RecyclerView.Adapter<RecyclerView.
             imgVehicle = itemView.findViewById(R.id.imgVehicle);
             imgSalesPerson = itemView.findViewById(R.id.imgSalesPerson);
             imgClick = itemView.findViewById(R.id.imgClick);
+            imgOption = itemView.findViewById(R.id.imgOption);
             bottomView = itemView.findViewById(R.id.bottomView);
             llhead = itemView.findViewById(R.id.llhead);
             llhead1 = itemView.findViewById(R.id.llhead1);

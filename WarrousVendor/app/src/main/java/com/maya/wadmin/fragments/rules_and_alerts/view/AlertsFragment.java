@@ -326,50 +326,52 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
     @Override
     public void openPopUpOptions(View view, AlertRule alertRule, int position)
     {
-        PopupMenu popup = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
-        {
-            popup = new PopupMenu(activity(),view, Gravity.END);
-        }
-        else
-        {
-            popup = new PopupMenu(activity(),view);
-        }
-        // Inflate the menu from xml
-        popup.inflate(R.menu.alert_options);
-        // Setup menu item selection
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item)
-            {
-                switch (item.getItemId())
-                {
-                    case R.id.nav_clone:
-                        if(Utility.isNetworkAvailable(activity()))
-                        cloneAlert(alertRule,position);
-                        else
-                        showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                        return true;
-                    case R.id.nav_edit:
-                        edit(alertRule,position);
-                        return true;
-                    case R.id.nav_delete:
-                        if(Utility.isNetworkAvailable(activity()))
-                        deleteAlert(alertRule,position);
-                        else
-                        showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                        return true;
-                    case R.id.nav_violations:
-                        if(Utility.isNetworkAvailable(activity()))
-                        openViolationVehicles(alertRule,position);
-                        else
-                        showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
-        popup.show();
+
+        ((HelperActivity) activity()).openOptionsForAlerts(12,alertRule);
+//        PopupMenu popup = null;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
+//        {
+//            popup = new PopupMenu(activity(),view, Gravity.END);
+//        }
+//        else
+//        {
+//            popup = new PopupMenu(activity(),view);
+//        }
+//        // Inflate the menu from xml
+//        popup.inflate(R.menu.alert_options);
+//        // Setup menu item selection
+//        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            public boolean onMenuItemClick(MenuItem item)
+//            {
+//                switch (item.getItemId())
+//                {
+//                    case R.id.nav_clone:
+//                        if(Utility.isNetworkAvailable(activity()))
+//                        cloneAlert(alertRule,position);
+//                        else
+//                        showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+//                        return true;
+//                    case R.id.nav_edit:
+//                        edit(alertRule,position);
+//                        return true;
+//                    case R.id.nav_delete:
+//                        if(Utility.isNetworkAvailable(activity()))
+//                        deleteAlert(alertRule,position);
+//                        else
+//                        showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+//                        return true;
+//                    case R.id.nav_violations:
+//                        if(Utility.isNetworkAvailable(activity()))
+//                        openViolationVehicles(alertRule,position);
+//                        else
+//                        showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+//                        return true;
+//                    default:
+//                        return false;
+//                }
+//            }
+//        });
+//        popup.show();
 
     }
 

@@ -35,6 +35,7 @@ import com.maya.wadmin.models.AppOverview;
 import com.maya.wadmin.models.CheckList;
 import com.maya.wadmin.models.Inspection;
 import com.maya.wadmin.models.LotCheckList;
+import com.maya.wadmin.models.Options;
 import com.maya.wadmin.models.PDIPreparation;
 import com.maya.wadmin.models.TopBarPanel;
 import com.maya.wadmin.models.UserRole;
@@ -578,6 +579,8 @@ public class Utility
 
     public static List<UserRole> getUserRole(int value)
     {
+
+
         List<UserRole> list = new ArrayList<UserRole>();
         Gson gson =new Gson();
         Type type = new TypeToken<AppOverview>(){}.getType();
@@ -585,78 +588,79 @@ public class Utility
         {
             return list;
         }
-        AppOverview appOverview = gson.fromJson(getString(getSharedPreferences(),Constants.APP_OVERVIEW),type); //getString(getSharedPreferences(),Constants.APP_OVERVIEW)  Constants.SAMPLE_APP_OVERVIEW
-        if(appOverview == null)
-        {
-            return list;
-        }
-        else
-        {
-            if(appOverview.vehicleTypeCount==null || appOverview.vehicleTypeCount.size()==0)
-            {
+        try {
+            AppOverview appOverview = gson.fromJson(getString(getSharedPreferences(), Constants.APP_OVERVIEW), type); //getString(getSharedPreferences(),Constants.APP_OVERVIEW)  Constants.SAMPLE_APP_OVERVIEW
+            if (appOverview == null) {
                 return list;
+            } else {
+                if (appOverview.vehicleTypeCount == null || appOverview.vehicleTypeCount.size() == 0) {
+                    return list;
+                }
+            }
+
+            List<VehicleCount> countList;
+            switch (value) {
+                case 0:
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.VehicleDeliveryCount, "Vehicle's in the delivery"));
+                    list.add(new UserRole("Vehicle Delivery", R.drawable.ic_vehicle_delivery, countList));
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.ZoneCount, "Zones in the present"));
+                    list.add(new UserRole("Manage Zones", R.drawable.ic_manage_zones, countList));
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.AlertsCount, "Alerts in the panel"));
+                    list.add(new UserRole("Rules & Alerts", R.drawable.ic_rules_alerts, countList));
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.FindVehicleCount, "Vehicles in the current"));
+                    list.add(new UserRole("Find Vehicle", R.drawable.ic_find_vehicle, countList));
+                    break;
+                case 1:
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(0).VehicleCount, "Vehicle's in delivery received"));
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(4).VehicleCount, "Vehicle's in Preparing for lot"));
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(2).VehicleCount, "Vehicle's in marked for pdi"));
+                    list.add(new UserRole("Fleet Delivery", R.drawable.fleet_mangement, countList));
+
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(2).VehicleCount, "Vehicle's in marked for pdi"));
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(3).VehicleCount, "Vehicle's in pdi incomplete"));
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(1).VehicleCount, "Vehicle's in pdi completed"));
+                    list.add(new UserRole("PDI", R.drawable.ic_p_pdi, countList));
+
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(5).VehicleCount, "Vehicle's in lot"));
+                    list.add(new UserRole("Test Drive", R.drawable.ic_test_drive, countList));
+
+
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(0).VehicleCount, "Vehicle's in delivery received"));
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(4).VehicleCount, "Vehicle's in Preparing for lot"));
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(2).VehicleCount, "Vehicle's in marked for pdi"));
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(3).VehicleCount, "Vehicle's in pdi incomplete"));
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(1).VehicleCount, "Vehicle's in inventory"));
+                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(5).VehicleCount, "Vehicle's in test drive"));
+                    list.add(new UserRole("Lot Management", R.drawable.ic_lot_management, countList));
+
+
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.ZoneCount, "Zones in the present"));
+                    list.add(new UserRole("Manage Zones", R.drawable.ic_manage_zones, countList));
+
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.AlertsCount, "Alerts in the panel"));
+                    list.add(new UserRole("Rules & Alerts", R.drawable.ic_rules_alerts, countList));
+
+                    countList = new ArrayList<>();
+                    countList.add(new VehicleCount(appOverview.FindVehicleCount, "Vehicle's in the current"));
+                    list.add(new UserRole("Find Vehicle", R.drawable.ic_find_vehicle, countList));
+                    //list.add(new UserRole("Create Zone",R.drawable.ic_rules_alerts));
+                    break;
+
             }
         }
-
-        List<VehicleCount> countList;
-        switch (value)
+        catch (Exception e)
         {
-            case 0:
-                countList = new ArrayList<>();
-                countList.add(new VehicleCount(appOverview.VehicleDeliveryCount,"Vehicle's in the delivery"));
-                list.add(new UserRole("Vehicle Delivery",R.drawable.ic_vehicle_delivery,countList));
-                countList = new ArrayList<>();
-                countList.add(new VehicleCount(appOverview.ZoneCount,"Zones in the present"));
-                list.add(new UserRole("Manage Zones",R.drawable.ic_manage_zones,countList));
-                countList = new ArrayList<>();
-                countList.add(new VehicleCount(appOverview.AlertsCount,"Alerts in the panel"));
-                list.add(new UserRole("Rules & Alerts",R.drawable.ic_rules_alerts,countList));
-                countList = new ArrayList<>();
-                countList.add(new VehicleCount(appOverview.FindVehicleCount,"Vehicles in the current"));
-                list.add(new UserRole("Find Vehicle",R.drawable.ic_find_vehicle,countList));
-                break;
-            case 1:
-                    countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(0).VehicleCount,"Vehicle's in delivery received"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(4).VehicleCount,"Vehicle's in Preparing for lot"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(2).VehicleCount,"Vehicle's in marked for pdi"));
-                list.add(new UserRole("Fleet Delivery",R.drawable.fleet_mangement,countList));
-
-                    countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(2).VehicleCount,"Vehicle's in marked for pdi"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(3).VehicleCount,"Vehicle's in pdi incomplete"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(1).VehicleCount,"Vehicle's in pdi completed"));
-                list.add(new UserRole("PDI",R.drawable.ic_p_pdi,countList));
-
-                    countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(5).VehicleCount,"Vehicle's in lot"));
-                list.add(new UserRole("Test Drive",R.drawable.ic_test_drive,countList));
-
-
-                    countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(0).VehicleCount,"Vehicle's in delivery received"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(4).VehicleCount,"Vehicle's in Preparing for lot"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(2).VehicleCount,"Vehicle's in marked for pdi"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(3).VehicleCount,"Vehicle's in pdi incomplete"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(1).VehicleCount,"Vehicle's in inventory"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(5).VehicleCount,"Vehicle's in test drive"));
-                list.add(new UserRole("Lot Management",R.drawable.ic_lot_management,countList));
-
-
-                    countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.ZoneCount,"Zones in the present"));
-                list.add(new UserRole("Manage Zones",R.drawable.ic_manage_zones,countList));
-
-                    countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.AlertsCount,"Alerts in the panel"));
-                list.add(new UserRole("Rules & Alerts",R.drawable.ic_rules_alerts,countList));
-
-                    countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.FindVehicleCount,"Vehicles in the current"));
-                list.add(new UserRole("Find Vehicle",R.drawable.ic_find_vehicle,countList));
-                //list.add(new UserRole("Create Zone",R.drawable.ic_rules_alerts));
-                break;
-
+            e.printStackTrace();
         }
 
         return list;
@@ -731,6 +735,40 @@ public class Utility
         }
 
         return list;
+    }
+
+    public static LotCheckList setAllPass(LotCheckList lotCheckList)
+    {
+
+        lotCheckList.IsBillLading = 1;
+
+        lotCheckList.IsKeysCount = 1;
+
+        lotCheckList.IsOwnersManualPacket = 1;
+
+        lotCheckList.IsVinMatch = 1;
+
+        lotCheckList.IsShippingDamage = 1;
+
+        lotCheckList.IsMirrors= 1;
+
+        lotCheckList.IsRemovalWrap= 1;
+
+        lotCheckList.IsUpdateShippingInvoice= 1;
+
+        lotCheckList.IsVehiclePackets= 1;
+
+        lotCheckList.IsPrintBarCode= 1;
+
+        lotCheckList.IsHandShippingInvoices= 1;
+
+        lotCheckList.IsInstallBarCodeStickers= 1;
+
+        lotCheckList.IsSeperateKeys= 1;
+
+        lotCheckList.IsFilePackets= 1;
+
+        return lotCheckList;
     }
 
     public static List<CheckList> generateChecklistForPreparationForm(LotCheckList lotCheckList)
@@ -1283,7 +1321,7 @@ public class Utility
 
 
         int j = 0;
-        for (int i = 43; i <= 71; i++)
+        for (int i = 43; i <= 72; i++)
         {
             list.get(j).value = values[i];
             j++;
@@ -1333,7 +1371,7 @@ public class Utility
 
 
         int j = 0;
-        for (int i = 72; i <= 79; i++)
+        for (int i = 73; i <= 80; i++)
         {
             list.get(j).value = values[i];
             j++;
@@ -1370,9 +1408,10 @@ public class Utility
         list.add(ch5);
 
         int j = 0;
-        for (int i = 80; i <= 84; i++)
+        for (int i = 81; i <= 85; i++)
         {
             list.get(j).value = values[i];
+            j++;
         }
 
         return list;
@@ -1427,7 +1466,7 @@ public class Utility
         list.add(ch10);
 //
         int j = 0;
-        for (int i = 85; i <= 94; i++)
+        for (int i = 86; i <= 95; i++)
         {
             list.get(j).value = values[i];
             j++;
@@ -1479,6 +1518,37 @@ public class Utility
         list.add(v7);
 
 
+        return list;
+    }
+
+
+    public static List<Options> generateOptions(int value)
+    {
+        List<Options> list = new ArrayList<>();
+
+        switch (value)
+        {
+            case 1: // test drive lot
+            list.add(new Options("Edit", R.drawable.ic_edit_black));
+            list.add(new Options("Delete", R.drawable.ic_recyclebin));
+            list.add(new Options("Overview", R.drawable.ic_info_outline));
+            list.add(new Options("Locate", R.drawable.ic_location_on_current));
+            break;
+            case 2: // test drive / return
+            list.add(new Options("Overview", R.drawable.ic_info_outline));
+            list.add(new Options("Locate", R.drawable.ic_location_on_current));
+            break;
+            case 11: // zones
+            list.add(new Options("Edit", R.drawable.ic_edit_black));
+            list.add(new Options("Delete", R.drawable.ic_recyclebin));
+            break;
+            case 12: // zones
+            list.add(new Options("Clone", R.drawable.ic_clone));
+            list.add(new Options("Edit", R.drawable.ic_edit_black));
+            list.add(new Options("Delete", R.drawable.ic_recyclebin));
+            list.add(new Options("Violations", R.drawable.ic_alerts));
+            break;
+        }
         return list;
     }
 }

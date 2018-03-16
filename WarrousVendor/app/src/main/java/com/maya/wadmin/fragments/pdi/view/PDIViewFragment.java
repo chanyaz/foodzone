@@ -108,6 +108,7 @@ public class PDIViewFragment extends Fragment implements IFragment,ISalesPersonV
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
 
         swipeRefreshLayout.setOnRefreshListener(() -> {

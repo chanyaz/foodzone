@@ -284,9 +284,20 @@ public class LotPreparationFormFragment extends Fragment implements IFragment, I
                 lotCheckList = gson.fromJson(response, type);
                 if(lotCheckList!=null)
                 {
+                    if(tvSave.getVisibility()==View.GONE)
+                    {
+                      lotCheckList = Utility.setAllPass(lotCheckList);
+                    }
 
                     list = Utility.generateChecklistForPreparationForm(lotCheckList);
-                    recyclerView.setAdapter(pdiChecklistAdapter = new PDIChecklistAdapter(list,activity(),iPdiChecklistAdapter));
+                    pdiChecklistAdapter = new PDIChecklistAdapter(list,activity(),iPdiChecklistAdapter);
+                    if(tvSave.getVisibility()==View.GONE)
+                    {
+                        pdiChecklistAdapter.isClickable = false;
+                    }
+                    recyclerView.setAdapter(pdiChecklistAdapter);
+
+
                 }
 
             }

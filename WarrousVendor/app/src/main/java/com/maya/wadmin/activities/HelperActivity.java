@@ -2,6 +2,7 @@ package com.maya.wadmin.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.TypeEvaluator;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
@@ -9,13 +10,17 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,9 +40,11 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.maya.wadmin.R;
+import com.maya.wadmin.adapters.custom.OptionsAdapter;
 import com.maya.wadmin.constants.Constants;
 import com.maya.wadmin.fragments.delivery.VehicleDeliveryFragment;
 import com.maya.wadmin.fragments.fleet.FleetHomeFragment;
+import com.maya.wadmin.fragments.home.options.ProfileFragment;
 import com.maya.wadmin.fragments.lot.LOTFragment;
 import com.maya.wadmin.fragments.lot.add.AddPreparingLotFragment;
 import com.maya.wadmin.fragments.lot.form.LotPreparationFormFragment;
@@ -47,6 +55,7 @@ import com.maya.wadmin.fragments.pdi.add.AddPDIFragment;
 import com.maya.wadmin.fragments.pdi.form.PdiFormFragment;
 import com.maya.wadmin.fragments.rules_and_alerts.AlertsAndRulesFragment;
 import com.maya.wadmin.fragments.rules_and_alerts.view.AddAlertFragment;
+import com.maya.wadmin.fragments.rules_and_alerts.view.AlertsFragment;
 import com.maya.wadmin.fragments.rules_and_alerts.violations.ViolationVehiclesOfAlertFragment;
 import com.maya.wadmin.fragments.testdrive.TestDriveHomeFragment;
 import com.maya.wadmin.fragments.testdrive.add.AddNewTestDriveFragment;
@@ -55,12 +64,15 @@ import com.maya.wadmin.fragments.vehicle.location.VehicleLocationFragment;
 import com.maya.wadmin.fragments.vehicle.overview.VehicleOverviewFragment;
 import com.maya.wadmin.fragments.zones.ZonesHomeFragment;
 import com.maya.wadmin.fragments.zones.add.CreateZoneFragment;
+import com.maya.wadmin.fragments.zones.view.ZonesViewFragment;
 import com.maya.wadmin.interfaces.activities.IActivity;
+import com.maya.wadmin.interfaces.custom.IOptionsAdapter;
 import com.maya.wadmin.interfaces.fragments.delivery.IVehicleArrivalFragment;
 import com.maya.wadmin.interfaces.fragments.rules_and_alerts.IAlertsAndRulesFragment;
 import com.maya.wadmin.models.AlertRule;
 import com.maya.wadmin.models.DeliveryTruck;
 import com.maya.wadmin.models.GroupFilter;
+import com.maya.wadmin.models.Options;
 import com.maya.wadmin.models.Vehicle;
 import com.maya.wadmin.models.Zone;
 import com.maya.wadmin.utilities.Logger;
@@ -68,8 +80,9 @@ import com.maya.wadmin.utilities.Utility;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.List;
 
-public class HelperActivity extends AppCompatActivity implements IActivity, IVehicleArrivalFragment,IAlertsAndRulesFragment {
+public class HelperActivity extends AppCompatActivity implements IActivity, IVehicleArrivalFragment,IAlertsAndRulesFragment ,IOptionsAdapter {
 
     Toolbar toolbar;
     CoordinatorLayout coordinatorLayout;
@@ -80,6 +93,11 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
     Toolbar searchToolbar;
     public MenuItem searchViewItem, locationItem;
     SearchView searchView;
+    FrameLayout bottomSheetLayout;
+    BottomSheetBehavior bottomSheetBehavior;
+    RecyclerView recyclerView;
+    LinearLayout llClose;
+    IOptionsAdapter iOptionsAdapter;
 
 
     @Override
@@ -89,6 +107,21 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
         toolbar = findViewById(R.id.toolbar);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
         tvTitle = findViewById(R.id.tvTitle);
+        bottomSheetLayout = findViewById(R.id.fragment_bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+        recyclerView = findViewById(R.id.recyclerView);
+        llClose = findViewById(R.id.llClose);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity(),LinearLayoutManager.HORIZONTAL,false));
+        iOptionsAdapter = this;
+
+
+        bottomSheetBehavior.setHideable(true);
+        bottomSheetBehavior.setPeekHeight(0);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        llClose.setOnClickListener(click -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        });
 
 
         toolbar.setTitle("");
@@ -368,6 +401,11 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
     {
         Logger.d("FRAGMENT COUNT",""+getSupportFragmentManager().getBackStackEntryCount());
 
+        if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+        {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            return;
+        }
 
         if(getIntent().getIntExtra(Constants.FRAGMENT_KEY,0)==611)
         {
@@ -475,6 +513,13 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
                     }
                     fragment = ZonesHomeFragment.newInstance(null,null);
                     break;
+                case 8:
+                    changeTitle("User Profile");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        toolbar.setElevation(0);
+                    }
+                    fragment = ProfileFragment.newInstance(null,null);
+                    break;
                 case 11:
                     changeTitle("Assign for Preparing");
                     fragment = AddPreparingLotFragment.newInstance(null,null);
@@ -501,6 +546,17 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
                     else
                     {
                         fragment = VehicleOverviewFragment.newInstance(null, null);
+                    }
+                    break;
+
+                case 112:
+                    changeTitle("Locate Vehicle");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        toolbar.setElevation(0);
+                    }
+                    if(getIntent().getSerializableExtra("vehicle")!=null)
+                    {
+                        fragment = VehicleLocationFragment.newInstance((Vehicle) getIntent().getSerializableExtra("vehicle"));
                     }
                     break;
 
@@ -686,6 +742,146 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
         }
     }
 
+    public void openOptions(int value,Vehicle vehicle)
+    {
+        Logger.d("TYPE ",vehicle.Type + " " +vehicle.VehicleId);
+        switch (value)
+        {
+            case 1: // test drive lot
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                recyclerView.setAdapter(new OptionsAdapter(1,Utility.generateOptions(1),activity(),iOptionsAdapter,new Gson().toJson(vehicle)));
+                break;
+            case 2: // test drive / return
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                recyclerView.setAdapter(new OptionsAdapter(2,Utility.generateOptions(2),activity(),iOptionsAdapter,new Gson().toJson(vehicle)));
+                break;
+
+        }
+    }
+
+    public void openOptionsForZone(int value,Zone zone)
+    {
+        switch (value)
+        {
+            case 11: // test drive lot
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                recyclerView.setAdapter(new OptionsAdapter(11,Utility.generateOptions(11),activity(),iOptionsAdapter,new Gson().toJson(zone)));
+                break;
+        }
+    }
+
+    public void openOptionsForAlerts(int value,AlertRule alertRule)
+    {
+        switch (value)
+        {
+            case 12: // test drive lot
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                recyclerView.setAdapter(new OptionsAdapter(12,Utility.generateOptions(12),activity(),iOptionsAdapter,new Gson().toJson(alertRule)));
+                break;
+        }
+    }
+
+    @Override
+    public void onOptionClick(Options options, int type, int position, String content) {
+        try {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            switch (type) {
+                case 1:
+                    switch (position) {
+                        case 0:
+
+                            break;
+                        case 1:
+                            if (Utility.isNetworkAvailable(activity()))
+                                ((TestDriveHomeFragment) getSupportFragmentManager().getFragments().get(0)).deleteVehicleFromLot(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                                }.getType()));
+                            else {
+                                showSnackBar(Constants.PLEASE_CHECK_INTERNET, 0);
+                            }
+                            break;
+                        case 2:
+                            goToVehicleOverView(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                        case 3:
+                            goToLocateVehicle(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                    }
+                    break;
+
+                case 2:
+                    switch (position) {
+                        case 0:
+                            goToVehicleOverView(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                        case 1:
+                            goToLocateVehicle(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                    }
+                    break;
+                case 11:
+                    ZonesHomeFragment zonesHomeFragment = (ZonesHomeFragment) getSupportFragmentManager().getFragments().get(0);
+                    ZonesViewFragment zonesViewFragment = (ZonesViewFragment) zonesHomeFragment.getChildFragmentManager().getFragments().get(0);
+                    switch (position) {
+                        case 0:
+                            zonesViewFragment.editZone(new Gson().fromJson(content, new TypeToken<Zone>() {
+                            }.getType()), -1);
+                            break;
+                        case 1:
+                            zonesViewFragment.deleteZone(new Gson().fromJson(content, new TypeToken<Zone>() {
+                            }.getType()), -1);
+                            break;
+                    }
+                case 12:
+                    AlertsAndRulesFragment alertsAndRulesFragment = (AlertsAndRulesFragment) getSupportFragmentManager().getFragments().get(0);
+                    AlertsFragment alertsFragment = (AlertsFragment) alertsAndRulesFragment.getFragmentManager().getFragments().get(alertsAndRulesFragment.viewPager.getCurrentItem() + 1);
+                    switch (position) {
+                        case 0:
+                            alertsFragment.cloneAlert(new Gson().fromJson(content, new TypeToken<AlertRule>() {
+                            }.getType()), -1);
+                            break;
+                        case 1:
+                            alertsFragment.edit(new Gson().fromJson(content, new TypeToken<AlertRule>() {
+                            }.getType()), -1);
+                            break;
+                        case 2:
+                            alertsFragment.deleteAlert(new Gson().fromJson(content, new TypeToken<AlertRule>() {
+                            }.getType()), -1);
+                            break;
+                        case 3:
+                            alertsFragment.openViolationVehicles(new Gson().fromJson(content, new TypeToken<AlertRule>() {
+                            }.getType()), -1);
+                            break;
+
+                    }
+                    break;
+
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void goToVehicleOverView(Vehicle vehicle)
+    {
+        Intent intent = new Intent(activity(), HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,111);
+        intent.putExtra("vehicle",vehicle);
+        startActivity(intent);
+    }
+
+    public void goToLocateVehicle(Vehicle vehicle)
+    {
+        Intent intent = new Intent(activity(), HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,112);
+        intent.putExtra("vehicle",vehicle);
+        startActivity(intent);
+    }
 
 
 }
