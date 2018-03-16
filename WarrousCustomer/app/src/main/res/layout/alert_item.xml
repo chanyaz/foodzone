@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.maya.wcustomer.customviews.SFMediumTextView
+                    android:id="@+id/tvAlertName"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:ellipsize="end"
+                    android:textSize="14sp"
+                    android:textColor="#BA4141"
+                    android:text="MAX SPEED"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.maya.wcustomer.customviews.SFMediumTextView
+                    android:id="@+id/tvAlertValue"
+                    android:layout_marginRight="5dp"
+                    android:ellipsize="end"
+                    android:textSize="20sp"
+                    android:textColor="@color/text_color"
+                    android:text="66 mph"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <android.support.v7.widget.SwitchCompat
+                android:buttonTint="@color/colorAccent"
+                android:id="@+id/switchCompat"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="7dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.maya.wcustomer.customviews.SFMediumTextView
+                    android:textSize="14sp"
+                    android:ellipsize="end"
+                    android:textColor="#70404040"
+                    android:id="@+id/tv_smtwtfs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="S M T W T F S"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.maya.wcustomer.customviews.SFMediumTextView
+                    android:id="@+id/tvTime"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="14sp"
+                    android:maxLines="1"
+                    android:gravity="right"
+                    android:textColor="#70404040"
+                    android:text="9:00am - 7:00 pm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:background="#54BDBDBD"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </LinearLayout>
+
+</LinearLayout>

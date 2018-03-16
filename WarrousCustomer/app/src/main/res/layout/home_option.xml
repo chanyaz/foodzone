@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="4dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp">
+        <ImageView
+            android:id="@+id/imgOption"
+            android:src="@drawable/sample_dot"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+        </android.support.v7.widget.CardView>,
+
+        <LinearLayout
+            android:layout_marginRight="15dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.maya.wcustomer.customviews.SFSemiBoldTextView
+                android:id="@+id/tvOptionTitle"
+                android:text="My Way"
+                android:textSize="23sp"
+                android:ellipsize="end"
+                android:textColor="#404040"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.maya.wcustomer.customviews.SFRegularTextView
+                android:id="@+id/tvOptionDetails"
+                android:ellipsize="end"
+                android:textColor="@color/colorAccent"
+                android:text="Trips &amp; Places Nearby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

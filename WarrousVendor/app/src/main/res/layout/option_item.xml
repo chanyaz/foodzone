@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:layout_width="90dp" android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgOption"
+        android:padding="10dp"
+        android:tint="@color/white"
+        android:src="@drawable/ic_location_on_current"
+        android:background="@drawable/circle_red"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+    <com.maya.wadmin.customviews.MediumTextView
+        android:id="@+id/tvOption"
+        android:layout_marginTop="5dp"
+        android:text="Locate"
+        android:maxLines="1"
+        android:textSize="15sp"
+        android:textColor="#5c5c5c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
