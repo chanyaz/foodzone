@@ -25,7 +25,7 @@
         android:weightSum="2"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="55dp">
+        android:layout_height="60dp">
 
         <com.maya.wadmin.customviews.SFMediumTextView
             android:id="@+id/tvNo"

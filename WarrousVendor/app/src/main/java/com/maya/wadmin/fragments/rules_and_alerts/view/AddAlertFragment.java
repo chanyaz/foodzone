@@ -41,11 +41,15 @@ import com.maya.wadmin.models.Operation;
 import com.maya.wadmin.models.SalesPerson;
 import com.maya.wadmin.models.Vehicle;
 import com.maya.wadmin.models.Zone;
+import com.maya.wadmin.utilities.CommonApiCalls;
 import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
 
 import java.lang.reflect.Type;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,12 +67,17 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
     private String mParam2;
 
 
-    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     public int currentFragment = 1;
-    LinearLayout llSelectAll, llNext;
-    TextView tvNext,tvAddAlert;
-    ImageView imgNextArrow;
-    ProgressBar progressBar;
+
+    @BindView(R.id.llSelectAll) LinearLayout llSelectAll;
+    @BindView(R.id.llNext) LinearLayout llNext;
+
+    @BindView(R.id.tvNext) TextView tvNext;
+    @BindView(R.id.tvAddAlert) TextView tvAddAlert;
+    @BindView(R.id.imgNextArrow) ImageView imgNextArrow;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+
     List<Operation> operations;
     int alertPosition = 0;
     List<Zone> zoneList = null;
@@ -102,11 +111,12 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
         return fragment;
     }
 
-    public static AddAlertFragment newInstance(AlertRule alertRule)
+    public static AddAlertFragment newInstance(int CategoryId,AlertRule alertRule)
     {
         AddAlertFragment fragment = new AddAlertFragment();
         Bundle args = new Bundle();
         args.putSerializable("AlertRule", alertRule);
+        args.putInt("CategoryId",CategoryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -125,15 +135,10 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_alert, container, false);
+        ButterKnife.bind(this,view);
         iAddActionDialog = this;
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        llSelectAll = view.findViewById(R.id.llSelectAll);
-        llNext = view.findViewById(R.id.llNext);
-        tvNext = view.findViewById(R.id.tvNext);
-        tvAddAlert = view.findViewById(R.id.tvAddAlert);
-        imgNextArrow = view.findViewById(R.id.imgNextArrow);
-        progressBar = view.findViewById(R.id.progressBar);
+
         progressBar.setVisibility(View.GONE);
 
 
@@ -173,7 +178,8 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
         {
             if (Utility.isNetworkAvailable(activity()))
                 generateCurrentAlertId();
-            else {
+            else
+            {
                 activity().finish();
             }
         }
@@ -181,6 +187,8 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
         {
             alertRule = (AlertRule) getArguments().getSerializable("AlertRule");
             currentAlertId = alertRule.AlertId;
+            alertPosition = getPositionOfCategory(getArguments().getInt("CategoryId",0));
+
         }
 
         addFragment();
@@ -218,7 +226,7 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
     private void generateCurrentAlertId()
     {
         final ProgressDialog progressDialog = Utility.generateProgressDialog(activity());
-        String URL = Constants.URL_GENERATE_ALERT_ID +  Utility.getString(Utility.getSharedPreferences(), Constants.DEALER_ID);
+        String URL = Constants.URL_GENERATE_ALERT_ID +  Utility.getString(Utility.getSharedPreferences(), Constants.DEALER_ID) + Utility.addPortalTag();
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
@@ -276,6 +284,7 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
 
     public void fetchOperations(final int categoryId)
     {
+        Logger.d("CATEGORY ID",""+categoryId);
         progressBar.setVisibility(View.VISIBLE);
         String URL = Constants.URL_CATEGORY_OPERATION + categoryId + "&DealerId=" + Utility.getString(Utility.getSharedPreferences(), Constants.DEALER_ID);
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
@@ -292,7 +301,7 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
                 operations = gson.fromJson(response, type);
                 if (operations != null && operations.size()>0)
                 {
-                    if(categoryId==3 || categoryId==4)
+                    if(categoryId == 3 || categoryId == 4)
                     {
                         fetchZones(categoryId);
                     }
@@ -306,18 +315,26 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Logger.d("[response]", Constants.CONNECTION_ERROR);
-                progressBar.setVisibility(View.GONE);
-                showSnackBar(Constants.CONNECTION_ERROR, 2);
+                if(volleyError.networkResponse.statusCode == 401)
+                {
+                    CommonApiCalls.refreshAuthTokenCall();
+                    fetchOperations(categoryId);
+                }
+                else
+                {
+                    progressBar.setVisibility(View.GONE);
+                    showSnackBar(Constants.CONNECTION_ERROR, 2);
+                }
             }
         };
         volleyHelperLayer.startHandlerVolley(URL, null, listener, errorListener, Request.Priority.NORMAL, Constants.GET_REQUEST);
 
     }
 
-    private void fetchZones(int categoryId)
+    private void fetchZones(final int categoryId)
     {
         progressBar.setVisibility(View.VISIBLE);
-        String URL = Constants.URL_ALERT_GEOFENCE + Utility.getString(Utility.getSharedPreferences(), Constants.DEALER_ID);
+        String URL = Constants.URL_ALERT_GEOFENCE + Utility.getString(Utility.getSharedPreferences(), Constants.DEALER_ID) + Utility.addPortalTag();
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
@@ -341,8 +358,16 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Logger.d("[response]", Constants.CONNECTION_ERROR);
-                progressBar.setVisibility(View.GONE);
-                showSnackBar(Constants.CONNECTION_ERROR, 2);
+                if(volleyError.networkResponse.statusCode == 401)
+                {
+                    CommonApiCalls.refreshAuthTokenCall();
+                    fetchZones(categoryId);
+                }
+                else
+                {
+                    progressBar.setVisibility(View.GONE);
+                    showSnackBar(Constants.CONNECTION_ERROR, 2);
+                }
             }
         };
         volleyHelperLayer.startHandlerVolley(URL, null, listener, errorListener, Request.Priority.NORMAL, Constants.GET_REQUEST);
@@ -356,7 +381,7 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
         addActionDialog = new AddActionDialog(activity(),iAddActionDialog,alertPosition,operations,categoryId ==3 || categoryId == 4 ?zoneList :null,currentAlertId);
         else
         {
-            addActionDialog = new AddActionDialog(activity(),alertActionChannel,iAddActionDialog,getPositionOfCategory(categoryId),operations,categoryId ==1 || categoryId ==3 ?zoneList :null,currentAlertId);
+            addActionDialog = new AddActionDialog(activity(),alertActionChannel,iAddActionDialog,getPositionOfCategory(categoryId),operations,categoryId ==3 || categoryId ==4 ?zoneList :null,currentAlertId);
             alertActionChannel = null;
         }
 
@@ -416,7 +441,7 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
                 }
                 else
                 {
-                    getChildFragmentManager().beginTransaction().replace(R.id.frameLayout, AlertControlFragment.newInstance(alertRule)).addToBackStack("Start").commit();
+                    getChildFragmentManager().beginTransaction().replace(R.id.frameLayout, AlertControlFragment.newInstance(getArguments().getInt("CategoryId",0),alertRule)).addToBackStack("Start").commit();
                 }
                 break;
             case 2:
@@ -533,14 +558,22 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Logger.d("[response]",Constants.CONNECTION_ERROR);
-                progressBar.setVisibility(View.GONE);
-                showSnackBar(Constants.CONNECTION_ERROR,2);
+                if(volleyError.networkResponse.statusCode == 401)
+                {
+                    CommonApiCalls.refreshAuthTokenCall();
+                    addAlert();
+                }
+                else
+                {
+                    progressBar.setVisibility(View.GONE);
+                    showSnackBar(Constants.CONNECTION_ERROR, 2);
+                }
             }
         };
         volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
     }
 
-    public void fetchAlertVehicles(AlertRule alertRule)
+    public void fetchAlertVehicles(final AlertRule alertRule)
     {
         progressBar.setVisibility(View.VISIBLE);
         String URL = Constants.URL_ALERT_VEHICLES_DETAILS + alertRule.AlertId;
@@ -571,19 +604,28 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Logger.d("[response]",Constants.CONNECTION_ERROR);
-                progressBar.setVisibility(View.GONE);
-                showSnackBar(Constants.CONNECTION_ERROR,2);
+                if(volleyError.networkResponse.statusCode == 401)
+                {
+                    CommonApiCalls.refreshAuthTokenCall();
+                    fetchAlertVehicles(alertRule);
+                }
+                else
+                {
+                    progressBar.setVisibility(View.GONE);
+                    showSnackBar(Constants.CONNECTION_ERROR, 2);
+                }
             }
         };
         volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
 
     }
 
+
     public int getPositionOfCategory(int category)
     {
         for (int i=0;i<Constants.ALERT_TYPE_IDS.length;i++)
         {
-            if(Constants.ALERT_TYPE_IDS[i]==category)
+            if(Constants.ALERT_TYPE_IDS[i] == category)
             {
                 return i;
             }
@@ -591,4 +633,5 @@ public class AddAlertFragment extends Fragment implements IFragment,IAddActionDi
 
         return 0;
     }
+
 }

@@ -61,7 +61,6 @@ public class VehiclesTypeAdapter extends FragmentStatePagerAdapter
         this.inPDICompleted = inPDICompleted;
     }
 
-    List<Vehicle> inDeliveryReceived, inPreparingForLot, inInventory;
 
     public VehiclesTypeAdapter(FragmentManager fm, List<Vehicle> inDeliveryReceived, List<Vehicle> inPreparingForLot,
                                List<Vehicle> inMarkForPDI, List<Vehicle> inPDIInCompleted, List<Vehicle> inInventory,

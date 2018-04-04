@@ -32,6 +32,9 @@ import com.maya.wadmin.utilities.Utility;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ViolationVehiclesOfAlertFragment#newInstance} factory method to
@@ -47,10 +50,18 @@ public class ViolationVehiclesOfAlertFragment extends Fragment implements IFragm
     private String mParam1;
     private String mParam2;
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
     VehicleArrivalAdapter vehicleArrivalAdapter;
     List<Vehicle> list;
     AlertRule alertRule;
@@ -100,12 +111,13 @@ public class ViolationVehiclesOfAlertFragment extends Fragment implements IFragm
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_violation_vehicles_of_alert, container, false);
+        ButterKnife.bind(this,view);
         if(getArguments()!=null)
         {
             if((AlertRule) getArguments().getSerializable("AlertRule")!=null)
             {
                 alertRule = (AlertRule) getArguments().getSerializable("AlertRule");
-                initialize(view);
+                setUp();
             }
             else
             {
@@ -119,13 +131,10 @@ public class ViolationVehiclesOfAlertFragment extends Fragment implements IFragm
         return view;
     }
 
-    private void initialize(View view)
+    private void setUp()
     {
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
-        progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

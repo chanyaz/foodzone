@@ -20,6 +20,9 @@ import com.maya.wadmin.utilities.Utility;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/6/2018.
  */
@@ -139,22 +142,17 @@ public class TruckDeliveryAdapter extends RecyclerView.Adapter<TruckDeliveryAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTruckName, tvTruckDelivery, tvTruckDriver;
-
-        RecyclerView recyclerView;
-
-        ImageView mapView, imgTruck;
+        @BindView(R.id.tvTruckName) TextView tvTruckName;
+        @BindView(R.id.tvTruckDelivery) TextView tvTruckDelivery;
+        @BindView(R.id.tvTruckDriver) TextView tvTruckDriver;
+        @BindView(R.id.recyclerView) RecyclerView recyclerView;
+        @BindView(R.id.mapView) ImageView mapView;
+        @BindView(R.id.imgTruck) ImageView imgTruck;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvTruckName= itemView.findViewById(R.id.tvTruckName);
-            tvTruckDelivery = itemView.findViewById(R.id.tvTruckDelivery);
-            tvTruckDriver = itemView.findViewById(R.id.tvTruckDriver);
-            recyclerView = itemView.findViewById(R.id.recyclerView);
-            mapView = itemView.findViewById(R.id.mapView);
-            imgTruck = itemView.findViewById(R.id.imgTruck);
-
+            ButterKnife.bind(this,itemView);
         }
     }
 }

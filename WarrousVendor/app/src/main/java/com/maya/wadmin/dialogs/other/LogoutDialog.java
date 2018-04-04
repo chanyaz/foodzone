@@ -10,13 +10,22 @@ import com.maya.wadmin.R;
 import com.maya.wadmin.activities.SplashActivity;
 import com.maya.wadmin.utilities.Utility;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 3/5/2018.
  */
 
 public class LogoutDialog extends Dialog
 {
-    TextView tvYes, tvNo;
+    @BindView(R.id.tvYes)
+    TextView tvYes;
+
+    @BindView(R.id.tvNo)
+    TextView tvNo;
+
+
     Activity activity;
     public LogoutDialog(Activity activity)
     {
@@ -28,8 +37,7 @@ public class LogoutDialog extends Dialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logout_dialog);
-        tvYes = findViewById(R.id.tvYes);
-        tvNo = findViewById(R.id.tvNo);
+        ButterKnife.bind(this);
 
         tvNo.setOnClickListener(click -> dismiss());
 

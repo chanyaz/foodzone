@@ -29,7 +29,11 @@ import com.maya.wadmin.models.Vehicle;
 import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,15 +50,32 @@ public class AddPDIFragment extends Fragment implements IFragment {
     private String mParam1;
     private String mParam2;
 
+    Vehicle assignedVehicle = null;
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
     public int currentFragment = 1;
-    LinearLayout llSelectAll, llNext;
+
+    @BindView(R.id.llSelectAll)
+    LinearLayout llSelectAll;
+
+    @BindView(R.id.llNext)
+    LinearLayout llNext;
+
+    @BindView(R.id.tvNext)
     TextView tvNext;
+
+    @BindView(R.id.imgNextArrow)
     ImageView imgNextArrow;
+
     List<Vehicle> selectedList;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
+
     SalesPerson salesPerson;
 
 
@@ -80,6 +101,14 @@ public class AddPDIFragment extends Fragment implements IFragment {
         return fragment;
     }
 
+    public static AddPDIFragment newInstance(Vehicle vehicle) {
+        AddPDIFragment fragment = new AddPDIFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("vehicle", vehicle);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,12 +123,19 @@ public class AddPDIFragment extends Fragment implements IFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assign_pdi, container, false);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        llSelectAll = view.findViewById(R.id.llSelectAll);
-        llNext = view.findViewById(R.id.llNext);
-        tvNext = view.findViewById(R.id.tvNext);
-        imgNextArrow = view.findViewById(R.id.imgNextArrow);
-        progressBar = view.findViewById(R.id.progressBar);
+        ButterKnife.bind(this,view);
+
+        if(getArguments()!=null)
+        {
+            if(getArguments().getSerializable("vehicle")!=null)
+            {
+                assignedVehicle = (Vehicle) getArguments().getSerializable("vehicle");
+                currentFragment++;
+                selectedList = new ArrayList<>();
+                selectedList.add(assignedVehicle);
+            }
+        }
+
 
 
 
@@ -111,6 +147,8 @@ public class AddPDIFragment extends Fragment implements IFragment {
         });
 
         llSelectAll.setOnClickListener( click -> doActionSelectAll());
+
+
 
 
 
@@ -185,6 +223,11 @@ public class AddPDIFragment extends Fragment implements IFragment {
 
     public boolean addAndVerify()
     {
+        if(assignedVehicle!=null)
+        {
+            return true;
+        }
+
         AssignVehiclesPDIFragment assignVehiclesPDIFragment = ((AssignVehiclesPDIFragment)getChildFragmentManager().getFragments().get(0));
         selectedList = assignVehiclesPDIFragment.selectedList;
         if(selectedList!=null && selectedList.size()>0)

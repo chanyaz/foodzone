@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -19,6 +20,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -38,9 +40,11 @@ import com.maya.wadmin.adapters.fragments.testdrive.AssignVehicleAdapter;
 import com.maya.wadmin.adapters.fragments.vehicle.types.VehiclesTypeAdapter;
 import com.maya.wadmin.apis.volley.VolleyHelperLayer;
 import com.maya.wadmin.constants.Constants;
+import com.maya.wadmin.dialogs.actions.ActionConfirmationDialog;
 import com.maya.wadmin.fragments.pdi.view.PDIViewFragment;
 import com.maya.wadmin.fragments.vehicle.types.VehiclesTypeFragment;
 import com.maya.wadmin.interfaces.custom.ITopBarAdapter;
+import com.maya.wadmin.interfaces.dialog.IActionConfirmationDialogVehicle;
 import com.maya.wadmin.interfaces.fragments.IFragment;
 import com.maya.wadmin.models.SalesPerson;
 import com.maya.wadmin.models.TopBarPanel;
@@ -52,12 +56,15 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TestDriveHomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBarAdapter {
+public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBarAdapter, IActionConfirmationDialogVehicle {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,26 +74,44 @@ public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBa
     private String mParam1;
     private String mParam2;
 
+    IActionConfirmationDialogVehicle iActionConfirmationDialogVehicle;
+
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.tvAssignTestDrive)
     TextView tvAssignTestDrive;
+
+    @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+
+    @BindView(R.id.view_pager)
     ViewPager viewPager;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+
     List<SalesPerson> list;
     List<Vehicle> inLot;
     List<Vehicle> inTestDrive;
     List<Vehicle> inReturn;
     List<TopBarPanel> listTopBarPanel = Utility.getTopBarPanelElements(4);
     int previous = 0;
-    LinearLayout mainTabLayout;
-    AppBarLayout appBar;
-    RecyclerView recyclerViewTopBar;
+
+    @BindView(R.id.mainTabLayout) LinearLayout mainTabLayout;
+    @BindView(R.id.appBar) AppBarLayout appBar;
+    @BindView(R.id.recyclerViewTopBar) RecyclerView recyclerViewTopBar;
+
     ITopBarAdapter iITopBarAdapter;
-    LinearLayout llTopBarPanel,llMainHead;
-    TextView tvTopBarItem;
+    @BindView(R.id.llTopBarPanel) LinearLayout llTopBarPanel;
+    @BindView(R.id.llMainHead) LinearLayout llMainHead;
+    @BindView(R.id.tvTopBarItem) TextView tvTopBarItem;
+
     TopBarAdapter topBarAdapter;
-    FrameLayout frameLayout;
-    ProgressBar progressBar;
+
+    @BindView(R.id.frameLayout) FrameLayout frameLayout;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
 
     public TestDriveHomeFragment() {
@@ -125,10 +150,12 @@ public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBa
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_test_drive_home, container, false);
-        iITopBarAdapter = this;
+        ButterKnife.bind(this,view);
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        tvAssignTestDrive = view.findViewById(R.id.tvAssignTestDrive);
+        iITopBarAdapter = this;
+        iActionConfirmationDialogVehicle = this;
+
+
         tvAssignTestDrive.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -137,41 +164,31 @@ public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBa
                 gotoAddTestDrive();
             }
         });
-        tabLayout = view.findViewById(R.id.tab_layout);
-        viewPager = view.findViewById(R.id.view_pager);
+
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
         swipeRefreshLayout.setEnabled(false);
-        progressBar = view.findViewById(R.id.progressBar);
+
         progressBar.setVisibility(View.GONE);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if(Utility.isNetworkAvailable(activity()))
-                {
-                    fetchVehiclesOfTestDrive();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
-                swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if(Utility.isNetworkAvailable(activity()))
+            {
+                fetchVehiclesOfTestDrive();
             }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+            }
+            swipeRefreshLayout.setRefreshing(false);
         });
 
-        frameLayout = view.findViewById(R.id.frameLayout);
-        mainTabLayout = view.findViewById(R.id.mainTabLayout);
-        recyclerViewTopBar = view.findViewById(R.id.recyclerViewTopBar);
-        llTopBarPanel = view.findViewById(R.id.llTopBarPanel);
-        llMainHead = view.findViewById(R.id.llMainHead);
-        tvTopBarItem = view.findViewById(R.id.tvTopBarItem);
+
         tvTopBarItem.setText(listTopBarPanel.get(0).title);
         recyclerViewTopBar.setLayoutManager(new LinearLayoutManager(activity()));
         recyclerViewTopBar.setAdapter(topBarAdapter = new TopBarAdapter(listTopBarPanel,activity(),iITopBarAdapter));
         swipeRefreshLayout.setEnabled(false);
         frameLayout.setVisibility(View.GONE);
-        appBar = view.findViewById(R.id.appBar);
 
         tvTopBarItem.setOnClickListener(click ->
         {
@@ -400,30 +417,16 @@ public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBa
 
     public void deleteVehicleFromLot(Vehicle vehicle)
     {
-        progressBar.setVisibility(View.VISIBLE);
-        String URL = Constants.URL_DELETE_TEST_DRIVE + vehicle.VehicleId;
-        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
-        final Response.Listener<String> listener = new Response.Listener<String>()
-        {
-            @Override
-            public void onResponse(String response) {
-                Logger.d("[response]", response);
-                progressBar.setVisibility(View.GONE);
-                showSnackBar("Updating Vehicles",1);
-                fetchVehiclesOfTestDrive();
-            }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Logger.d("[response]",Constants.CONNECTION_ERROR);
-                progressBar.setVisibility(View.GONE);
-                showSnackBar(Constants.CONNECTION_ERROR,2);
-            }
-        };
-        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+        openConfirmationDialog(vehicle,"Delete this Vehicle",0);
+    }
 
+    private void openConfirmationDialog(Vehicle vehicle,String content,int type)
+    {
+        ActionConfirmationDialog dialog = new ActionConfirmationDialog(type,activity(),content,iActionConfirmationDialogVehicle,vehicle);
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     @Override
@@ -539,5 +542,34 @@ public class TestDriveHomeFragment extends Fragment implements IFragment, ITopBa
                 ((VehiclesTypeFragment) getChildFragmentManager().getFragments().get(0)).updateVehiclesBySearch(content);
                 break;
         }
+    }
+
+    @Override
+    public void deleteVehicle(Vehicle vehicle)
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        String URL = Constants.URL_DELETE_TEST_DRIVE + vehicle.VehicleId;
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        final Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response) {
+                Logger.d("[response]", response);
+                progressBar.setVisibility(View.GONE);
+                showSnackBar("Updating Vehicles",1);
+                fetchVehiclesOfTestDrive();
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                progressBar.setVisibility(View.GONE);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+
     }
 }

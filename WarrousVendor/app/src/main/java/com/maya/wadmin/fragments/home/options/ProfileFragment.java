@@ -1,20 +1,29 @@
 package com.maya.wadmin.fragments.home.options;
 
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.maya.wadmin.R;
+import com.maya.wadmin.constants.Constants;
+import com.maya.wadmin.interfaces.fragments.IFragment;
+import com.maya.wadmin.utilities.Utility;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements IFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -23,6 +32,14 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.tvFirstName) TextView tvFirstName;
+    @BindView(R.id.tvLastName) TextView tvLastName;
+    @BindView(R.id.tvUserName) TextView tvUserName;
+    @BindView(R.id.tvUserRoll) TextView tvUserRoll;
 
 
     public ProfileFragment() {
@@ -60,7 +77,35 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        setUp(view);
+        return view;
     }
 
+    public void setUp(View view)
+    {
+        ButterKnife.bind(this,view);
+        tvFirstName.setText(Utility.getCamelCase(Utility.getString(Utility.getSharedPreferences(), Constants.FIRST_NAME)));
+        tvLastName.setText(Utility.getCamelCase(Utility.getString(Utility.getSharedPreferences(), Constants.LAST_NAME)));
+        tvUserName.setText(Utility.getString(Utility.getSharedPreferences(), Constants.USER_NAME).toLowerCase());
+        tvUserRoll.setText(Utility.getString(Utility.getSharedPreferences(), Constants.USER_ROLL_NAME));
+
+    }
+
+    @Override
+    public void changeTitle(String title) {
+
+    }
+
+    @Override
+    public void showSnackBar(String snackBarText, int type)
+    {
+        Utility.showSnackBar(activity(),coordinatorLayout,snackBarText,type);
+    }
+
+    @Override
+    public Activity activity()
+    {
+        return getActivity();
+    }
 }

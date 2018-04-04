@@ -16,6 +16,9 @@ import com.maya.wadmin.models.Customer;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 1/30/2018.
  */
@@ -84,19 +87,17 @@ public class AssignCustomerAdapter extends RecyclerView.Adapter<AssignCustomerAd
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvCustomerName, tvCustomerEmail, tvCustomerPhone, tvCustomerTime;
-        ImageView imgClick;
-        LinearLayout llhead;
+        @BindView(R.id.tvCustomerName) TextView tvCustomerName;
+        @BindView(R.id.tvCustomerEmail) TextView tvCustomerEmail;
+        @BindView(R.id.tvCustomerPhone) TextView tvCustomerPhone;
+        @BindView(R.id.tvCustomerTime) TextView tvCustomerTime;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.llhead) LinearLayout llhead;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvCustomerName= itemView.findViewById(R.id.tvCustomerName);
-            tvCustomerEmail = itemView.findViewById(R.id.tvCustomerEmail);
-            tvCustomerPhone = itemView.findViewById(R.id.tvCustomerPhone);
-            tvCustomerTime = itemView.findViewById(R.id.tvCustomerTime);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            llhead = itemView.findViewById(R.id.llhead);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

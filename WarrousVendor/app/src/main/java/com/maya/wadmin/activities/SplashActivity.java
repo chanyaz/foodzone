@@ -17,10 +17,18 @@ import com.maya.wadmin.interfaces.activities.IActivity;
 import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SplashActivity extends AppCompatActivity implements IActivity{
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.tvTitle)
     TextView tvTitle;
+
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     @Override
@@ -37,9 +45,9 @@ public class SplashActivity extends AppCompatActivity implements IActivity{
         }
 
         setContentView(R.layout.activity_splash);
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        tvTitle = findViewById(R.id.tvTitle);
-        toolbar = findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
+
         setSupportActionBar(toolbar);
 
 
@@ -62,8 +70,9 @@ public class SplashActivity extends AppCompatActivity implements IActivity{
     }
 
     @Override
-    public void showSnackBar(String snackBarText, int type) {
-
+    public void showSnackBar(String snackBarText, int type)
+    {
+        Utility.showSnackBar(activity(),coordinatorLayout,snackBarText,type);
     }
 
     @Override

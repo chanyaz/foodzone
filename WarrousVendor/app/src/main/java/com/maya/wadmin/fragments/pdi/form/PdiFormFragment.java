@@ -41,6 +41,9 @@ import com.squareup.picasso.Picasso;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PdiFormFragment#newInstance} factory method to
@@ -57,17 +60,32 @@ public class PdiFormFragment extends Fragment implements IFragment , IPDIInspect
     private String mParam2;
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
     List<Inspection> list;
     IPDIInspectionAdapter ipdiInspectionAdapter;
     PDIInspectionAdapter pdiInspectionAdapter;
     int previous = -1;
+
     PDIPreparation pdiPreparation;
-    TextView tvTime, tvSalesPerson, tvVin, tvOther, tvCancel, tvSave;
-    ImageView imgSalesPerson;
+
+    @BindView(R.id.tvTime) TextView tvTime;
+    @BindView(R.id.tvSalesPerson) TextView tvSalesPerson;
+    @BindView(R.id.tvVin) TextView tvVin;
+    @BindView(R.id.tvOther) TextView tvOther;
+    @BindView(R.id.tvCancel) TextView tvCancel;
+    @BindView(R.id.tvSave) TextView tvSave;
+    @BindView(R.id.imgSalesPerson) ImageView imgSalesPerson;
 
     Vehicle vehicle;
     int result = 0;
@@ -119,8 +137,9 @@ public class PdiFormFragment extends Fragment implements IFragment , IPDIInspect
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pdi_form, container, false);
+        ButterKnife.bind(this,view);
         ipdiInspectionAdapter =this;
-        tvSave = view.findViewById(R.id.tvSave);
+
         if(getArguments()!=null)
         {
             vehicle = (Vehicle) getArguments().getSerializable("vehicle");
@@ -130,18 +149,7 @@ public class PdiFormFragment extends Fragment implements IFragment , IPDIInspect
               tvSave.setVisibility(View.GONE);
             }
         }
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setEnabled(false);
-        progressBar = view.findViewById(R.id.progressBar);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        tvOther = view.findViewById(R.id.tvOther);
-        tvVin = view.findViewById(R.id.tvVin);
-        tvSalesPerson = view.findViewById(R.id.tvSalesPerson);
-        tvTime = view.findViewById(R.id.tvTime);
-        tvSave = view.findViewById(R.id.tvSave);
-        tvCancel = view.findViewById(R.id.tvCancel);
-        imgSalesPerson = view.findViewById(R.id.imgSalesPerson);
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));

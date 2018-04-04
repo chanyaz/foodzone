@@ -18,6 +18,9 @@ import com.maya.wadmin.models.UserRole;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by Gokul Kalagara on 1/25/2018.
@@ -77,16 +80,13 @@ public class UserRoleAdapter extends RecyclerView.Adapter<UserRoleAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvUserRoleName;
-        ImageView imgUserRole;
-        RecyclerView recyclerView;
+        @BindView(R.id.tvUserRoleName) TextView tvUserRoleName;
+        @BindView(R.id.imgUserRole) ImageView imgUserRole;
+        @BindView(R.id.recyclerView) RecyclerView recyclerView;
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvUserRoleName= itemView.findViewById(R.id.tvUserRoleName);
-            imgUserRole = itemView.findViewById(R.id.imgUserRole);
-            recyclerView = itemView.findViewById(R.id.recyclerView);
-
+            ButterKnife.bind(this,itemView);
         }
     }
 

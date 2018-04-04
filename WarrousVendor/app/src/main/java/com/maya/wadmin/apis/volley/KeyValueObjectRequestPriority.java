@@ -5,6 +5,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
+import com.maya.wadmin.constants.Constants;
+import com.maya.wadmin.utilities.Utility;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,11 +52,14 @@ public class KeyValueObjectRequestPriority extends StringRequest
         return super.setRetryPolicy(retryPolicy);
     }
 
-
-    //    @Override
-//    public Map<String, String> getHeaders() throws AuthFailureError {
-//        Map<String,String> params = new HashMap<String, String>();
-//        params.put("Content-Type","application/x-www-form-urlencoded");
-//        return params;
-//    }
+    @Override
+    public Map<String, String> getHeaders() throws AuthFailureError
+    {
+        Map<String,String> params = new HashMap<String, String>();
+        if(Utility.getSharedPreferences().contains(Constants.TOKEN_TYPE))
+        {
+            params.put("Authorization", Utility.getString(Utility.getSharedPreferences(),Constants.TOKEN_TYPE)+ " " + Utility.getString(Utility.getSharedPreferences(),Constants.ACCESS_TOKEN));
+        }
+        return params;
+    }
 }

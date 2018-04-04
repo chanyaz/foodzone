@@ -41,6 +41,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link VehiclesTypeFragment#newInstance} factory method to
@@ -56,14 +59,24 @@ public class VehiclesTypeFragment extends Fragment implements IFragment, ITestDr
     private String mParam1;
     private String mParam2;
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+
     List<Vehicle> finalList,list;
     ITestDriveVehiclesAdapter iVehiclesTypeAdapter;
     TestDriveVehiclesAdapter testDriveVehiclesAdapter;
+
     int previous = -1;
     int adapterType = 0;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
     public VehiclesTypeFragment() {
@@ -114,6 +127,8 @@ public class VehiclesTypeFragment extends Fragment implements IFragment, ITestDr
     {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_test_drive_vehilces_type, container, false);
+        ButterKnife.bind(this,view);
+
         iVehiclesTypeAdapter = this;
         if(getArguments().getInt("type",-1)!= -1)
         {
@@ -128,11 +143,7 @@ public class VehiclesTypeFragment extends Fragment implements IFragment, ITestDr
         {
             return view;
         }
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setEnabled(false);
-        progressBar = view.findViewById(R.id.progressBar);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
         progressBar.setVisibility(View.GONE);
 
@@ -629,7 +640,30 @@ public class VehiclesTypeFragment extends Fragment implements IFragment, ITestDr
     @Override
     public void openOptions(Vehicle vehicle, int position)
     {
-        ((HelperActivity)activity()).openOptions(vehicle.Status.equalsIgnoreCase(Constants.ON_LOT)? 1 : 2 ,vehicle);
+        switch (adapterType)
+        {
+            case 0:
+            ((HelperActivity) activity()).openOptions(vehicle.Status.equalsIgnoreCase(Constants.ON_LOT) ? 1 : 2, vehicle);
+            break;
+            case 91011:
+            ((HelperActivity) activity()).openOptions(getArguments().getString("value").equalsIgnoreCase(Constants.MARK_FOR_PDI) ?  3: 4, vehicle);
+            break;
+            case 3:
+            ((HelperActivity) activity()).openOptions(4, vehicle);
+            break;
+            case 789:
+            ((HelperActivity) activity()).openOptions(getArguments().getString("value").equalsIgnoreCase(Constants.DELIVERY_RECEIVED) ?  5: 4, vehicle);
+            break;
+            case 7891012:
+            ((HelperActivity) activity()).openOptions(getArguments().getString("value").equalsIgnoreCase(Constants.DELIVERY_RECEIVED) ?  5: 4, vehicle);
+            break;
+
+
+
+            default: // for missing things
+            ((HelperActivity) activity()).openOptions(4, vehicle);
+            break;
+        }
     }
 
 

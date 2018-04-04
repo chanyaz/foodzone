@@ -13,6 +13,9 @@ import com.maya.wadmin.interfaces.custom.IKeyWordAdapter;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/21/2018.
  */
@@ -49,14 +52,13 @@ public class KeyWordAdapter extends RecyclerView.Adapter<KeyWordAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTitle;
-        ImageView imgCancel;
+        @BindView(R.id.tvTitle) TextView tvTitle;
+        @BindView(R.id.imgCancel) ImageView imgCancel;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvTitle= itemView.findViewById(R.id.tvTitle);
-            imgCancel = itemView.findViewById(R.id.imgCancel);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

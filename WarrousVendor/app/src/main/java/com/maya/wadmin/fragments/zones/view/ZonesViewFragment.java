@@ -3,6 +3,8 @@ package com.maya.wadmin.fragments.zones.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
@@ -31,8 +34,11 @@ import com.maya.wadmin.adapters.fragments.delivery.VehicleArrivalAdapter;
 import com.maya.wadmin.adapters.fragments.zones.ZonesViewAdapter;
 import com.maya.wadmin.apis.volley.VolleyHelperLayer;
 import com.maya.wadmin.constants.Constants;
+import com.maya.wadmin.dialogs.actions.ActionConfirmationDialog;
 import com.maya.wadmin.interfaces.adapters.zones.IZonesViewAdapter;
+import com.maya.wadmin.interfaces.dialog.IActionConfirmationDialogZone;
 import com.maya.wadmin.interfaces.fragments.IFragment;
+import com.maya.wadmin.models.AlertRule;
 import com.maya.wadmin.models.Vehicle;
 import com.maya.wadmin.models.Zone;
 import com.maya.wadmin.utilities.Logger;
@@ -42,12 +48,15 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ZonesViewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ZonesViewFragment extends Fragment implements IFragment ,IZonesViewAdapter {
+public class ZonesViewFragment extends Fragment implements IFragment ,IZonesViewAdapter, IActionConfirmationDialogZone {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,14 +67,13 @@ public class ZonesViewFragment extends Fragment implements IFragment ,IZonesView
     private String mParam2;
 
 
+    IActionConfirmationDialogZone iActionConfirmationDialogZone;
 
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
-
-
-    CoordinatorLayout coordinatorLayout;
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView recyclerView;
-    ProgressBar progressBar;
     List<Zone> list,finalList;
     ZonesViewAdapter zonesViewAdapter;
     IZonesViewAdapter iZonesViewAdapter;
@@ -107,12 +115,12 @@ public class ZonesViewFragment extends Fragment implements IFragment ,IZonesView
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_zones_view, container, false);
-        iZonesViewAdapter = this;
+        ButterKnife.bind(this,view);
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        progressBar = view.findViewById(R.id.progressBar);
+        iZonesViewAdapter = this;
+        iActionConfirmationDialogZone = this;
+
+
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
@@ -166,7 +174,7 @@ public class ZonesViewFragment extends Fragment implements IFragment ,IZonesView
     public void fetchAllZones()
     {
         progressBar.setVisibility(View.VISIBLE);
-        String URL = Constants.URL_GEOFENCES_LIST +  Utility.getString(Utility.getSharedPreferences(),Constants.DEALER_ID);
+        String URL = Constants.URL_GEOFENCES_LIST +  Utility.getString(Utility.getSharedPreferences(),Constants.DEALER_ID) + Utility.addPortalTag();
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>()
         {
@@ -277,13 +285,22 @@ public class ZonesViewFragment extends Fragment implements IFragment ,IZonesView
     {
         if(Utility.isNetworkAvailable(activity()))
         {
-            deleteZoneByGUID(zone);
+            confirmationDialog("Delete this Zone",0,zone);
         }
         else
         {
             showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
         }
 
+    }
+
+    public void confirmationDialog(String content,int type,Zone zone)
+    {
+        ActionConfirmationDialog dialog = new ActionConfirmationDialog(1,type,activity(),content,iActionConfirmationDialogZone,zone);
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     private void deleteZoneByGUID(Zone zone)
@@ -406,5 +423,10 @@ public class ZonesViewFragment extends Fragment implements IFragment ,IZonesView
         }
 
 
+    }
+
+    @Override
+    public void deleteZoneAction(Zone zone) {
+        deleteZoneByGUID(zone);
     }
 }

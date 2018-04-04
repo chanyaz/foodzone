@@ -17,6 +17,9 @@ import com.maya.wadmin.utilities.Utility;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 3/12/2018.
  */
@@ -64,14 +67,13 @@ public class OptionsAdapter extends RecyclerView.Adapter<OptionsAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvOption;
-        ImageView imgOption;
+        @BindView(R.id.tvOption) TextView tvOption;
+        @BindView(R.id.imgOption) ImageView imgOption;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvOption= itemView.findViewById(R.id.tvOption);
-            imgOption = itemView.findViewById(R.id.imgOption);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

@@ -17,6 +17,9 @@ import com.maya.wadmin.models.AlertRule;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/8/2018.
  */
@@ -63,22 +66,19 @@ public class AlertsAdapter extends RecyclerView.Adapter<AlertsAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTitle, tvSubTitle, tvVehiclesContent;
-        ImageView imgMessage, imgCall, imgMail, imgNoti;
-        CardView cardView;
-        LinearLayout llhead;
+        @BindView(R.id.tvTitle) TextView tvTitle;
+        @BindView(R.id.tvSubTitle) TextView tvSubTitle;
+        @BindView(R.id.tvVehiclesContent) TextView tvVehiclesContent;
+        @BindView(R.id.imgMessage) ImageView imgMessage;
+        @BindView(R.id.imgCall) ImageView imgCall;
+        @BindView(R.id.imgMail) ImageView imgMail;
+        @BindView(R.id.imgNoti) ImageView imgNoti;
+        @BindView(R.id.cardView) CardView cardView;
+        @BindView(R.id.llhead) LinearLayout llhead;
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvTitle= itemView.findViewById(R.id.tvTitle);
-            tvSubTitle = itemView.findViewById(R.id.tvSubTitle);
-            tvVehiclesContent = itemView.findViewById(R.id.tvVehiclesContent);
-            imgMessage = itemView.findViewById(R.id.imgMessage);
-            imgCall = itemView.findViewById(R.id.imgCall);
-            imgMail = itemView.findViewById(R.id.imgMail);
-            imgNoti = itemView.findViewById(R.id.imgNoti);
-            cardView = itemView.findViewById(R.id.cardView);
-            llhead = itemView.findViewById(R.id.llhead);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

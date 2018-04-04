@@ -18,6 +18,9 @@ import com.maya.wadmin.utilities.Utility;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/23/2018.
  */
@@ -58,14 +61,13 @@ public class VehicleCountAdapter extends RecyclerView.Adapter<VehicleCountAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvCountVehicles, tvVehiclesContent;
-        LinearLayout llhead;
+        @BindView(R.id.tvCountVehicles) TextView tvCountVehicles;
+        @BindView(R.id.tvVehiclesContent) TextView tvVehiclesContent;
+        @BindView(R.id.llhead) LinearLayout llhead;
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvCountVehicles= itemView.findViewById(R.id.tvCountVehicles);
-            tvVehiclesContent = itemView.findViewById(R.id.tvVehiclesContent);
-            llhead = itemView.findViewById(R.id.llhead);
+            ButterKnife.bind(this,itemView);
 
         }
     }

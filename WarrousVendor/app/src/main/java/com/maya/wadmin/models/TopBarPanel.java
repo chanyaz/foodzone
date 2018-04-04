@@ -8,7 +8,6 @@ public class TopBarPanel
 {
     public String title;
     public String subTitle;
-
     public boolean isSelected;
 
     public TopBarPanel(String title, String subTitle, boolean isSelected) {

@@ -21,6 +21,9 @@ import com.maya.wadmin.utilities.Utility;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/6/2018.
  */
@@ -204,53 +207,47 @@ public class VehicleArrivalAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvOther;
-        ImageView imgVehicle, imgClick;
-        View bottomView;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.bottomView) View bottomView;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
+            ButterKnife.bind(this,itemView);
         }
     }
 
     public class NormalViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvOther, tvArrival;
-        ImageView imgVehicle, imgClick;
-        View bottomView;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.tvArrival) TextView tvArrival;
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.bottomView) View bottomView;
 
         public NormalViewHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            tvArrival = itemView.findViewById(R.id.tvArrival);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
+            ButterKnife.bind(this,itemView);
         }
     }
 
     public class OtherViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvOther, tvCount;
-        ImageView imgVehicle;
-        View bottomView;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.tvCount) TextView tvCount;
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.bottomView) View bottomView;
 
         public OtherViewHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            tvCount = itemView.findViewById(R.id.tvCount);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            bottomView = itemView.findViewById(R.id.bottomView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

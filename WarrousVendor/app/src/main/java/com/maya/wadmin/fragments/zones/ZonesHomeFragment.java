@@ -33,6 +33,9 @@ import com.maya.wadmin.utilities.Utility;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ZonesHomeFragment#newInstance} factory method to
@@ -48,19 +51,21 @@ public class ZonesHomeFragment extends Fragment implements IFragment, ITopBarAda
     private String mParam1;
     private String mParam2;
 
-    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     ITopBarAdapter iITopBarAdapter;
-    LinearLayout llTopBarPanel,llMainHead;
-    TextView tvTopBarItem;
+    @BindView(R.id.llTopBarPanel) LinearLayout llTopBarPanel;
+
+    @BindView(R.id.llMainHead) LinearLayout llMainHead;
+    @BindView(R.id.tvTopBarItem) TextView tvTopBarItem;
+
     TopBarAdapter topBarAdapter;
-    TopBarPanel topBarPanel;
     List<TopBarPanel> listTopBarPanel = Utility.getTopBarPanelElements(1);
     int previous = -1;
-    AppBarLayout appBar;
-    float before = -1;
+
+    @BindView(R.id.appBar) AppBarLayout appBar;
     ViewGroup.LayoutParams layoutParams;
-    RecyclerView recyclerViewTopBar;
-    TextView tvCreateZone;
+    @BindView(R.id.recyclerViewTopBar) RecyclerView recyclerViewTopBar;
+    @BindView(R.id.tvCreateZone) TextView tvCreateZone;
 
 
 
@@ -100,18 +105,12 @@ public class ZonesHomeFragment extends Fragment implements IFragment, ITopBarAda
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_zones_home, container, false);
+        ButterKnife.bind(this,view);
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
         iITopBarAdapter = this;
-        recyclerViewTopBar = view.findViewById(R.id.recyclerViewTopBar);
-        llTopBarPanel = view.findViewById(R.id.llTopBarPanel);
-        llMainHead = view.findViewById(R.id.llMainHead);
-        tvTopBarItem = view.findViewById(R.id.tvTopBarItem);
         tvTopBarItem.setText(listTopBarPanel.get(0).title);
         recyclerViewTopBar.setLayoutManager(new LinearLayoutManager(activity()));
         recyclerViewTopBar.setAdapter(topBarAdapter = new TopBarAdapter(listTopBarPanel,activity(),iITopBarAdapter));
-        appBar = view.findViewById(R.id.appBar);
-        tvCreateZone = view.findViewById(R.id.tvCreateZone);
 
         tvCreateZone.setOnClickListener(click -> goToCreateZone() );
 

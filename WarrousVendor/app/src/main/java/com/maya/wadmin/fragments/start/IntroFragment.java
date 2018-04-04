@@ -1,20 +1,27 @@
 package com.maya.wadmin.fragments.start;
 
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.maya.wadmin.R;
+import com.maya.wadmin.interfaces.fragments.IFragment;
+import com.maya.wadmin.utilities.Utility;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link IntroFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class IntroFragment extends Fragment {
+public class IntroFragment extends Fragment implements IFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -23,6 +30,9 @@ public class IntroFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
 
 
     public IntroFragment() {
@@ -60,7 +70,25 @@ public class IntroFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_intro, container, false);
+        View view = inflater.inflate(R.layout.fragment_intro, container, false);
+        ButterKnife.bind(this,view);
+        return view;
     }
 
+    @Override
+    public void changeTitle(String title) {
+
+    }
+
+    @Override
+    public void showSnackBar(String snackBarText, int type)
+    {
+        Utility.showSnackBar(activity(),coordinatorLayout,snackBarText,type);
+    }
+
+    @Override
+    public Activity activity()
+    {
+        return getActivity();
+    }
 }

@@ -38,6 +38,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AssignVehicleFragment#newInstance} factory method to
@@ -54,17 +57,18 @@ public class AssignVehicleFragment extends Fragment implements IFragment, IAssig
     private String mParam2;
 
 
-    CoordinatorLayout coordinatorLayout;
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView recyclerView;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+
     List<Vehicle> list, finalList;
-    Collection<Vehicle> collectionList;
     IAssignVehicleAdapter iAssignVehicleAdapter;
     AssignVehicleAdapter assignVehicleAdapter;
     int previous = -1;
     Vehicle vehicle;
     IAddNewTestDriveFragment iAddNewTestDriveFragment;
-    ProgressBar progressBar;
+
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
 
     public AssignVehicleFragment() {
@@ -103,30 +107,25 @@ public class AssignVehicleFragment extends Fragment implements IFragment, IAssig
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assign_vehicle, container, false);
+        ButterKnife.bind(this,view);
+
         iAssignVehicleAdapter = this;
         iAddNewTestDriveFragment = (AddNewTestDriveFragment)getParentFragment();
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view .findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view .findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
-        progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh()
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            ((HelperActivity)activity()).clearSearchText();
+            if(Utility.isNetworkAvailable(activity()))
             {
-                ((HelperActivity)activity()).clearSearchText();
-                if(Utility.isNetworkAvailable(activity()))
-                {
-                    fetchAssignVehiclesForTestDrive();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
-                swipeRefreshLayout.setRefreshing(false);
+                fetchAssignVehiclesForTestDrive();
             }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+            }
+            swipeRefreshLayout.setRefreshing(false);
+
         });
 
         if(Utility.isNetworkAvailable(activity()))

@@ -48,6 +48,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FleetHomeFragment#newInstance} factory method to
@@ -63,10 +66,18 @@ public class FleetHomeFragment extends Fragment implements IFragment , ITopBarAd
     private String mParam1;
     private String mParam2;
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+
+    @BindView(R.id.view_pager)
     ViewPager viewPager;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
     List<Vehicle> list;
     List<Vehicle> inDeliveryReceived;
     List<Vehicle> inPreparingForLot;
@@ -76,17 +87,39 @@ public class FleetHomeFragment extends Fragment implements IFragment , ITopBarAd
     List<Vehicle> inTestDrive;
     List<TopBarPanel> listTopBarPanel = Utility.getTopBarPanelElements(7);
     int previous = 0;
+
+    @BindView(R.id.mainTabLayout)
     LinearLayout mainTabLayout;
+
+    @BindView(R.id.appBar)
     AppBarLayout appBar;
+
+    @BindView(R.id.recyclerViewTopBar)
     RecyclerView recyclerViewTopBar;
+
+
     ITopBarAdapter iITopBarAdapter;
-    LinearLayout llTopBarPanel,llMainHead;
+
+    @BindView(R.id.llTopBarPanel)
+    LinearLayout llTopBarPanel;
+
+    @BindView(R.id.llMainHead)
+    LinearLayout llMainHead;
+
+    @BindView(R.id.tvTopBarItem)
     TextView tvTopBarItem;
+
+
     TopBarAdapter topBarAdapter;
+
+    @BindView(R.id.frameLayout)
     FrameLayout frameLayout;
+
+
     ArrayList<String> stringList = new ArrayList<>();
     int vehiclesType[] = {7,8,9};
 
+    @BindView(R.id.tvAssign)
     TextView tvAssign;
 
 
@@ -127,16 +160,13 @@ public class FleetHomeFragment extends Fragment implements IFragment , ITopBarAd
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_fleet_home, container, false);
+        ButterKnife.bind(this,view);
+
         iITopBarAdapter = this;
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
 
-        tabLayout = view.findViewById(R.id.tab_layout);
-        viewPager = view.findViewById(R.id.view_pager);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        tvAssign = view.findViewById(R.id.tvAssign);
         swipeRefreshLayout.setEnabled(false);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -157,18 +187,12 @@ public class FleetHomeFragment extends Fragment implements IFragment , ITopBarAd
         stringList.add(Constants.PREPARING_FOR_LOT);
         stringList.add(Constants.MARK_FOR_PDI);
 
-        frameLayout = view.findViewById(R.id.frameLayout);
-        mainTabLayout = view.findViewById(R.id.mainTabLayout);
-        recyclerViewTopBar = view.findViewById(R.id.recyclerViewTopBar);
-        llTopBarPanel = view.findViewById(R.id.llTopBarPanel);
-        llMainHead = view.findViewById(R.id.llMainHead);
-        tvTopBarItem = view.findViewById(R.id.tvTopBarItem);
+
         tvTopBarItem.setText(listTopBarPanel.get(0).title);
         recyclerViewTopBar.setLayoutManager(new LinearLayoutManager(activity()));
         recyclerViewTopBar.setAdapter(topBarAdapter = new TopBarAdapter(listTopBarPanel,activity(),iITopBarAdapter));
         swipeRefreshLayout.setEnabled(false);
         frameLayout.setVisibility(View.GONE);
-        appBar = view.findViewById(R.id.appBar);
 
         tvTopBarItem.setOnClickListener(click ->
         {
@@ -209,6 +233,14 @@ public class FleetHomeFragment extends Fragment implements IFragment , ITopBarAd
     {
         Intent intent = new Intent(activity(), HelperActivity.class);
         intent.putExtra(Constants.FRAGMENT_KEY,11);
+        startActivityForResult(intent,Utility.generateRequestCodes().get("ASSIGN_PREPARE"));
+    }
+
+    public void gotoAddPreparing(Vehicle vehicle)
+    {
+        Intent intent = new Intent(activity(), HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,11);
+        intent.putExtra("vehicle",vehicle);
         startActivityForResult(intent,Utility.generateRequestCodes().get("ASSIGN_PREPARE"));
     }
 

@@ -15,6 +15,9 @@ import com.maya.wadmin.models.VehicleStatus;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/19/2018.
  */
@@ -52,13 +55,12 @@ public class AlertVehicleStatusAdapter extends RecyclerView.Adapter<AlertVehicle
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVehicleStatus;
-        RelativeLayout llhead;
+        @BindView(R.id.tvVehicleStatus) TextView tvVehicleStatus;
+        @BindView(R.id.llhead) RelativeLayout llhead;
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvVehicleStatus= itemView.findViewById(R.id.tvVehicleStatus);
-            llhead = itemView.findViewById(R.id.llhead);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

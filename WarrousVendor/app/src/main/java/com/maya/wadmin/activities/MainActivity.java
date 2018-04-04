@@ -2,17 +2,25 @@ package com.maya.wadmin.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -21,6 +29,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.maya.wadmin.Manifest;
 import com.maya.wadmin.R;
 import com.maya.wadmin.constants.Constants;
 import com.maya.wadmin.dialogs.other.LogoutDialog;
@@ -28,18 +37,32 @@ import com.maya.wadmin.fragments.home.HomeFragment;
 import com.maya.wadmin.interfaces.activities.IActivity;
 import com.maya.wadmin.utilities.Utility;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends AppCompatActivity implements IActivity
 {
 
+    @BindView(R.id.navigation)
     BottomNavigationViewEx navigation;
+
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
+
+    @BindView(R.id.toolbar)
     android.support.v7.widget.Toolbar toolbar;
+
+    @BindView(R.id.nav_view)
     NavigationView navigationView;
+
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
+
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+
     NestedScrollView nestedScrollView;
     TextView tvUserName, tvUserRoleName;
     TextView tvCurrentPlatform, tvOtherPlatform;
@@ -50,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements IActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         initialize();
 
@@ -59,19 +83,18 @@ public class MainActivity extends AppCompatActivity implements IActivity
     private void initialize()
     {
 
-        navigationView = findViewById(R.id.nav_view);
-        navigation = findViewById(R.id.navigation);
-        drawer = findViewById(R.id.drawer_layout);
-        toolbar = findViewById(R.id.toolbar);
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+
+        // side navigation items
         headerLayout = navigationView.getHeaderView(0);
-        tvUserRoleName = (TextView) headerLayout.findViewById(R.id.tvUserRoleName);
-        tvUserName = (TextView) headerLayout.findViewById(R.id.tvUserName);
+        tvUserRoleName =  headerLayout.findViewById(R.id.tvUserRoleName);
+        tvUserName =  headerLayout.findViewById(R.id.tvUserName);
         tvOtherPlatform = headerLayout.findViewById(R.id.tvOtherPlatform);
         tvCurrentPlatform = headerLayout.findViewById(R.id.tvCurrentPlatform);
         nestedScrollView = headerLayout.findViewById(R.id.nestedScrollView);
         tvSignout = headerLayout.findViewById(R.id.tvSignOut);
         tvUserProfile = headerLayout.findViewById(R.id.tvUserProfile);
+        tvFAQ = headerLayout.findViewById(R.id.tvFAQ);
 
 
 
@@ -83,40 +106,40 @@ public class MainActivity extends AppCompatActivity implements IActivity
         navigation.enableShiftingMode(false);
         navigation.enableItemShiftingMode(false);
         navigation.setTextVisibility(true);
+
         tvUserName.setText(Utility.getString(Utility.getSharedPreferences(), Constants.FIRST_NAME)+ " " +Utility.getString(Utility.getSharedPreferences(), Constants.LAST_NAME));
         tvUserRoleName.setText(Utility.getString(Utility.getSharedPreferences(), Constants.USER_ROLL_NAME));
 
 
-
-        tvCurrentPlatform.setText(Constants.portalsTypeIDS[ Utility.getPortalType() ]);
+        tvCurrentPlatform.setText(Constants.portalsTypeIDS[Utility.getPortalType()]);
         tvOtherPlatform.setText(Utility.getPortalType()==1?Constants.portalsTypeIDS[0]:Constants.portalsTypeIDS[1]);
-        tvOtherPlatform.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                updatePortal();
-            }
+
+
+        tvOtherPlatform.setOnClickListener(v -> {
+            updatePortal();
         });
 
         addBadgeAt(0, 4);
         addBadgeAt(3, 9);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, HomeFragment.newInstance(null,null)).commit();
 
-        tvSignout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                openLogoutDialog();
-            }
+
+
+        tvSignout.setOnClickListener(v ->
+        {
+            openLogoutDialog();
         });
 
-        tvUserProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                openUserProfile();
-            }
+        tvUserProfile.setOnClickListener(v -> {
+            openUserProfile();
         });
+
+        tvFAQ.setOnClickListener(v -> {
+            openFAQ();
+        });
+
+
+
     }
 
     private void openUserProfile()
@@ -124,6 +147,14 @@ public class MainActivity extends AppCompatActivity implements IActivity
         drawer.closeDrawers();
         Intent intent = new Intent(activity(),HelperActivity.class);
         intent.putExtra(Constants.FRAGMENT_KEY,8);
+        startActivity(intent);
+    }
+
+    private void openFAQ()
+    {
+        drawer.closeDrawers();
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,9);
         startActivity(intent);
     }
 
@@ -200,6 +231,109 @@ public class MainActivity extends AppCompatActivity implements IActivity
         homeFragment.generateUserRoles();
         homeFragment.showSnackBar("Switched to "+Constants.portalsTypeIDS[Utility.getPortalType()],2);
 
+    }
 
+
+    BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item)
+        {
+            //item.setChecked(true);
+
+            switch (item.getItemId())
+            {
+                case R.id.navigation_scan:
+                    openBarCodeScan();
+                    break;
+                case R.id.navigation_notifications:
+                    openNotifications();
+                    break;
+                case R.id.navigation_location:
+                    openLocations();
+                    break;
+                case R.id.navigation_messages:
+                    openMessages();
+                    break;
+            }
+            return false;
+        }
+    };
+
+    private void openLocations()
+    {
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,704);
+        startActivity(intent);
+    }
+
+    private void openNotifications()
+    {
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,703);
+        startActivity(intent);
+    }
+
+    private void openMessages()
+    {
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,702);
+        startActivity(intent);
+    }
+
+    private void openBarCodeScan()
+    {
+        if(checkPermissions(1))
+        {
+            Intent intent = new Intent(activity(),HelperActivity.class);
+            intent.putExtra(Constants.FRAGMENT_KEY,701);
+            startActivity(intent);
+        }
+    }
+
+    private boolean checkPermissions(int option)
+    {
+        switch (option)
+        {
+
+            case 1:
+                if (ContextCompat.checkSelfPermission(activity(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions(activity(), new String[]{android.Manifest.permission.CAMERA}, Utility.generateRequestCodes().get("REQUEST_CAMERA"));
+                    return false;
+                }
+            case 2:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == Utility.generateRequestCodes().get("REQUEST_CAMERA"))
+        {
+            if(grantResults[0] != PackageManager.PERMISSION_GRANTED)
+            {
+              if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+              {
+                  if(shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA) == false)
+                  {
+                      Toast.makeText(this, "Open permissions and give all the permissions in order to access the app", Toast.LENGTH_LONG).show();
+                      Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                      Uri uri = Uri.fromParts("package", getPackageName(), null);
+                      intent.setData(uri);
+                      startActivity(intent);
+                  }
+                  else
+                  {
+                      checkPermissions(1);
+                  }
+              }
+            }
+            else
+            {
+                openBarCodeScan();
+            }
+        }
     }
 }

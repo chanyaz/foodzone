@@ -43,6 +43,9 @@ import com.maya.wadmin.utilities.Utility;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link VehicleLocationFragment#newInstance} factory method to
@@ -59,11 +62,17 @@ public class VehicleLocationFragment extends Fragment implements IFragment ,OnMa
     private String mParam2;
 
     GoogleMap googleMap;
-    MapView mapView;
+
+    @BindView(R.id.mapView) MapView mapView;
+
     Vehicle vehicle = null;
-    TextView tvModel, tvVin, tvMake, tvYear;
-    CoordinatorLayout coordinatorLayout;
-    ProgressBar progressBar;
+
+    @BindView(R.id.tvModel) TextView tvModel;
+    @BindView(R.id.tvVin) TextView tvVin;
+    @BindView(R.id.tvMake) TextView tvMake;
+    @BindView(R.id.tvYear) TextView tvYear;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     public VehicleLocationFragment() {
         // Required empty public constructor
@@ -109,8 +118,9 @@ public class VehicleLocationFragment extends Fragment implements IFragment ,OnMa
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vehicle_location, container, false);
-        vehicleIdsSetUp(view);
-        mapView = view.findViewById(R.id.mapView);
+        ButterKnife.bind(this,view);
+
+        progressBar.setVisibility(View.GONE);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
@@ -131,15 +141,9 @@ public class VehicleLocationFragment extends Fragment implements IFragment ,OnMa
         return view;
     }
 
-    private void vehicleIdsSetUp(View view)
+    private void vehicleIdsSetUp()
     {
-        tvModel = view.findViewById(R.id.tvModel);
-        tvVin = view.findViewById(R.id.tvVin);
-        tvMake = view.findViewById(R.id.tvMake);
-        tvYear = view.findViewById(R.id.tvYear);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        progressBar = view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -202,7 +206,6 @@ public class VehicleLocationFragment extends Fragment implements IFragment ,OnMa
 
     private void fetchVehicleLocation()
     {
-        progressBar.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         String URL = Constants.URL_VEHICLES_DETAILS + vehicle.VehicleId;
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();

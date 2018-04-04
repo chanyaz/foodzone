@@ -36,6 +36,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AssignTechnicianPDIFragment#newInstance} factory method to
@@ -53,11 +56,25 @@ public class AssignTechnicianPDIFragment extends Fragment implements IFragment, 
 
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    TextView tvVehicleCount, tvEdit;
+
+    @BindView(R.id.tvVehicleCount)
+    TextView tvVehicleCount;
+
+    @BindView(R.id.tvEdit)
+    TextView tvEdit;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
+
     List<SalesPerson> list, finalList;
     SalesPerson salesPerson;
     AssignTechnicianPDIAdapter assignTechnicianPDIAdapter;
@@ -109,13 +126,10 @@ public class AssignTechnicianPDIFragment extends Fragment implements IFragment, 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assign_technician_pdi, container, false);
+        ButterKnife.bind(this,view);
+
         iAssignTechnicianPDIAdapter = this;
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        tvVehicleCount = view.findViewById(R.id.tvVehicleCount);
-        tvEdit = view.findViewById(R.id.tvEdit);
-        progressBar = view.findViewById(R.id.progressBar);
+
         progressBar.setVisibility(View.GONE);
 
 

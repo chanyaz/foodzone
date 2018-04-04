@@ -51,6 +51,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link VehicleDeliveryFragment#newInstance} factory method to
@@ -68,28 +71,58 @@ public class VehicleDeliveryFragment extends Fragment implements IFragment,ITopB
 
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    TextView tvAssignPDI;
+
+
+    @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+
+    @BindView(R.id.view_pager)
     ViewPager viewPager;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.frameLayout)
     FrameLayout frameLayout;
+
+
     List<DeliveryTruck> list;
     List<DeliveryTruck> inToday;
     List<DeliveryTruck> inNextWeek;
     List<DeliveryTruck> inTomorrow;
     List<String> content;
+
+    @BindView(R.id.recyclerViewTopBar)
     RecyclerView recyclerViewTopBar;
+
+
     ITopBarAdapter iITopBarAdapter;
-    LinearLayout llTopBarPanel,llMainHead;
+
+    @BindView(R.id.llTopBarPanel)
+    LinearLayout llTopBarPanel;
+
+    @BindView(R.id.llMainHead)
+    LinearLayout llMainHead;
+
+    @BindView(R.id.tvTopBarItem)
     TextView tvTopBarItem;
+
     TopBarAdapter topBarAdapter;
-    TopBarPanel topBarPanel;
+
     List<TopBarPanel> listTopBarPanel = Utility.getTopBarPanelElements(0);
     int previous = 0;
+
+    @BindView(R.id.mainTabLayout)
     LinearLayout mainTabLayout;
+
+    @BindView(R.id.appBar)
     AppBarLayout appBar;
+
     float before = -1;
     ViewGroup.LayoutParams layoutParams;
 
@@ -134,49 +167,43 @@ public class VehicleDeliveryFragment extends Fragment implements IFragment,ITopB
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vehicle_delivery, container, false);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
+        ButterKnife.bind(this,view);
+
+
         iITopBarAdapter = this;
 
-        tabLayout = view.findViewById(R.id.tab_layout);
-        viewPager = view.findViewById(R.id.view_pager);
+
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
-        progressBar = view.findViewById(R.id.progressBar);
+
         progressBar.setVisibility(View.GONE);
 
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        frameLayout = view.findViewById(R.id.frameLayout);
-        mainTabLayout = view.findViewById(R.id.mainTabLayout);
-        recyclerViewTopBar = view.findViewById(R.id.recyclerViewTopBar);
-        llTopBarPanel = view.findViewById(R.id.llTopBarPanel);
-        llMainHead = view.findViewById(R.id.llMainHead);
-        tvTopBarItem = view.findViewById(R.id.tvTopBarItem);
+
         tvTopBarItem.setText(listTopBarPanel.get(0).title);
         recyclerViewTopBar.setLayoutManager(new LinearLayoutManager(activity()));
         recyclerViewTopBar.setAdapter(topBarAdapter = new TopBarAdapter(listTopBarPanel,activity(),iITopBarAdapter));
         swipeRefreshLayout.setEnabled(false);
         frameLayout.setVisibility(View.GONE);
-        appBar = view.findViewById(R.id.appBar);
 
         layoutParams  = llMainHead.getLayoutParams();
         Logger.d("real content main" , +layoutParams.width + " "  +layoutParams.height);
 
 
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if(Utility.isNetworkAvailable(activity()))
-                {
-                    fetchVehiclesOfDelivery();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
-                swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setOnRefreshListener(() ->
+        {
+            if(Utility.isNetworkAvailable(activity()))
+            {
+                fetchVehiclesOfDelivery();
             }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+            }
+            swipeRefreshLayout.setRefreshing(false);
+
         });
+
 
         if(Utility.isNetworkAvailable(activity()))
         {

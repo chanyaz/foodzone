@@ -29,6 +29,9 @@ import com.maya.wadmin.models.Vehicle;
 import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddNewTestDriveFragment#newInstance} factory method to
@@ -45,15 +48,21 @@ public class AddNewTestDriveFragment extends Fragment implements IFragment , IAd
     private String mParam2;
 
 
-    CoordinatorLayout coordinatorLayout;
-    FrameLayout frameLayout;
-    TextView tvNext,tvOne,tvTwo,tvThree,tvFour;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.frameLayout) FrameLayout frameLayout;
+
+    @BindView(R.id.tvNext) TextView tvNext;
+    @BindView(R.id.tvOne) TextView tvOne;
+    @BindView(R.id.tvTwo) TextView tvTwo;
+    @BindView(R.id.tvThree) TextView tvThree;
+    @BindView(R.id.tvFour) TextView tvFour;
+
     Vehicle vehicle;
     SalesPerson salesPerson;
     Customer customer;
 
     public int currentFragment = 1;
-    ProgressBar progressBar;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     public AddNewTestDriveFragment() {
         // Required empty public constructor
@@ -91,21 +100,12 @@ public class AddNewTestDriveFragment extends Fragment implements IFragment , IAd
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_new_test_drive, container, false);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        frameLayout = view.findViewById(R.id.frameLayout);
-        tvNext = view.findViewById(R.id.tvNext);
-        tvOne = view.findViewById(R.id.tvOne);
-        tvTwo = view.findViewById(R.id.tvTwo);
-        tvThree = view.findViewById(R.id.tvThree);
-        tvFour = view.findViewById(R.id.tvFour);
-        progressBar = view.findViewById(R.id.progressBar);
+        ButterKnife.bind(this,view);
 
-        tvNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                addFragment();
-            }
+
+
+        tvNext.setOnClickListener(v -> {
+            addFragment();
         });
 
         addFragment();

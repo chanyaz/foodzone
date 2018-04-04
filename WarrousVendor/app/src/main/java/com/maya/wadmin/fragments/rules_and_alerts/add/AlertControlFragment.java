@@ -36,11 +36,15 @@ import com.maya.wadmin.models.AlertActionChannel;
 import com.maya.wadmin.models.AlertRule;
 import com.maya.wadmin.models.Operation;
 import com.maya.wadmin.models.TopBarPanel;
+import com.maya.wadmin.utilities.CommonApiCalls;
 import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
 
 import java.lang.reflect.Type;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,20 +62,29 @@ public class AlertControlFragment extends Fragment implements IFragment,ITopBarA
     private String mParam2;
 
 
-    SwipeRefreshLayout swipeRefreshLayout;
-    CoordinatorLayout coordinatorLayout;
-    RecyclerView recyclerViewTopBar;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.recyclerViewTopBar) RecyclerView recyclerViewTopBar;
+
     ITopBarAdapter iITopBarAdapter;
-    LinearLayout llTopBarPanel,llMainHead;
-    TextView tvTopBarItem;
+
+    @BindView(R.id.llTopBarPanel) LinearLayout llTopBarPanel;
+    @BindView(R.id.llMainHead) LinearLayout llMainHead;
+    @BindView(R.id.tvTopBarItem) TextView tvTopBarItem;
+
     TopBarAdapter topBarAdapter;
     TopBarPanel topBarPanel;
     List<TopBarPanel> listTopBarPanel = Utility.getTopBarPanelElements(6);
     public int previous = 0;
-    RecyclerView recyclerView;
-    ProgressBar progressBar;
+
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+
     public List<AlertActionChannel> alertActionChannelList;
-    public EditText etAlertName, etAlertDesc;
+
+    @BindView(R.id.etAlertName) public EditText etAlertName;
+    @BindView(R.id.etAlertDesc) public EditText etAlertDesc;
+
     AlertRule alertRule;
 
     IActionChannelAdapter iActionChannelAdapter;
@@ -99,10 +112,11 @@ public class AlertControlFragment extends Fragment implements IFragment,ITopBarA
         return fragment;
     }
 
-    public static AlertControlFragment newInstance(AlertRule alertRule) {
+    public static AlertControlFragment newInstance(int CategoryId, AlertRule alertRule) {
         AlertControlFragment fragment = new AlertControlFragment();
         Bundle args = new Bundle();
         args.putSerializable("AlertRule", alertRule);
+        args.putInt("CategoryId",CategoryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -121,25 +135,17 @@ public class AlertControlFragment extends Fragment implements IFragment,ITopBarA
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_alert_control, container, false);
+        ButterKnife.bind(this,view);
+
         iITopBarAdapter = this;
         iActionChannelAdapter = this;
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        recyclerViewTopBar = view.findViewById(R.id.recyclerViewTopBar);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setEnabled(false);
-        llTopBarPanel = view.findViewById(R.id.llTopBarPanel);
-        llMainHead = view.findViewById(R.id.llMainHead);
-        tvTopBarItem = view.findViewById(R.id.tvTopBarItem);
         tvTopBarItem.setText(listTopBarPanel.get(0).title);
         recyclerViewTopBar.setLayoutManager(new LinearLayoutManager(activity()));
         recyclerViewTopBar.setAdapter(topBarAdapter = new TopBarAdapter(listTopBarPanel,activity(),iITopBarAdapter,1));
-        progressBar = view.findViewById(R.id.progressBar);
-        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
 
-        etAlertDesc = view.findViewById(R.id.etAlertDesc);
-        etAlertName = view.findViewById(R.id.etAlertName);
 
         tvTopBarItem.setOnClickListener(click ->
         {
@@ -166,6 +172,8 @@ public class AlertControlFragment extends Fragment implements IFragment,ITopBarA
         {
             etAlertName.setText(alertRule.AlertName);
             etAlertDesc.setText(alertRule.AlertDescription);
+            itemClick(listTopBarPanel.get(getPositionOfCategory(getArguments().getInt("CategoryId",0))), getPositionOfCategory(getArguments().getInt("CategoryId",0)) );
+            tvTopBarItem.setEnabled(false);
             fetchAlertActions(alertRule.AlertId);
         }
 
@@ -182,7 +190,7 @@ public class AlertControlFragment extends Fragment implements IFragment,ITopBarA
     }
 
 
-    public void fetchAlertActions(int alertId)
+    public void fetchAlertActions(final int alertId)
     {
         progressBar.setVisibility(View.VISIBLE);
         String URL = Constants.URL_GENERATE_ACTION_CHANNEL_BASED_ALERT_ID + alertId;
@@ -209,8 +217,16 @@ public class AlertControlFragment extends Fragment implements IFragment,ITopBarA
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Logger.d("[response]", Constants.CONNECTION_ERROR);
-                progressBar.setVisibility(View.GONE);
-                showSnackBar(Constants.CONNECTION_ERROR, 2);
+                if(volleyError.networkResponse.statusCode == 401)
+                {
+                    CommonApiCalls.refreshAuthTokenCall();
+                    fetchAlertActions(alertId);
+                }
+                else
+                {
+                    progressBar.setVisibility(View.GONE);
+                    showSnackBar(Constants.CONNECTION_ERROR, 2);
+                }
             }
         };
         volleyHelperLayer.startHandlerVolley(URL, null, listener, errorListener, Request.Priority.NORMAL, Constants.GET_REQUEST);
@@ -278,5 +294,18 @@ public class AlertControlFragment extends Fragment implements IFragment,ITopBarA
         {
 
         }
+    }
+
+
+    public int getPositionOfCategory(int category)
+    {
+        for (int i=0;i<Constants.ALERT_TYPE_IDS.length;i++)
+        {
+            if(Constants.ALERT_TYPE_IDS[i] == category)
+            {
+                return i;
+            }
+        }
+        return 0;
     }
 }

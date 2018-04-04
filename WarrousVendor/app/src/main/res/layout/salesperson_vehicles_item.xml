@@ -13,6 +13,7 @@
         <android.support.v7.widget.CardView
             android:layout_gravity="center_vertical"
             app:cardElevation="8dp"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="26.5dp"
             android:layout_margin="8dp"
             android:layout_width="wrap_content"

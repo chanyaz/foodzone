@@ -19,6 +19,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 1/29/2018.
  */
@@ -100,18 +103,16 @@ public class AssignVehicleAdapter extends RecyclerView.Adapter<AssignVehicleAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvOther;
-        ImageView imgVehicle, imgClick;
-        View bottomView;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.bottomView) View bottomView;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

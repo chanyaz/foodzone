@@ -20,6 +20,9 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/2/2018.
  */
@@ -123,25 +126,22 @@ public class FindVehiclesAdapter extends RecyclerView.Adapter<FindVehiclesAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvModel ,tvOther, tvReceived, tvStatus;
-        ImageView imgVehicle, imgClick;
-        View bottomView;
-        LinearLayout llhead,llhead1,llhead3;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvModel) TextView tvModel;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.tvReceived) TextView tvReceived;
+        @BindView(R.id.tvStatus) TextView tvStatus;
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.bottomView) View bottomView;
+        @BindView(R.id.llhead) LinearLayout llhead;
+        @BindView(R.id.llhead1) LinearLayout llhead1;
+        @BindView(R.id.llhead3) LinearLayout llhead3;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvModel = itemView.findViewById(R.id.tvModel);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            tvReceived = itemView.findViewById(R.id.tvReceived);
-            tvStatus = itemView.findViewById(R.id.tvStatus);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
-            llhead = itemView.findViewById(R.id.llhead);
-            llhead1 = itemView.findViewById(R.id.llhead1);
-            llhead3 = itemView.findViewById(R.id.llhead3);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

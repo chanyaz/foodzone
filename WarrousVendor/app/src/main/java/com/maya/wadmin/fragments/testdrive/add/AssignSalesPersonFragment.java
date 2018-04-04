@@ -39,6 +39,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AssignSalesPersonFragment#newInstance} factory method to
@@ -55,18 +58,23 @@ public class AssignSalesPersonFragment extends Fragment implements IFragment, IA
     private String mParam2;
 
     Vehicle vehicle;
-    TextView tvVin, tvOther, tvEdit;
-    ImageView imgVehicle;
-    CoordinatorLayout coordinatorLayout;
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView recyclerView;
+
+    @BindView(R.id.tvVin) TextView tvVin;
+    @BindView(R.id.tvOther) TextView tvOther;
+    @BindView(R.id.tvEdit) TextView tvEdit;
+    @BindView(R.id.imgVehicle) ImageView imgVehicle;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+
     SalesPerson salesPerson;
     AssignSalesPersonAdapter assignSalesPersonAdapter;
     List<SalesPerson> list, finalList;
     IAssignSalesPersonAdapter iAssignSalesPersonAdapter;
     int previous = -1;
     IAddNewTestDriveFragment iAddNewTestDriveFragment;
-    ProgressBar progressBar;
+
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
 
     public AssignSalesPersonFragment() {
@@ -115,21 +123,16 @@ public class AssignSalesPersonFragment extends Fragment implements IFragment, IA
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assign_sales_person, container, false);
+        ButterKnife.bind(this,view);
+
         iAssignSalesPersonAdapter = this;
         ((HelperActivity) activity()).clearSearchText();
 
 
-        progressBar = view.findViewById(R.id.progressBar);
+
         progressBar.setVisibility(View.GONE);
 
         iAddNewTestDriveFragment = (AddNewTestDriveFragment)getParentFragment();
-        tvVin= view.findViewById(R.id.tvVin);
-        tvOther = view.findViewById(R.id.tvOther);
-        imgVehicle = view.findViewById(R.id.imgVehicle);
-        tvEdit = view.findViewById(R.id.tvEdit);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
 
 
 

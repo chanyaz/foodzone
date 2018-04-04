@@ -195,7 +195,7 @@
                 android:layout_marginRight="9dp"
                 android:layout_marginTop="17dp"
                 android:background="@drawable/unselected_corner_6"
-                android:text="Cancel"
+                android:text="Close"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
             <com.maya.wadmin.customviews.SFBoldTextView

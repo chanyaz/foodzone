@@ -40,6 +40,9 @@ import com.maya.wadmin.utilities.Utility;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link VehicleOverviewFragment#newInstance} factory method to
@@ -57,25 +60,50 @@ public class VehicleOverviewFragment extends Fragment implements IFragment {
 
 
     Vehicle vehicle;
-    CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+
     ObjectAnimator animLeftRight;
     ObjectAnimator animReverse;
     int animationDuration = 2000;
     int animationTimes = 0;
-    public View viewScanLeftRight;
-    public View viewScanRightLeft;
+
+    @BindView(R.id.view_scan_bar_left_right) public View viewScanLeftRight;
+    @BindView(R.id.view_scan_bar_right_left) public View viewScanRightLeft;
+
     private int timeSet = 0;
     public int openFlag = 0;
-    TextView tvScan, tvStatus;
+
+    @BindView(R.id.tvScan) TextView tvScan;
+    @BindView(R.id.tvStatus) TextView tvStatus;
+
     List<DTCDiagnostics> list;
-    RecyclerView recyclerView;
+
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+
     DTCDiagnosticsAdapter dtcDiagnosticsAdapter;
-    RelativeLayout rlFinishScan, llhead3;
-    LinearLayout llhead2;
-    ScrollView scrollView;
-    ProgressBar progressBar;
-    TextView  tvModel, tvVin, tvMake, tvYear, tvEngineNumber;
-    TextView tvColorExterior, tvInterior, tvBodyStyle, tvOdometerStatus, tvTransmissionType, tvDoorQuantity;
+
+    @BindView(R.id.rlFinishScan) RelativeLayout rlFinishScan;
+    @BindView(R.id.llhead3) RelativeLayout llhead3;
+
+    @BindView(R.id.llhead2) LinearLayout llhead2;
+
+    @BindView(R.id.scrollView) ScrollView scrollView;
+
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+
+    @BindView(R.id.tvModel) TextView tvModel;
+    @BindView(R.id.tvVin) TextView tvVin;
+    @BindView(R.id.tvMake) TextView tvMake;
+    @BindView(R.id.tvYear) TextView tvYear;
+    @BindView(R.id.tvEngineNumber) TextView tvEngineNumber;
+
+    @BindView(R.id.tvColorExterior) TextView tvColorExterior;
+    @BindView(R.id.tvInterior) TextView tvInterior;
+    @BindView(R.id.tvBodyStyle) TextView tvBodyStyle;
+    @BindView(R.id.tvOdometerStatus) TextView tvOdometerStatus;
+    @BindView(R.id.tvTransmissionType) TextView tvTransmissionType;
+    @BindView(R.id.tvDoorQuantity) TextView tvDoorQuantity;
 
 
     public VehicleOverviewFragment() {
@@ -122,6 +150,8 @@ public class VehicleOverviewFragment extends Fragment implements IFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vehicle_overview, container, false);
+        ButterKnife.bind(this,view);
+
         if(getArguments().getSerializable("vehicle")!=null)
         {
             vehicle = (Vehicle) getArguments().getSerializable("vehicle");
@@ -131,18 +161,7 @@ public class VehicleOverviewFragment extends Fragment implements IFragment {
             vehicle.VehicleId = "17";
             vehicle.Type = "In Test Drive";
         }
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        progressBar = view.findViewById(R.id.progressBar);
-        viewScanLeftRight = view.findViewById(R.id.view_scan_bar_left_right);
-        viewScanRightLeft = view.findViewById(R.id.view_scan_bar_right_left);
-        tvScan = view.findViewById(R.id.tvScan);
-        tvStatus = view.findViewById(R.id.tvStatus);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        rlFinishScan = view.findViewById(R.id.rlFinishScan);
-        llhead2 = view.findViewById(R.id.llhead2);
-        llhead3 = view.findViewById(R.id.llhead3);
-        scrollView = view.findViewById(R.id.scrollView);
-        vehicleIdsSetUp(view);
+
 
 
 
@@ -160,38 +179,30 @@ public class VehicleOverviewFragment extends Fragment implements IFragment {
         viewScanRightLeft.setVisibility(View.INVISIBLE);
         setUpFirst();
 
-        tvScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
+        tvScan.setOnClickListener(v -> {
+            if(Utility.isNetworkAvailable(activity()))
             {
-                if(Utility.isNetworkAvailable(activity()))
-                {
-
-                    tvStatus.setText("Scaning...");
-                    tvStatus.setBackgroundResource(R.drawable.corner_radius_primary_10);
-                    tvScan.setVisibility(View.INVISIBLE);
-                    animate();
-                    fetchDTCCodeOfVehicles();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
+                tvStatus.setText("Scaning...");
+                tvStatus.setBackgroundResource(R.drawable.corner_radius_primary_10);
+                tvScan.setVisibility(View.INVISIBLE);
+                animate();
+                fetchDTCCodeOfVehicles();
+            }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
             }
         });
 
-        rlFinishScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                scrollView.fullScroll(View.FOCUS_UP);
-                scrollView.smoothScrollTo(0,0);
-                rlFinishScan.setVisibility(View.GONE);
-                tvScan.setVisibility(View.VISIBLE);
-                llhead3.setVisibility(View.GONE);
-                llhead2.setVisibility(View.VISIBLE);
+        rlFinishScan.setOnClickListener(v ->
+        {
+            scrollView.fullScroll(View.FOCUS_UP);
+            scrollView.smoothScrollTo(0,0);
+            rlFinishScan.setVisibility(View.GONE);
+            tvScan.setVisibility(View.VISIBLE);
+            llhead3.setVisibility(View.GONE);
+            llhead2.setVisibility(View.VISIBLE);
 
-            }
         });
 
         if(Utility.isNetworkAvailable(activity()))
@@ -207,21 +218,7 @@ public class VehicleOverviewFragment extends Fragment implements IFragment {
     }
 
 
-    private void vehicleIdsSetUp(View view)
-    {
-        tvModel = view.findViewById(R.id.tvModel);
-        tvStatus = view.findViewById(R.id.tvStatus);
-        tvVin = view.findViewById(R.id.tvVin);
-        tvMake = view.findViewById(R.id.tvMake);
-        tvYear = view.findViewById(R.id.tvYear);
-        tvColorExterior = view.findViewById(R.id.tvColorExterior);
-        tvInterior = view.findViewById(R.id.tvInterior);
-        tvBodyStyle = view.findViewById(R.id.tvBodyStyle);
-        tvOdometerStatus = view.findViewById(R.id.tvOdometerStatus);
-        tvTransmissionType = view.findViewById(R.id.tvTransmissionType);
-        tvDoorQuantity = view.findViewById(R.id.tvDoorQuantity);
-        tvEngineNumber = view.findViewById(R.id.tvEngineNumber);
-    }
+
 
     private void setUpFirst()
     {

@@ -16,6 +16,9 @@ import com.maya.wadmin.models.CheckList;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/12/2018.
  */
@@ -119,19 +122,17 @@ public class PDIChecklistAdapter extends RecyclerView.Adapter<PDIChecklistAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTitle, tvInspected, tvFail, tvPass;
-        LinearLayout llhead;
-        ImageView imgComment;
+        @BindView(R.id.tvTitle) TextView tvTitle;
+        @BindView(R.id.tvInspected) TextView tvInspected;
+        @BindView(R.id.tvFail) TextView tvFail;
+        @BindView(R.id.tvPass) TextView tvPass;
+        @BindView(R.id.llhead) LinearLayout llhead;
+        @BindView(R.id.imgComment) ImageView imgComment;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvTitle= itemView.findViewById(R.id.tvTitle);
-            tvInspected = itemView.findViewById(R.id.tvInspected);
-            tvFail = itemView.findViewById(R.id.tvFail);
-            tvPass = itemView.findViewById(R.id.tvPass);
-            imgComment = itemView.findViewById(R.id.imgComment);
-            llhead = itemView.findViewById(R.id.llhead);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

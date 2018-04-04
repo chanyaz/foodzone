@@ -16,6 +16,9 @@ import com.maya.wadmin.models.DTCDiagnostics;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 1/31/2018.
  */
@@ -71,17 +74,15 @@ public class DTCDiagnosticsAdapter extends RecyclerView.Adapter<DTCDiagnosticsAd
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvCodeDesc, tvRole;
-        ImageView imgStatus, imgDtc;
-        LinearLayout llhead;
+        @BindView(R.id.tvCodeDesc) TextView tvCodeDesc;
+        @BindView(R.id.imgStatus) ImageView imgStatus;
+        @BindView(R.id.imgDtc) ImageView imgDtc;
+        @BindView(R.id.llhead) LinearLayout llhead;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvCodeDesc= itemView.findViewById(R.id.tvCodeDesc);
-            imgStatus = itemView.findViewById(R.id.imgStatus);
-            imgDtc = itemView.findViewById(R.id.imgDtc);
-            llhead = itemView.findViewById(R.id.llhead);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

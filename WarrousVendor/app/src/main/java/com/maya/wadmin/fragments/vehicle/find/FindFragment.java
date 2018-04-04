@@ -38,6 +38,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FindFragment#newInstance} factory method to
@@ -55,10 +58,11 @@ public class FindFragment extends Fragment implements IFragment, IFindVehiclesAd
 
     public GroupFilter groupFilter = null;
 
-    CoordinatorLayout coordinatorLayout;
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView recyclerView;
-    ProgressBar progressBar;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+
     IFindVehiclesAdapter iFindVehiclesAdapter;
     FindVehiclesAdapter findVehiclesAdapter;
     List<Vehicle> list, finalList;
@@ -101,29 +105,25 @@ public class FindFragment extends Fragment implements IFragment, IFindVehiclesAd
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_find, container, false);
+        ButterKnife.bind(this,view);
+
         iFindVehiclesAdapter = this;
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh()
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+
+            if(Utility.isNetworkAvailable(activity()))
             {
-                if(Utility.isNetworkAvailable(activity()))
-                {
-                    fetchVehicles();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
-                swipeRefreshLayout.setRefreshing(false);
+                fetchVehicles();
             }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+            }
+            swipeRefreshLayout.setRefreshing(false);
+
         });
 
 

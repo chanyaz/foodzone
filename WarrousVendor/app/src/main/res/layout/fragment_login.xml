@@ -68,6 +68,7 @@
                     android:layout_height="wrap_content" />
                 <com.maya.wadmin.customviews.BoldTextView
                     android:maxLines="1"
+                    android:visibility="gone"
                     android:id="@+id/tvPortalName"
                     android:layout_marginTop="10dp"
                     android:textAlignment="center"

@@ -38,6 +38,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AllDeliveryVehiclesFragment#newInstance} factory method to
@@ -54,10 +57,19 @@ public class AllDeliveryVehiclesFragment extends Fragment implements IFragment, 
     private String mParam2;
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
+
     VehicleArrivalAdapter vehicleArrivalAdapter;
     List<Vehicle> list, finalList;
     IVehicleArrivalAdapter iVehicleArrivalAdapter;
@@ -99,32 +111,28 @@ public class AllDeliveryVehiclesFragment extends Fragment implements IFragment, 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_delivery_vehicles, container, false);
-
+        ButterKnife.bind(this,view);
         iVehicleArrivalAdapter = this;
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
-        progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh()
+        swipeRefreshLayout.setOnRefreshListener(() ->
+        {
+            if(Utility.isNetworkAvailable(activity()))
             {
-                if(Utility.isNetworkAvailable(activity()))
-                {
-                    ((HelperActivity) activity()).clearSearchText();
-                    fetchAllDeliveryVehicles();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
-                swipeRefreshLayout.setRefreshing(false);
+                ((HelperActivity) activity()).clearSearchText();
+                fetchAllDeliveryVehicles();
             }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+            }
+            swipeRefreshLayout.setRefreshing(false);
         });
+
+
 
         if(Utility.isNetworkAvailable(activity()))
         {

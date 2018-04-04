@@ -37,6 +37,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PDIViewFragment#newInstance} factory method to
@@ -54,10 +57,19 @@ public class PDIViewFragment extends Fragment implements IFragment,ISalesPersonV
 
 
     int previous = -1;
+
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
     List<SalesPerson> list,finalList;
     SalesPersonVehiclesAdapter salesPersonVehiclesAdapter;
     ISalesPersonVehiclesAdapter iSalesPersonVehiclesAdapter;
@@ -102,12 +114,10 @@ public class PDIViewFragment extends Fragment implements IFragment,ISalesPersonV
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pdiview, container, false);
+        ButterKnife.bind(this,view);
+
         iSalesPersonVehiclesAdapter = this;
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
 

@@ -71,6 +71,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CreateZoneFragment#newInstance} factory method to
@@ -89,9 +92,9 @@ public class CreateZoneFragment extends Fragment implements IFragment, OnMapRead
 
 
     PolygonOptions rectOptions;
-    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     GoogleMap map;
-    MapView mapView;
+    @BindView(R.id.mapView) MapView mapView;
     Place place;
     int min = 100;
     List<LatLng> polygonsList = new ArrayList<>();
@@ -100,16 +103,25 @@ public class CreateZoneFragment extends Fragment implements IFragment, OnMapRead
     boolean isPolygon = false, isHand = true, isCircle = false, isLocation = false;
     boolean geofence = false, polygon = false;
 
-    LinearLayout llLocation, llPolyline, llHand, llClear, llCircle;
-    ImageView imgLocation, imgPolygon, imgHand, imgCircle;
-    IndicatorSeekBar seekBar;
-    LinearLayout llhead1;
-    RecyclerView recyclerView;
-    EditText etKeyword;
-    ImageView imgAdd;
-    EditText etZoneName;
-    ProgressBar progressBar;
-    RelativeLayout rlOverView;
+    @BindView(R.id.llLocation) LinearLayout llLocation;
+    @BindView(R.id.llPolyline) LinearLayout llPolyline;
+    @BindView(R.id.llHand) LinearLayout llHand;
+    @BindView(R.id.llClear) LinearLayout llClear;
+    @BindView(R.id.llCircle) LinearLayout llCircle;
+
+    @BindView(R.id.imgLocation) ImageView imgLocation;
+    @BindView(R.id.imgPolygon) ImageView imgPolygon;
+    @BindView(R.id.imgHand) ImageView imgHand;
+    @BindView(R.id.imgCircle) ImageView imgCircle;
+
+    @BindView(R.id.seekbar) IndicatorSeekBar seekBar;
+    @BindView(R.id.llhead1) LinearLayout llhead1;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.etKeyword) EditText etKeyword;
+    @BindView(R.id.imgAdd) ImageView imgAdd;
+    @BindView(R.id.etZoneName) EditText etZoneName;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.rlOverView) RelativeLayout rlOverView;
 
     IKeyWordAdapter iKeyWordAdapter;
     KeyWordAdapter keyWordAdapter;
@@ -163,37 +175,17 @@ public class CreateZoneFragment extends Fragment implements IFragment, OnMapRead
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_zone, container, false);
+        ButterKnife.bind(this,view);
+
         iKeyWordAdapter = this;
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        mapView = view.findViewById(R.id.mapView);
-        llCircle = view.findViewById(R.id.llCircle);
-        llClear = view.findViewById(R.id.llClear);
-        llHand = view.findViewById(R.id.llHand);
-        llPolyline = view.findViewById(R.id.llPolyline);
-        llLocation = view.findViewById(R.id.llLocation);
-        llhead1 = view.findViewById(R.id.llhead1);
         llhead1.setVisibility(View.GONE);
         llhead1.setOnClickListener(click -> {});
 
-        rlOverView = view.findViewById(R.id.rlOverView);
 
-
-
-        etKeyword = view.findViewById(R.id.etKeyword);
-        imgAdd = view.findViewById(R.id.imgAdd);
-        etZoneName = view.findViewById(R.id.etZoneName);
-
-        imgCircle = view.findViewById(R.id.imgCircle);
-        imgHand = view.findViewById(R.id.imgHand);
-        imgPolygon = view.findViewById(R.id.imgPolygon);
-        imgLocation = view.findViewById(R.id.imgLocation);
-        seekBar = view.findViewById(R.id.seekbar);
-        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity(),LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setAdapter(keyWordAdapter = new KeyWordAdapter(stringList,activity(),iKeyWordAdapter));
         recyclerView.setVisibility(View.GONE);
 
-        progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
 
@@ -659,7 +651,8 @@ public class CreateZoneFragment extends Fragment implements IFragment, OnMapRead
                 "&keywords=" + getKeyWordsString() +
                 "&radius=" + (geofence?  seekBar.getProgress() : 0)  +
                 "&GeofenceGuid=" + (zone==null ? "00000000-0000-0000-0000-000000000000" : zone.GeofenceGuid) +
-                "&DealerId=" +  Utility.getString(Utility.getSharedPreferences(),Constants.DEALER_ID);
+                "&DealerId=" +  Utility.getString(Utility.getSharedPreferences(),Constants.DEALER_ID)
+                + Utility.addPortalTag();
 
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>() {

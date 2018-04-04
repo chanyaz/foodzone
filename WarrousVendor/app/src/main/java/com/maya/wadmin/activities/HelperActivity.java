@@ -1,34 +1,23 @@
 package com.maya.wadmin.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.TypeEvaluator;
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,11 +33,15 @@ import com.maya.wadmin.adapters.custom.OptionsAdapter;
 import com.maya.wadmin.constants.Constants;
 import com.maya.wadmin.fragments.delivery.VehicleDeliveryFragment;
 import com.maya.wadmin.fragments.fleet.FleetHomeFragment;
+import com.maya.wadmin.fragments.home.options.FAQFragment;
 import com.maya.wadmin.fragments.home.options.ProfileFragment;
+import com.maya.wadmin.fragments.location.LocationOfVehicleFragment;
 import com.maya.wadmin.fragments.lot.LOTFragment;
 import com.maya.wadmin.fragments.lot.add.AddPreparingLotFragment;
 import com.maya.wadmin.fragments.lot.form.LotPreparationFormFragment;
 import com.maya.wadmin.fragments.map.CustomMapFragment;
+import com.maya.wadmin.fragments.messages.ChatBoxMessagesFragment;
+import com.maya.wadmin.fragments.notifications.NotificationsFragment;
 import com.maya.wadmin.fragments.other.FilterFragment;
 import com.maya.wadmin.fragments.pdi.PDIHomeFragment;
 import com.maya.wadmin.fragments.pdi.add.AddPDIFragment;
@@ -57,6 +50,7 @@ import com.maya.wadmin.fragments.rules_and_alerts.AlertsAndRulesFragment;
 import com.maya.wadmin.fragments.rules_and_alerts.view.AddAlertFragment;
 import com.maya.wadmin.fragments.rules_and_alerts.view.AlertsFragment;
 import com.maya.wadmin.fragments.rules_and_alerts.violations.ViolationVehiclesOfAlertFragment;
+import com.maya.wadmin.fragments.scan.ScanVinFragment;
 import com.maya.wadmin.fragments.testdrive.TestDriveHomeFragment;
 import com.maya.wadmin.fragments.testdrive.add.AddNewTestDriveFragment;
 import com.maya.wadmin.fragments.vehicle.find.FindFragment;
@@ -78,39 +72,48 @@ import com.maya.wadmin.models.Zone;
 import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.util.List;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class HelperActivity extends AppCompatActivity implements IActivity, IVehicleArrivalFragment,IAlertsAndRulesFragment ,IOptionsAdapter {
+public class HelperActivity extends AppCompatActivity implements IActivity, IVehicleArrivalFragment,IAlertsAndRulesFragment ,IOptionsAdapter
+{
 
-    Toolbar toolbar;
-    CoordinatorLayout coordinatorLayout;
-    TextView tvTitle;
+
     String previousTitle = "";
-
-    // search purpose
-    Toolbar searchToolbar;
     public MenuItem searchViewItem, locationItem;
     SearchView searchView;
-    FrameLayout bottomSheetLayout;
     BottomSheetBehavior bottomSheetBehavior;
-    RecyclerView recyclerView;
-    LinearLayout llClose;
     IOptionsAdapter iOptionsAdapter;
+
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.tvTitle)
+    TextView tvTitle;
+
+    @BindView(R.id.fragment_bottom_sheet)
+    FrameLayout bottomSheetLayout;
+
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.llClose)
+    LinearLayout llClose;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_helper);
-        toolbar = findViewById(R.id.toolbar);
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        tvTitle = findViewById(R.id.tvTitle);
-        bottomSheetLayout = findViewById(R.id.fragment_bottom_sheet);
+        ButterKnife.bind(this);
+
+
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
-        recyclerView = findViewById(R.id.recyclerView);
-        llClose = findViewById(R.id.llClose);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity(),LinearLayoutManager.HORIZONTAL,false));
         iOptionsAdapter = this;
 
@@ -515,18 +518,25 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
                     break;
                 case 8:
                     changeTitle("User Profile");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        toolbar.setElevation(0);
-                    }
                     fragment = ProfileFragment.newInstance(null,null);
+                    break;
+                case 9:
+                    changeTitle("FAQ'S");
+                    fragment = FAQFragment.newInstance(null,null);
                     break;
                 case 11:
                     changeTitle("Assign for Preparing");
-                    fragment = AddPreparingLotFragment.newInstance(null,null);
+                    if(getIntent().getSerializableExtra("vehicle")==null)
+                        fragment = AddPreparingLotFragment.newInstance(null,null);
+                    else
+                        fragment = AddPreparingLotFragment.newInstance((Vehicle) getIntent().getSerializableExtra("vehicle"));
                     break;
                 case 21:
                     changeTitle("Assign for PDI");
+                    if(getIntent().getSerializableExtra("vehicle")==null)
                     fragment = AddPDIFragment.newInstance(null,null);
+                    else
+                    fragment = AddPDIFragment.newInstance((Vehicle) getIntent().getSerializableExtra("vehicle"));
                     break;
 
                 case 31:
@@ -604,7 +614,7 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
                     else
                     {
                         changeTitle("Edit Alert");
-                        fragment = AddAlertFragment.newInstance((AlertRule)getIntent().getSerializableExtra("AlertRule"));
+                        fragment = AddAlertFragment.newInstance(getIntent().getIntExtra("CategoryId",0),(AlertRule)getIntent().getSerializableExtra("AlertRule"));
                     }
                     break;
                 case 612:
@@ -632,11 +642,33 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
                         fragment = FilterFragment.newInstance(null);
                     }
                     break;
+
+                case 701:
+                    changeTitle("Scan Vin");
+                    fragment = ScanVinFragment.newInstance(null,null);
+                    break;
+
+                case 702:
+                    changeTitle("Messages");
+                    fragment = ChatBoxMessagesFragment.newInstance(null,null);
+                    break;
+
+                case 703:
+                    changeTitle("Notifications");
+                    fragment = NotificationsFragment.newInstance(null,null);
+                    break;
+
+                case 704:
+                    changeTitle("Location");
+                    fragment = LocationOfVehicleFragment.newInstance(null,null);
+                    break;
             }
 
 
-            if(fragment!=null)
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).addToBackStack("START").commitAllowingStateLoss();
+            if(fragment!=null) // add for 5 only
+            {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack("START").commitAllowingStateLoss();
+            }
 
         }
         else
@@ -755,6 +787,20 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 recyclerView.setAdapter(new OptionsAdapter(2,Utility.generateOptions(2),activity(),iOptionsAdapter,new Gson().toJson(vehicle)));
                 break;
+            case 3:// marked for pdi
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                recyclerView.setAdapter(new OptionsAdapter(3,Utility.generateOptions(3),activity(),iOptionsAdapter,new Gson().toJson(vehicle)));
+                break;
+
+            case 4:// all vehicle default actions locate and overview
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                recyclerView.setAdapter(new OptionsAdapter(4,Utility.generateOptions(4),activity(),iOptionsAdapter,new Gson().toJson(vehicle)));
+                break;
+
+            case 5:// delivery received in fleet and lot
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                recyclerView.setAdapter(new OptionsAdapter(5,Utility.generateOptions(5),activity(),iOptionsAdapter,new Gson().toJson(vehicle)));
+                break;
 
         }
     }
@@ -817,6 +863,73 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
                             }.getType()));
                             break;
                         case 1:
+                            goToLocateVehicle(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (position)
+                    {
+                        case 0:
+                            if (Utility.isNetworkAvailable(activity()))
+                                ((PDIHomeFragment) getSupportFragmentManager().getFragments().get(0)).gotoAddPDI(new Gson().fromJson(content, new TypeToken<Vehicle>() {}.getType()));
+                            else {
+                                showSnackBar(Constants.PLEASE_CHECK_INTERNET, 0);
+                            }
+                            break;
+                        case 1:
+                            goToVehicleOverView(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                        case 2:
+                            goToLocateVehicle(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                    }
+                    break;
+
+                case 4:
+                    switch (position) {
+                        case 0:
+                            goToVehicleOverView(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                        case 1:
+                            goToLocateVehicle(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                    }
+                    break;
+
+                case 5:
+                    switch (position)
+                    {
+                        case 0:
+                            if (Utility.isNetworkAvailable(activity()))
+                            {
+                                int fragmentKey = getIntent().getIntExtra(Constants.FRAGMENT_KEY,0);
+                                if(fragmentKey==12)
+                                ((FleetHomeFragment) getSupportFragmentManager().getFragments().get(0)).gotoAddPreparing(new Gson().fromJson(content, new TypeToken<Vehicle>() {}.getType()));
+                                else if(fragmentKey==1)
+                                {
+                                ((LOTFragment) getSupportFragmentManager().getFragments().get(0)).gotoAddPreparing(new Gson().fromJson(content, new TypeToken<Vehicle>() {}.getType()));
+                                }
+                                else
+                                {
+
+                                }
+                            }
+                            else
+                            {
+                                showSnackBar(Constants.PLEASE_CHECK_INTERNET, 0);
+                            }
+                            break;
+                        case 1:
+                            goToVehicleOverView(new Gson().fromJson(content, new TypeToken<Vehicle>() {
+                            }.getType()));
+                            break;
+                        case 2:
                             goToLocateVehicle(new Gson().fromJson(content, new TypeToken<Vehicle>() {
                             }.getType()));
                             break;

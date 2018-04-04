@@ -34,6 +34,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/19/2018.
  */
@@ -42,29 +45,69 @@ public class AddActionDialog extends Dialog
 {
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
     IAddActionDialog iAddActionDialog;
-    Spinner spOperation,spGeofence;
+
+    @BindView(R.id.spOperation)
+    Spinner spOperation;
+
+    @BindView(R.id.spGeofence)
+    Spinner spGeofence;
+
     Context context;
+
     String[] operations,zones;
-    TextView tvCancel, tvNext;
-    ImageView imgSMS, imgCall, imgMail, imgNoti;
-    LinearLayout llSMS, llCall, llMail, llNoti, llContent;
-    TextView  tvSMS, tvCall, tvMail, tvNoti;
+
+    @BindView(R.id.tvCancel)
+    TextView tvCancel;
+
+    @BindView(R.id.tvNext)
+    TextView tvNext;
+
+
+    @BindView(R.id.imgSMS) ImageView imgSMS;
+    @BindView(R.id.imgCall) ImageView imgCall;
+    @BindView(R.id.imgMail) ImageView imgMail;
+    @BindView(R.id.imgNoti) ImageView imgNoti;
+
+    @BindView(R.id.llSMS) LinearLayout llSMS;
+    @BindView(R.id.llCall) LinearLayout llCall;
+    @BindView(R.id.llMail) LinearLayout llMail;
+    @BindView(R.id.llNoti) LinearLayout llNoti;
+    @BindView(R.id.llContent) LinearLayout llContent;
+
+
+    @BindView(R.id.tvSMS) TextView  tvSMS;
+    @BindView(R.id.tvCall) TextView tvCall;
+    @BindView(R.id.tvMail) TextView tvMail;
+    @BindView(R.id.tvNoti) TextView tvNoti;
+
     Boolean isSMS = false, isCall = false, isMail = false, isNoti = false;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
     final Calendar calendar = Calendar.getInstance();
 
 
-    TextView tvFrom,tvTo;
+    @BindView(R.id.tvFrom)
+    TextView tvFrom;
+
+    @BindView(R.id.tvTo)
+    TextView tvTo;
 
     List<Operation> operationList;
     List<Zone> zoneList;
     int position;
     int currentAlertId;
 
-    EditText etContent, etMessage;
+    @BindView(R.id.etContent)
+    EditText etContent;
+
+    @BindView(R.id.etMessage)
+    EditText etMessage;
+
+
     String fromDate, toDate;
     AlertActionChannel alertActionChannel = null;
 
@@ -105,32 +148,9 @@ public class AddActionDialog extends Dialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_action_dialog);
-        spOperation = findViewById(R.id.spOperation);
-        spGeofence = findViewById(R.id.spGeofence);
-        tvCancel = findViewById(R.id.tvCancel);
-        tvNext = findViewById(R.id.tvNext);
-        imgSMS = findViewById(R.id.imgSMS);
-        imgCall = findViewById(R.id.imgCall);
-        imgMail = findViewById(R.id.imgMail);
-        imgNoti = findViewById(R.id.imgNoti);
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        ButterKnife.bind(this);
 
-        llSMS = findViewById(R.id.llSMS);
-        llCall = findViewById(R.id.llCall);
-        llMail = findViewById(R.id.llMail);
-        llNoti = findViewById(R.id.llNoti);
-        llContent = findViewById(R.id.llContent);
 
-        tvSMS = findViewById(R.id.tvSMS);
-        tvCall = findViewById(R.id.tvCall);
-        tvMail = findViewById(R.id.tvMail);
-        tvNoti = findViewById(R.id.tvNoti);
-
-        etContent = findViewById(R.id.etContent);
-        etMessage = findViewById(R.id.etMessage);
-
-        tvFrom = findViewById(R.id.tvFrom);
-        tvTo = findViewById(R.id.tvTo);
 
         tvFrom.setOnClickListener(click -> {
 
@@ -201,7 +221,7 @@ public class AddActionDialog extends Dialog
         spOperation.setAdapter(adapterOperation);
         adapterOperation.setDropDownViewResource(R.layout.other_spinner_text);
 
-        if(position==1 || position==3)
+        if(position == 0 || position==7) // geofence view in this
         {
             zones = new String[zoneList.size()];
             i = 0;
@@ -220,7 +240,7 @@ public class AddActionDialog extends Dialog
             spGeofence.setVisibility(View.GONE);
         }
 
-        if(position==0 || position==2)
+        if(position==1 || position==2) // speed and mielage
         {
             llContent.setVisibility(View.VISIBLE);
         }
@@ -250,7 +270,6 @@ public class AddActionDialog extends Dialog
     private void deleteAction()
     {
         final ProgressDialog progressDialog = Utility.generateProgressDialog(context);
-
         String URL = Constants.URL_DELETE_ALERT_CHANNEL + alertActionChannel.AlertChannelId ;
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>()
@@ -291,7 +310,7 @@ public class AddActionDialog extends Dialog
 
     private void checkAction()
     {
-        if(position==0 || position==2)
+        if(position==1 || position==2)
         {
             if((""+etContent.getText()).length()>0)
             {
@@ -345,9 +364,9 @@ public class AddActionDialog extends Dialog
     private void createAction()
     {
         final ProgressDialog progressDialog = Utility.generateProgressDialog(context);
-        String value = position==0||position==2?
+        String value = position==1||position==2? // speed & mileage
                 etContent.getText().toString() :
-                position==1||position==3?
+                position==0||position==7? // geofence 7 theft
                         "" + zoneList.get(spGeofence.getSelectedItemPosition()).GeofenceId :
                         "-1";
 
@@ -434,7 +453,7 @@ public class AddActionDialog extends Dialog
         tvTo.setText("To: "+toDate);
 
         //spinner
-        if(position==1 || position==3)
+        if(position == 0 || position == 7) // geofence & theft
         {
             for (int i =0;i<zones.length;i++)
             {

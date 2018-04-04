@@ -36,12 +36,16 @@ import com.maya.wadmin.interfaces.fragments.IFragment;
 import com.maya.wadmin.models.TopBarPanel;
 import com.maya.wadmin.models.Vehicle;
 import com.maya.wadmin.models.VehicleStatus;
+import com.maya.wadmin.utilities.CommonApiCalls;
 import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,10 +63,11 @@ public class SelectVehiclesFragment extends Fragment implements IFragment, IAssi
     private String mParam2;
 
 
-    CoordinatorLayout coordinatorLayout;
-    RecyclerView recyclerView;
-    SwipeRefreshLayout swipeRefreshLayout;
-    ProgressBar progressBar;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+
     Vehicle vehicle;
     List<Vehicle> list;
     List<VehicleStatus> vehicleStatusList;
@@ -74,12 +79,15 @@ public class SelectVehiclesFragment extends Fragment implements IFragment, IAssi
     int previous = 0,otherPrevious = -1;
     int mainPosition = 0;
     List<TopBarPanel> listTopBarPanel = Utility.getTopBarPanelElements(5);
-    LinearLayout mainTabLayout;
-    AppBarLayout appBar;
-    RecyclerView recyclerViewTopBar;
+
+    @BindView(R.id.recyclerViewTopBar) RecyclerView recyclerViewTopBar;
+
     ITopBarAdapter iITopBarAdapter;
-    LinearLayout llTopBarPanel,llMainHead;
-    TextView tvTopBarItem;
+
+    @BindView(R.id.llTopBarPanel) LinearLayout llTopBarPanel;
+    @BindView(R.id.llMainHead) LinearLayout llMainHead;
+    @BindView(R.id.tvTopBarItem) TextView tvTopBarItem;
+
     TopBarAdapter topBarAdapter;
     List<String> vehicleIds;
 
@@ -129,13 +137,10 @@ public class SelectVehiclesFragment extends Fragment implements IFragment, IAssi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_select_vehicles, container, false);
+        ButterKnife.bind(this,view);
         iAssignPDIVehiclesAdapter = this;
         iAlertVehicleStatusAdapter = this;
         iITopBarAdapter = this;
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view .findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view .findViewById(R.id.recyclerView);
-        progressBar = view .findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
 
@@ -155,14 +160,9 @@ public class SelectVehiclesFragment extends Fragment implements IFragment, IAssi
             }
         });
 
-        recyclerViewTopBar = view.findViewById(R.id.recyclerViewTopBar);
-        llTopBarPanel = view.findViewById(R.id.llTopBarPanel);
-        llMainHead = view.findViewById(R.id.llMainHead);
-        tvTopBarItem = view.findViewById(R.id.tvTopBarItem);
         tvTopBarItem.setText(listTopBarPanel.get(0).title);
         recyclerViewTopBar.setLayoutManager(new LinearLayoutManager(activity()));
         recyclerViewTopBar.setAdapter(topBarAdapter = new TopBarAdapter(listTopBarPanel,activity(),iITopBarAdapter));
-        appBar = view.findViewById(R.id.appBar);
 
         tvTopBarItem.setOnClickListener(click ->
         {
@@ -267,10 +267,20 @@ public class SelectVehiclesFragment extends Fragment implements IFragment, IAssi
             };
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
-                public void onErrorResponse(VolleyError volleyError) {
+                public void onErrorResponse(VolleyError volleyError)
+                {
+
                     Logger.d("[response]", Constants.CONNECTION_ERROR);
-                    progressBar.setVisibility(View.GONE);
-                    showSnackBar(Constants.CONNECTION_ERROR, 2);
+                    if(volleyError.networkResponse.statusCode == 401)
+                    {
+                        CommonApiCalls.refreshAuthTokenCall();
+                        fetchAssignVehiclesForAlertAction();
+                    }
+                    else
+                    {
+                        progressBar.setVisibility(View.GONE);
+                        showSnackBar(Constants.CONNECTION_ERROR, 2);
+                    }
                 }
             };
             volleyHelperLayer.startHandlerVolley(URL, null, listener, errorListener, Request.Priority.NORMAL, Constants.GET_REQUEST);

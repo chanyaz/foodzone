@@ -31,7 +31,11 @@ import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,15 +53,23 @@ public class AddPreparingLotFragment extends Fragment implements IFragment {
     private String mParam2;
 
 
+    Vehicle assignedVehicle = null;
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
     public int currentFragment = 1;
-    LinearLayout llSelectAll, llNext;
-    TextView tvNext;
-    ImageView imgNextArrow;
+
+    @BindView(R.id.llSelectAll) LinearLayout llSelectAll;
+    @BindView(R.id.llNext) LinearLayout llNext;
+
+
+    @BindView(R.id.tvNext) TextView tvNext;
+    @BindView(R.id.imgNextArrow) ImageView imgNextArrow;
+
     List<Vehicle> selectedList;
     SalesPerson salesPerson;
-    ProgressBar progressBar;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
 
     public AddPreparingLotFragment() {
@@ -82,6 +94,14 @@ public class AddPreparingLotFragment extends Fragment implements IFragment {
         return fragment;
     }
 
+    public static AddPreparingLotFragment newInstance(Vehicle  vehicle) {
+        AddPreparingLotFragment fragment = new AddPreparingLotFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("vehicle", vehicle);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,12 +116,18 @@ public class AddPreparingLotFragment extends Fragment implements IFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_preparing_lot, container, false);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        llSelectAll = view.findViewById(R.id.llSelectAll);
-        llNext = view.findViewById(R.id.llNext);
-        tvNext = view.findViewById(R.id.tvNext);
-        imgNextArrow = view.findViewById(R.id.imgNextArrow);
-        progressBar = view.findViewById(R.id.progressBar);
+        ButterKnife.bind(this,view);
+        if(getArguments()!=null)
+        {
+            if(getArguments().getSerializable("vehicle")!=null)
+            {
+                assignedVehicle = (Vehicle) getArguments().getSerializable("vehicle");
+                selectedList = new ArrayList<>();
+                selectedList.add(assignedVehicle);
+                currentFragment++;
+            }
+        }
+
 
 
         llNext.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +265,10 @@ public class AddPreparingLotFragment extends Fragment implements IFragment {
 
     public boolean addAndVerify()
     {
+        if(assignedVehicle!=null)
+        {
+            return true;
+        }
         AssignVehiclesLotFragment assignVehiclesLotFragment = ((AssignVehiclesLotFragment)getChildFragmentManager().getFragments().get(0));
         selectedList = assignVehiclesLotFragment.selectedList;
         if(selectedList!=null && selectedList.size()>0)

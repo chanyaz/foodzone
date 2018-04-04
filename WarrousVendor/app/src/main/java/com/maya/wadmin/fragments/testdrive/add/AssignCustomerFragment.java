@@ -44,6 +44,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AssignCustomerFragment#newInstance} factory method to
@@ -60,14 +63,25 @@ public class AssignCustomerFragment extends Fragment implements IFragment, IAssi
     private String mParam2;
 
 
-    CoordinatorLayout coordinatorLayout;
-    NestedScrollView nestedScrollView;
-    EditText etFirstName, etLastName, etEmail, etPhoneNumber;
-    TextView tvAddCustomer;
-    TextView tvSalesPerson, tvRole, tvVehicleCount;
-    ImageView imgSalesPerson,imgVehicle;
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView recyclerView;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.nestedScrollView) NestedScrollView nestedScrollView;
+
+    @BindView(R.id.etFirstName) EditText etFirstName;
+    @BindView(R.id.etLastName) EditText etLastName;
+    @BindView(R.id.etEmail) EditText etEmail;
+    @BindView(R.id.etPhoneNumber) EditText etPhoneNumber;
+
+    @BindView(R.id.tvAddCustomer) TextView tvAddCustomer;
+    @BindView(R.id.tvSalesPerson) TextView tvSalesPerson;
+    @BindView(R.id.tvRole) TextView tvRole;
+    @BindView(R.id.tvVehicleCount) TextView tvVehicleCount;
+
+    @BindView(R.id.imgSalesPerson) ImageView imgSalesPerson;
+    @BindView(R.id.imgVehicle) ImageView imgVehicle;
+
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+
     Vehicle vehicle;
     SalesPerson salesPerson;
     Customer customer;
@@ -77,10 +91,11 @@ public class AssignCustomerFragment extends Fragment implements IFragment, IAssi
     int previous = -1;
     IAddNewTestDriveFragment iAddNewTestDriveFragment;
     boolean isAdded = false;
-    ProgressBar progressBar;
 
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
-    public AssignCustomerFragment() {
+    public AssignCustomerFragment()
+    {
         // Required empty public constructor
     }
 
@@ -126,27 +141,14 @@ public class AssignCustomerFragment extends Fragment implements IFragment, IAssi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assign_customer, container, false);
+        ButterKnife.bind(this,view);
+
         iAssignCustomerAdapter = this;
         ((HelperActivity) activity()).clearSearchText();
 
-        progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
         iAddNewTestDriveFragment = (AddNewTestDriveFragment)getParentFragment();
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        nestedScrollView = view.findViewById(R.id.nestedScrollView);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        tvSalesPerson = view.findViewById(R.id.tvSalesPerson);
-        tvRole = view.findViewById(R.id.tvRole);
-        tvVehicleCount = view.findViewById(R.id.tvVehicleCount);
-        tvAddCustomer = view.findViewById(R.id.tvAddCustomer);
-        etEmail = view.findViewById(R.id.etEmail);
-        etFirstName = view.findViewById(R.id.etFirstName);
-        etLastName = view.findViewById(R.id.etLastName);
-        etPhoneNumber = view.findViewById(R.id.etPhoneNumber);
-        imgVehicle = view.findViewById(R.id.imgVehicle);
-        imgSalesPerson = view.findViewById(R.id.imgSalesPerson);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setFocusable(false);
 
@@ -175,11 +177,6 @@ public class AssignCustomerFragment extends Fragment implements IFragment, IAssi
 
         if(vehicle!=null && salesPerson!=null)
         {
-//            Picasso.with(activity())
-//                    .load(Constants.SAMPLE_IMAGE)
-//                    .placeholder(R.drawable.corner_radius_hash_pool_6)
-//                    .error(R.drawable.corner_radius_hash_pool_6)
-//                    .into(imgVehicle);
 
             imgVehicle.setImageResource(R.drawable.sample_image1);
 
@@ -200,21 +197,18 @@ public class AssignCustomerFragment extends Fragment implements IFragment, IAssi
 
         }
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh()
+        swipeRefreshLayout.setOnRefreshListener(() ->
+        {
+            ((HelperActivity)activity()).clearSearchText();
+            if(Utility.isNetworkAvailable(activity()))
             {
-                ((HelperActivity)activity()).clearSearchText();
-                if(Utility.isNetworkAvailable(activity()))
-                {
-                    fetchAssignCustomersForTestDrive();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
-                swipeRefreshLayout.setRefreshing(false);
+                fetchAssignCustomersForTestDrive();
             }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+            }
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         if(Utility.isNetworkAvailable(activity()))

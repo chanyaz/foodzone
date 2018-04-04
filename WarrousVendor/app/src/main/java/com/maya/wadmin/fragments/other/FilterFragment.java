@@ -40,6 +40,9 @@ import java.lang.reflect.Type;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FilterFragment#newInstance} factory method to
@@ -56,10 +59,15 @@ public class FilterFragment extends Fragment implements IFragment,IFilterAdapter
     private String mParam2;
 
 
-    RecyclerView recyclerViewYear, recyclerViewMake, recyclerViewModel, recyclerViewVehicleStatus;
-    TextView tvFrom, tvTo;
-    CoordinatorLayout coordinatorLayout;
-    ProgressBar progressBar;
+    @BindView(R.id.recyclerViewYear) RecyclerView recyclerViewYear;
+    @BindView(R.id.recyclerViewMake) RecyclerView recyclerViewMake;
+    @BindView(R.id.recyclerViewModel) RecyclerView recyclerViewModel;
+    @BindView(R.id.recyclerViewVehicleStatus) RecyclerView recyclerViewVehicleStatus;
+
+    @BindView(R.id.tvFrom) TextView tvFrom;
+    @BindView(R.id.tvTo) TextView tvTo;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     IFilterAdapter iFilterAdapter;
     FilterAdapter filterAdapterYear, filterAdapterMake, filterAdapterModel, filterAdapterVehicleStatus;
@@ -112,10 +120,11 @@ public class FilterFragment extends Fragment implements IFragment,IFilterAdapter
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_filter, container, false);
+        ButterKnife.bind(this,view);
         iFilterAdapter = this;
 
 
-        initialize(view);
+        setUp();
 
 
         if(Utility.isNetworkAvailable(activity()))
@@ -322,23 +331,11 @@ public class FilterFragment extends Fragment implements IFragment,IFilterAdapter
         }
     }
 
-    private void initialize(View view)
+    private void setUp()
     {
-        tvFrom = view.findViewById(R.id.tvFrom);
-        tvTo = view.findViewById(R.id.tvTo);
-
-        progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
-        recyclerViewYear = view.findViewById(R.id.recyclerViewYear);
-        recyclerViewMake = view.findViewById(R.id.recyclerViewMake);
-        recyclerViewModel = view.findViewById(R.id.recyclerViewModel);
-        recyclerViewVehicleStatus = view.findViewById(R.id.recyclerViewVehicleStatus);
-
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-
 //        GridLayoutManager layoutManager = new GridLayoutManager(activity(), 4);
-//
 //        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 //            @Override
 //            public int getSpanSize(int position)

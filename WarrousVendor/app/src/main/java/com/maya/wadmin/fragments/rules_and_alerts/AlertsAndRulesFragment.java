@@ -29,6 +29,9 @@ import com.maya.wadmin.utilities.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AlertsAndRulesFragment#newInstance} factory method to
@@ -46,11 +49,21 @@ public class AlertsAndRulesFragment extends Fragment implements IFragment {
 
 
     IAlertsAndRulesFragment iAlertsAndRulesFragment;
+
+    @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+
+    @BindView(R.id.view_pager)
     public ViewPager viewPager;
+
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
     List<String> list = new ArrayList<>();
+
+    @BindView(R.id.tvAddAlert)
     TextView tvAddAlert;
+
     CustomWadminAdapter customWadminAdapter;
 
 
@@ -91,21 +104,12 @@ public class AlertsAndRulesFragment extends Fragment implements IFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_alerts_and_rules, container, false);
+        ButterKnife.bind(this,view);
         iAlertsAndRulesFragment = (HelperActivity)activity();
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        tabLayout = view.findViewById(R.id.tab_layout);
-        tvAddAlert = view.findViewById(R.id.tvAddAlert);
-        viewPager = view.findViewById(R.id.view_pager);
+
         tabLayout.setupWithViewPager(viewPager);
-        list.add("Speed");
-        list.add("Geofence");
-        list.add("Mileage");
-        list.add("Theft");
-        list.add("Delivery");
-        list.add("DTC");
-        list.add("Billing");
-        list.add("Vehicle");
-        list.add("Customer");
+
+        list = Utility.generateAlertTypes();
 
         viewPager.setAdapter(customWadminAdapter = new CustomWadminAdapter(getFragmentManager(),1,list));
         viewPager.setOffscreenPageLimit(list.size());

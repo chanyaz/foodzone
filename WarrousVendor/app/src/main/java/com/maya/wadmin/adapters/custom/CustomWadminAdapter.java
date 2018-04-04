@@ -56,28 +56,34 @@ public class CustomWadminAdapter extends FragmentPagerAdapter
     @Override
     public Fragment getItem(int position)
     {
-        Fragment fragment = new VehicleArrivalFragment();
-        Bundle bundle = new Bundle();
-        if(type==0)
-        {
-            bundle.putInt("type",type);
-            bundle.putString("list",gson.toJson(deliveryTruck.get(position),typeGson));
-            bundle.putString("value",stringList.get(position));
-            fragment.setArguments(bundle);
-        }
-        else if(type==1)
-        {
-            fragment = new AlertsFragment();
-            bundle.putInt("CategoryId", Constants.ALERT_TYPE_IDS[position]);
-            fragment.setArguments(bundle);
+        try {
 
+            Fragment fragment = new VehicleArrivalFragment();
+            Bundle bundle = new Bundle();
+            if (type == 0)
+            {
+                bundle.putInt("type", type);
+                bundle.putString("list", gson.toJson(deliveryTruck.get(position), typeGson));
+                bundle.putString("value", stringList.get(position));
+                fragment.setArguments(bundle);
+            }
+            else if (type == 1)
+            {
+                fragment = new AlertsFragment();
+                bundle.putInt("CategoryId", Constants.ALERT_TYPE_IDS[position]);
+                fragment.setArguments(bundle);
+
+            } else if (type == 2) {
+
+
+            }
+            return fragment;
         }
-        else if(type == 2)
+        catch (Exception e)
         {
-
-
+            e.printStackTrace();
+            return null;
         }
-        return fragment;
     }
 
 
@@ -93,23 +99,6 @@ public class CustomWadminAdapter extends FragmentPagerAdapter
         return stringList.get(position);
     }
 
-//    @Override
-//    public Object instantiateItem(ViewGroup container, int position)
-//    {
-//        Object object = super.instantiateItem(container, position);
-//        if(object instanceof Fragment)
-//        {
-//            Fragment fragment = (Fragment) super.instantiateItem(container, position);
-//            tags.put(position,fragment.getTag());
-//            Logger.d("FRAGMENT_TAG", fragment.getTag());
-//        }
-//        return object;
-//    }
-//
-//    public Fragment getFragment(int position)
-//    {
-//        return fragmentManager.findFragmentByTag(tags.get(position));
-//    }
 
 
 

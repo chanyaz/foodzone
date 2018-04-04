@@ -54,6 +54,9 @@ import com.squareup.picasso.Picasso;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AssignRouteFragment#newInstance} factory method to
@@ -72,15 +75,28 @@ public class AssignRouteFragment extends Fragment implements IFragment,OnMapRead
 
 
     GoogleMap map;
+
+    @BindView(R.id.mapView)
     MapView mapView;
-    CoordinatorLayout coordinatorLayout;
-    TextView tvCustomerName, tvCustomerPhone;
-    TextView tvSalesPerson, tvRole, tvVehicleCount, tvRouteName;
-    ImageView imgSalesPerson,imgVehicle;
+
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.tvCustomerName) TextView tvCustomerName;
+    @BindView(R.id.tvCustomerPhone) TextView tvCustomerPhone;
+
+    @BindView(R.id.tvSalesPerson) TextView tvSalesPerson;
+    @BindView(R.id.tvRole) TextView tvRole;
+    @BindView(R.id.tvVehicleCount) TextView tvVehicleCount;
+    @BindView(R.id.tvRouteName) TextView tvRouteName;
+
+    @BindView(R.id.imgSalesPerson) ImageView imgSalesPerson;
+    @BindView(R.id.imgVehicle) ImageView imgVehicle;
+
     Vehicle vehicle;
     SalesPerson salesPerson;
     Customer customer;
-    ProgressBar progressBar;
+
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+
     Route route;
 
 
@@ -132,30 +148,16 @@ public class AssignRouteFragment extends Fragment implements IFragment,OnMapRead
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assign_route, container, false);
+        ButterKnife.bind(this,view);
+
         ((HelperActivity) activity()).clearSearchText();
         ((HelperActivity) activity()).searchViewItem.setVisible(false);
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        mapView= view.findViewById(R.id.mapView);
-        tvSalesPerson = view.findViewById(R.id.tvSalesPerson);
-        tvRole = view.findViewById(R.id.tvRole);
-        tvVehicleCount = view.findViewById(R.id.tvVehicleCount);
-        tvCustomerPhone = view.findViewById(R.id.tvCustomerPhone);
-        tvCustomerName = view.findViewById(R.id.tvCustomerName);
-        tvRouteName = view.findViewById(R.id.tvRouteName);
-        imgVehicle = view.findViewById(R.id.imgVehicle);
-        imgSalesPerson = view.findViewById(R.id.imgSalesPerson);
-        progressBar = view.findViewById(R.id.progressBar);
         mapView.onCreate(savedInstanceState);
 
 
         if(customer!=null && salesPerson!=null && vehicle!=null)
         {
-//            Picasso.with(activity())
-//                    .load(Constants.SAMPLE_IMAGE)
-//                    .placeholder(R.drawable.corner_radius_hash_pool_6)
-//                    .error(R.drawable.corner_radius_hash_pool_6)
-//                    .into(imgVehicle);
             imgVehicle.setImageResource(R.drawable.sample_image1);
             Picasso.with(activity())
                     .load(Constants.SAMPLE_OTHER_SALES_PERSON)
@@ -185,20 +187,7 @@ public class AssignRouteFragment extends Fragment implements IFragment,OnMapRead
         progressBar.setVisibility(View.GONE);
 
         mapView.getMapAsync(this);
-        if(Utility.isNetworkAvailable(activity()))
-        {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fetchRouteBasedOnVehicleId();
-                }
-            },300);
 
-        }
-        else
-        {
-            showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-        }
         return view;
     }
 
@@ -260,6 +249,21 @@ public class AssignRouteFragment extends Fragment implements IFragment,OnMapRead
         }
 
         //zoomToPostion(new LatLng(17.43751, 78.3939));
+
+        if(Utility.isNetworkAvailable(activity()))
+        {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fetchRouteBasedOnVehicleId();
+                }
+            },300);
+
+        }
+        else
+        {
+            showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+        }
 
     }
 

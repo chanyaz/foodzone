@@ -62,6 +62,9 @@ public class Vehicle implements Serializable
     public String PhoneNumber;
     public boolean IsConnected;
     public int ViolateCount;
+    public String CurrentLatitude;
+    public String CurrentLongitude;
+
 
     public boolean assignTestDrive;
     public boolean assignPDI;

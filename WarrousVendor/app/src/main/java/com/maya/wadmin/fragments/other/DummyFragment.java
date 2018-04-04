@@ -13,6 +13,9 @@ import com.maya.wadmin.R;
 import com.maya.wadmin.interfaces.fragments.IFragment;
 import com.maya.wadmin.utilities.Utility;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DummyFragment#newInstance} factory method to
@@ -29,6 +32,7 @@ public class DummyFragment extends Fragment implements IFragment{
     private String mParam2;
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
 
     public DummyFragment() {
@@ -67,7 +71,7 @@ public class DummyFragment extends Fragment implements IFragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dummy, container, false);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
+        ButterKnife.bind(this,view);
         return view;
     }
 

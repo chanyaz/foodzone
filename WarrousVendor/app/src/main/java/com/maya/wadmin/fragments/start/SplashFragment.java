@@ -1,6 +1,7 @@
 package com.maya.wadmin.fragments.start;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,13 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.maya.wadmin.R;
+import com.maya.wadmin.interfaces.fragments.IFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SplashFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SplashFragment extends Fragment {
+public class SplashFragment extends Fragment implements IFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,7 +62,23 @@ public class SplashFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_splash, container, false);
+        View view = inflater.inflate(R.layout.fragment_splash, container, false);
+        return view;
     }
 
+    @Override
+    public void changeTitle(String title) {
+
+    }
+
+    @Override
+    public void showSnackBar(String snackBarText, int type) {
+
+    }
+
+    @Override
+    public Activity activity()
+    {
+        return getActivity();
+    }
 }

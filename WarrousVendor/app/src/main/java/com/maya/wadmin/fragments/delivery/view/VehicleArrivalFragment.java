@@ -31,6 +31,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link VehicleArrivalFragment#newInstance} factory method to
@@ -48,9 +51,16 @@ public class VehicleArrivalFragment extends Fragment implements IFragment, ITruc
     private String mParam2;
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+
     List<DeliveryTruck> list, finalList;
     int adapterType = 0;
     TruckDeliveryAdapter truckDeliveryAdapter;
@@ -94,11 +104,12 @@ public class VehicleArrivalFragment extends Fragment implements IFragment, ITruc
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vehicle_arrival, container, false);
+        ButterKnife.bind(this,view);
+
         iTruckDeliveryAdapter = this;
         iVehicleArrivalFragment = (HelperActivity) activity();
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
+
+
         swipeRefreshLayout.setEnabled(false);
         recyclerView.setNestedScrollingEnabled(true);
 

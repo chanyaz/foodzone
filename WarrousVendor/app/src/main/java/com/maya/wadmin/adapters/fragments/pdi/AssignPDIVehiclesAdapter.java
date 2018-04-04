@@ -19,6 +19,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/2/2018.
  */
@@ -80,11 +83,6 @@ public class AssignPDIVehiclesAdapter extends RecyclerView.Adapter<AssignPDIVehi
 
         holder.tvVin.setText(list.get(position).Vin.toUpperCase());
         holder.tvOther.setText(list.get(position).Make+ " " +list.get(position).Model + " " + list.get(position).Year);
-//        Picasso.with(context)
-//                .load(Constants.SAMPLE_IMAGE)
-//                .placeholder(R.drawable.corner_radius_hash_pool_6)
-//                .error(R.drawable.corner_radius_hash_pool_6)
-//                .into(holder.imgVehicle);
 
 
         if(position==list.size()-1)
@@ -107,18 +105,16 @@ public class AssignPDIVehiclesAdapter extends RecyclerView.Adapter<AssignPDIVehi
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvOther;
-        ImageView imgVehicle, imgClick;
-        View bottomView;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.bottomView) View bottomView;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

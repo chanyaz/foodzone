@@ -33,6 +33,9 @@ import com.maya.wadmin.interfaces.fragments.IFragment;
 import com.maya.wadmin.models.DeliveryTruck;
 import com.maya.wadmin.utilities.Utility;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CustomMapFragment#newInstance} factory method to
@@ -50,14 +53,24 @@ public class CustomMapFragment extends Fragment implements IFragment, OnMapReady
 
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.mapView)
     MapView mapView;
+
     GoogleMap googleMap;
     int type;
     DeliveryTruck deliveryTruck;
 
+    @BindView(R.id.llhead)
     LinearLayout llhead;
-    TextView tvVehicleCount, tvTruckDelivery;
+
+    @BindView(R.id.tvVehicleCount)
+    TextView tvVehicleCount;
+
+    @BindView(R.id.tvTruckDelivery)
+    TextView tvTruckDelivery;
 
     public CustomMapFragment() {
         // Required empty public constructor
@@ -95,14 +108,13 @@ public class CustomMapFragment extends Fragment implements IFragment, OnMapReady
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_custom_map, container, false);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        mapView = view.findViewById(R.id.mapView);
+        ButterKnife.bind(this,view);
+
+
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        llhead = view.findViewById(R.id.llhead);
-        tvVehicleCount = view.findViewById(R.id.tvVehicleCount);
-        tvTruckDelivery = view.findViewById(R.id.tvTruckDelivery);
+
 
         llhead.setVisibility(View.GONE);
 

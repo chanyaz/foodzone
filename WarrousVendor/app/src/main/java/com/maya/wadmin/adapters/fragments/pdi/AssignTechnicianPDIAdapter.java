@@ -18,6 +18,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/5/2018.
  */
@@ -97,18 +100,16 @@ public class AssignTechnicianPDIAdapter extends RecyclerView.Adapter<AssignTechn
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvSalesPerson, tvRole;
-        ImageView imgSalesPerson, imgClick;
-        RelativeLayout llhead;
+        @BindView(R.id.tvSalesPerson) TextView tvSalesPerson;
+        @BindView(R.id.tvRole) TextView tvRole;
+        @BindView(R.id.imgSalesPerson) ImageView imgSalesPerson;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.llhead) RelativeLayout llhead;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvSalesPerson= itemView.findViewById(R.id.tvSalesPerson);
-            tvRole = itemView.findViewById(R.id.tvRole);
-            imgSalesPerson = itemView.findViewById(R.id.imgSalesPerson);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            llhead = itemView.findViewById(R.id.llhead);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

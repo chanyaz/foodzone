@@ -14,6 +14,9 @@ import com.maya.wadmin.models.GroupFilter;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/27/2018.
  */
@@ -93,13 +96,12 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTitle;
-        LinearLayout llhead;
+        @BindView(R.id.tvTitle) TextView tvTitle;
+        @BindView(R.id.llhead) LinearLayout llhead;
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvTitle= itemView.findViewById(R.id.tvTitle);
-            llhead= itemView.findViewById(R.id.llhead);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

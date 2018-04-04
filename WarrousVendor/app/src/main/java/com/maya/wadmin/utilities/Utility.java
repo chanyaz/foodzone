@@ -3,6 +3,7 @@ package com.maya.wadmin.utilities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -25,17 +26,28 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.auth0.android.jwt.DecodeException;
+import com.auth0.android.jwt.JWT;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.maya.wadmin.R;
+import com.maya.wadmin.activities.MainActivity;
+import com.maya.wadmin.apis.volley.VolleyHelperLayer;
 import com.maya.wadmin.applications.WAdminApplication;
 import com.maya.wadmin.constants.Constants;
 import com.maya.wadmin.models.AlertRule;
 import com.maya.wadmin.models.AppOverview;
+import com.maya.wadmin.models.ChatMessage;
+import com.maya.wadmin.models.ChatPerson;
 import com.maya.wadmin.models.CheckList;
 import com.maya.wadmin.models.Inspection;
 import com.maya.wadmin.models.LotCheckList;
+import com.maya.wadmin.models.Notification;
 import com.maya.wadmin.models.Options;
+import com.maya.wadmin.models.OrderNotification;
 import com.maya.wadmin.models.PDIPreparation;
 import com.maya.wadmin.models.TopBarPanel;
 import com.maya.wadmin.models.UserRole;
@@ -54,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Gokul Kalagara on 1/25/2018.
@@ -397,6 +410,10 @@ public class Utility
     }
 
 
+    public static String addPortalTag()
+    {
+       return "&PortalName=" + Constants.portalKeyValues[getPortalType()];
+    }
 
 
 
@@ -541,10 +558,12 @@ public class Utility
         hashMap.put("LOT_FORM",14114);
         hashMap.put("PDI_FORM",14115);
         hashMap.put("ADD_ALERT",14116);
-        hashMap.put("OPEN_PLACES_SEARCH",14116);
-        hashMap.put("ADD_ZONE",14117);
-        hashMap.put("EDIT_ZONE",14118);
-        hashMap.put("APPLY_FILTER",14119);
+        hashMap.put("OPEN_PLACES_SEARCH",14117);
+        hashMap.put("ADD_ZONE",14118);
+        hashMap.put("EDIT_ZONE",14119);
+        hashMap.put("APPLY_FILTER",14120);
+        hashMap.put("REQUEST_CAMERA",14121);
+        hashMap.put("EDIT_ZONE",14122);
         return hashMap;
     }
 
@@ -580,7 +599,7 @@ public class Utility
     public static List<UserRole> getUserRole(int value)
     {
 
-
+        int deliveryCount = 0, preparingLotCount = 0, markedForPDICount = 0, pdiIncompleteCount = 0, pdiCompleteCount = 0, inventoryCount = 0, testDriveCount = 0;
         List<UserRole> list = new ArrayList<UserRole>();
         Gson gson =new Gson();
         Type type = new TypeToken<AppOverview>(){}.getType();
@@ -605,49 +624,78 @@ public class Utility
                     countList.add(new VehicleCount(appOverview.VehicleDeliveryCount, "Vehicle's in the delivery"));
                     list.add(new UserRole("Vehicle Delivery", R.drawable.ic_vehicle_delivery, countList));
                     countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.ZoneCount, "Zones in the present"));
+                    countList.add(new VehicleCount(appOverview.LogisticsZoneCount, "Zones in the present"));
                     list.add(new UserRole("Manage Zones", R.drawable.ic_manage_zones, countList));
                     countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.AlertsCount, "Alerts in the panel"));
+                    countList.add(new VehicleCount(appOverview.LogisticsAlertsCount, "Alerts in the panel"));
                     list.add(new UserRole("Rules & Alerts", R.drawable.ic_rules_alerts, countList));
                     countList = new ArrayList<>();
                     countList.add(new VehicleCount(appOverview.FindVehicleCount, "Vehicles in the current"));
                     list.add(new UserRole("Find Vehicle", R.drawable.ic_find_vehicle, countList));
                     break;
                 case 1:
+
+                    for(VehicleCount vehicleCount : appOverview.vehicleTypeCount)
+                    {
+                        switch (vehicleCount.Type)
+                        {
+                            case Constants.PREPARING_FOR_LOT:
+                                preparingLotCount = vehicleCount.VehicleCount;
+                                break;
+                            case Constants.DELIVERY_RECEIVED:
+                                deliveryCount = vehicleCount.VehicleCount;
+                                break;
+                            case Constants.MARK_FOR_PDI:
+                                markedForPDICount = vehicleCount.VehicleCount;
+                                break;
+                            case Constants.PDI_INCOMPLETE:
+                                pdiIncompleteCount = vehicleCount.VehicleCount;
+                                break;
+                            case Constants.PDI_COMPLETE:
+                                pdiCompleteCount = vehicleCount.VehicleCount;
+                                break;
+                            case Constants.TEST_DRIVE:
+                                testDriveCount = vehicleCount.VehicleCount;
+                                break;
+                            case Constants.INVENTORY:
+                                inventoryCount = vehicleCount.VehicleCount;
+                                break;
+                        }
+                    }
+
                     countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(0).VehicleCount, "Vehicle's in delivery received"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(4).VehicleCount, "Vehicle's in Preparing for lot"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(2).VehicleCount, "Vehicle's in marked for pdi"));
+                    countList.add(new VehicleCount(deliveryCount, "Vehicle's in delivery received"));
+                    countList.add(new VehicleCount(preparingLotCount, "Vehicle's in Preparing for lot"));
+                    countList.add(new VehicleCount(markedForPDICount, "Vehicle's in marked for pdi"));
                     list.add(new UserRole("Fleet Delivery", R.drawable.fleet_mangement, countList));
 
                     countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(2).VehicleCount, "Vehicle's in marked for pdi"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(3).VehicleCount, "Vehicle's in pdi incomplete"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(1).VehicleCount, "Vehicle's in pdi completed"));
+                    countList.add(new VehicleCount(markedForPDICount, "Vehicle's in marked for pdi"));
+                    countList.add(new VehicleCount(pdiIncompleteCount, "Vehicle's in pdi incomplete"));
+                    countList.add(new VehicleCount(pdiCompleteCount, "Vehicle's in pdi completed"));
                     list.add(new UserRole("PDI", R.drawable.ic_p_pdi, countList));
 
                     countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(5).VehicleCount, "Vehicle's in lot"));
+                    countList.add(new VehicleCount(testDriveCount, "Vehicle's in lot"));
                     list.add(new UserRole("Test Drive", R.drawable.ic_test_drive, countList));
 
 
                     countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(0).VehicleCount, "Vehicle's in delivery received"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(4).VehicleCount, "Vehicle's in Preparing for lot"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(2).VehicleCount, "Vehicle's in marked for pdi"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(3).VehicleCount, "Vehicle's in pdi incomplete"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(1).VehicleCount, "Vehicle's in inventory"));
-                    countList.add(new VehicleCount(appOverview.vehicleTypeCount.get(5).VehicleCount, "Vehicle's in test drive"));
+                    countList.add(new VehicleCount(deliveryCount, "Vehicle's in delivery received"));
+                    countList.add(new VehicleCount(preparingLotCount, "Vehicle's in Preparing for lot"));
+                    countList.add(new VehicleCount(markedForPDICount, "Vehicle's in marked for pdi"));
+                    countList.add(new VehicleCount(pdiIncompleteCount, "Vehicle's in pdi incomplete"));
+                    countList.add(new VehicleCount(inventoryCount, "Vehicle's in inventory"));
+                    countList.add(new VehicleCount(testDriveCount, "Vehicle's in test drive"));
                     list.add(new UserRole("Lot Management", R.drawable.ic_lot_management, countList));
 
 
                     countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.ZoneCount, "Zones in the present"));
+                    countList.add(new VehicleCount(appOverview.SalesZoneCount, "Zones in the present"));
                     list.add(new UserRole("Manage Zones", R.drawable.ic_manage_zones, countList));
 
                     countList = new ArrayList<>();
-                    countList.add(new VehicleCount(appOverview.AlertsCount, "Alerts in the panel"));
+                    countList.add(new VehicleCount(appOverview.SalesAlertCount, "Alerts in the panel"));
                     list.add(new UserRole("Rules & Alerts", R.drawable.ic_rules_alerts, countList));
 
                     countList = new ArrayList<>();
@@ -715,15 +763,15 @@ public class Utility
                 break;
             case 6:
                 //alert vehicles types
-                list.add(new TopBarPanel("Speed Alert","It contains all vehicles",true));
-                list.add(new TopBarPanel("Geofence Alert","Show all vehicles by status types",false));
+                list.add(new TopBarPanel("Geofence Alert","Show all vehicles by status types",true));
                 list.add(new TopBarPanel("Mileage Alert","Show all vehicles by status types",false));
-                list.add(new TopBarPanel("Theft Alert","Show all vehicles by status types",false));
-                list.add(new TopBarPanel("Delivery Alert","Show all vehicles by status types",false));
+                list.add(new TopBarPanel("Speed Alert","It contains all vehicles",false));
                 list.add(new TopBarPanel("DTC Alert","Show all vehicles by status types",false));
-                list.add(new TopBarPanel("Billing Alert","Show all vehicles",false));
-                list.add(new TopBarPanel("Vehicle Alert","Show all vehicles by status types",false));
+                list.add(new TopBarPanel("Billing Alert","Show all vehicles by status types",false));
                 list.add(new TopBarPanel("Customer Alert","Show all vehicles by status types",false));
+                list.add(new TopBarPanel("Delivery Alert","Show all vehicles",false));
+                list.add(new TopBarPanel("Theft Alert","Show all vehicles by status types",false));
+                list.add(new TopBarPanel("Vehicle Alert","Show all vehicles by status types",false));
                 break;
             case 7:
                 // fleet vehicles
@@ -1538,6 +1586,20 @@ public class Utility
             list.add(new Options("Overview", R.drawable.ic_info_outline));
             list.add(new Options("Locate", R.drawable.ic_location_on_current));
             break;
+            case 3: // pdi marked
+            list.add(new Options("Assign Pdi",R.drawable.assign));
+            list.add(new Options("Overview", R.drawable.ic_info_outline));
+            list.add(new Options("Locate", R.drawable.ic_location_on_current));
+            break;
+            case 4: // pdi incomplete, pdi completed
+            list.add(new Options("Overview", R.drawable.ic_info_outline));
+            list.add(new Options("Locate", R.drawable.ic_location_on_current));
+            break;
+            case 5: // delivery received
+            list.add(new Options("Assign Preparing",R.drawable.assign));
+            list.add(new Options("Overview", R.drawable.ic_info_outline));
+            list.add(new Options("Locate", R.drawable.ic_location_on_current));
+            break;
             case 11: // zones
             list.add(new Options("Edit", R.drawable.ic_edit_black));
             list.add(new Options("Delete", R.drawable.ic_recyclebin));
@@ -1551,4 +1613,187 @@ public class Utility
         }
         return list;
     }
+
+
+    public static List<ChatPerson> generateChatPerson()
+    {
+        List<ChatPerson> list = new ArrayList<>();
+
+        ChatPerson cp1 = new ChatPerson();
+        cp1.name = "Enay Bill";
+        cp1.lastMessage = "I send details to your mail";
+        cp1.type = 0;
+        cp1.readType = 0;
+        cp1.image = "https://d2e70e9yced57e.cloudfront.net/wallethub/posts/29912/eric-klinenberg.jpg";
+
+
+        ChatPerson cp2 = new ChatPerson();
+        cp2.name = "Henry David";
+        cp2.lastMessage = "ok fine bye!";
+        cp2.type = 1;
+        cp2.readType = 1;
+        cp2.image = "https://www.cs.ox.ac.uk/files/8640//profile.jpg";
+
+        ChatPerson cp3 = new ChatPerson();
+        cp3.name = "Christin Curie";
+        cp3.lastMessage = "We got total things from u";
+        cp3.type = 1;
+        cp3.readType = 1;
+        cp3.image = "https://www.radioproject.org/wp-content/uploads/2011/02/0711.jpg";
+
+        ChatPerson cp4 = new ChatPerson();
+        cp4.name = "John Rayie";
+        cp4.lastMessage = "Vehicles reached safely to lot";
+        cp4.type = 0;
+        cp4.readType = 0;
+        cp4.image = "https://edb-cdn-prod-tqgiyve.stackpathdns.com/players/icons/9e71815e-cabb-11e7-be93-0e6c723feec8.png";
+
+        ChatPerson cp5 = new ChatPerson();
+        cp5.name = "Gates Johnson";
+        cp5.lastMessage = "Sales goes high in this month";
+        cp5.type = 1;
+        cp5.readType = 1;
+        cp5.image = "http://www.unitytubes.com/wp-content/uploads/2017/07/DAVIDO-4-150x150.png";
+
+        list.add(cp1);
+        list.add(cp2);
+        list.add(cp3);
+        list.add(cp4);
+        list.add(cp5);
+
+
+        return list;
+    }
+
+    public static List<ChatMessage> generateChatMessages()
+    {
+        List<ChatMessage> list = new ArrayList<>();
+        ChatMessage cm1 = new ChatMessage();
+        cm1.senderId = "1";
+        cm1.message = "Hi Boss";
+        cm1.messageType = 0;
+        cm1.createdAt = "12:00 AM";
+
+        ChatMessage cm2 = new ChatMessage();
+        cm2.senderId = "1";
+        cm2.message = "Hi!";
+        cm2.messageType = 1;
+        cm2.createdAt = "12:01 AM";
+
+        ChatMessage cm3 = new ChatMessage();
+        cm3.senderId = "1";
+        cm3.message = "We need some more details of our dealer can u send to my mail id";
+        cm3.messageType = 0;
+        cm3.createdAt = "12:05 AM";
+
+        ChatMessage cm4 = new ChatMessage();
+        cm4.senderId = "1";
+        cm4.message = "I miss your mail-id can send here";
+        cm4.messageType = 1;
+        cm4.createdAt = "12:07 AM";
+
+        ChatMessage cm5 = new ChatMessage();
+        cm5.senderId = "1";
+        cm5.message = "enaybill1439@mayan.com";
+        cm5.messageType = 0;
+        cm5.createdAt = "12:08 AM";
+
+        ChatMessage cm6 = new ChatMessage();
+        cm6.senderId = "1";
+        cm6.message = "kk";
+        cm6.messageType = 1;
+        cm6.createdAt = "12:08 AM";
+        ChatMessage cm7 = new ChatMessage();
+        cm7.senderId = "1";
+        cm7.message = "Sales goes low in this month";
+        cm7.messageType = 0;
+        cm7.createdAt = "12:09 AM";
+        ChatMessage cm8 = new ChatMessage();
+        cm8.senderId = "1";
+        cm8.message = "compared to September";
+        cm8.messageType = 0;
+        cm8.createdAt = "12:09 AM";
+
+        ChatMessage cm9 = new ChatMessage();
+        cm9.senderId = "1";
+        cm9.message = "I send details to your mail";
+        cm9.messageType = 0;
+        cm9.createdAt = "12:10 AM";
+
+        ChatMessage cm10 = new ChatMessage();
+        cm10.senderId = "1";
+        cm10.message = "Hi Boss";
+        cm10.messageType = 0;
+        cm10.createdAt = "11:10 AM";
+
+        ChatMessage cm11 = new ChatMessage();
+        cm11.senderId = "1";
+        cm11.message = "One important thing";
+        cm11.messageType = 0;
+        cm11.createdAt = "11:10 AM";
+
+        ChatMessage cm12 = new ChatMessage();
+        cm12.senderId = "1";
+        cm12.message = "Are you there?";
+        cm12.messageType = 0;
+        cm12.createdAt = "11:15 AM";
+
+        list.add(cm10);
+        list.add(cm11);
+        list.add(cm12);
+        list.add(cm1);
+        list.add(cm2);
+        list.add(cm3);
+        list.add(cm4);
+        list.add(cm5);
+        list.add(cm6);
+        list.add(cm7);
+        list.add(cm8);
+        list.add(cm9);
+
+
+
+        return list;
+    }
+
+
+    public static List<OrderNotification> generateNotifications()
+    {
+        List<OrderNotification> list = new ArrayList<>();
+
+
+        List<Notification> notificationList = new ArrayList<>();
+        notificationList.add(new Notification("New Vehicle","Kia Optima has entered the lot","Today 9:20 pm in CA",5));
+        notificationList.add(new Notification("Speed Alert","Vehicle has passed 96mph","Today 7:12 pm in Sans",1));
+        notificationList.add(new Notification("New Vehicle","Kia K900 has entered the lot","Today 7:02 pm in CA",5));
+        notificationList.add(new Notification("New Vehicle","Kia Soul has entered the lot","Today 6:30 pm in CA",5));
+        notificationList.add(new Notification("Mileage Alert","Mileage is equal 78mph","Today 5:30 pm in San-Dieg",2));
+
+        List<Notification> notificationList1 = new ArrayList<>();
+        notificationList1.add(new Notification("Geofence Alert","Entered in Hyderabad","Yesterday 9:00 pm in Hyderabad",3));
+        notificationList1.add(new Notification("Speed Alert","Vehicle has passed 106mph","Yesterday 6:12 pm in Vizag",4));
+
+
+        list.add(new OrderNotification("today",notificationList));
+        list.add(new OrderNotification("yesterday",notificationList1));
+
+        return list;
+    }
+
+    public static List<String> generateAlertTypes()
+    {
+        List<String> list = new ArrayList<>();
+        list.add("Geofence");
+        list.add("Mileage");
+        list.add("Speed");
+        list.add("DTC");
+        list.add("Billing");
+        list.add("Customer");
+        list.add("Delivery");
+        list.add("Theft");
+        list.add("Vehicle");
+        return list;
+    }
+
+
 }

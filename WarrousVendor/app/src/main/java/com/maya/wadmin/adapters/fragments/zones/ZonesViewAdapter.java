@@ -15,6 +15,9 @@ import com.maya.wadmin.models.Zone;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/12/2018.
  */
@@ -26,7 +29,8 @@ public class ZonesViewAdapter extends RecyclerView.Adapter<ZonesViewAdapter.View
     Context context;
     IZonesViewAdapter iZonesViewAdapter;
 
-    public ZonesViewAdapter(List<Zone> list, Context context, IZonesViewAdapter iZonesViewAdapter) {
+    public ZonesViewAdapter(List<Zone> list, Context context, IZonesViewAdapter iZonesViewAdapter)
+    {
         this.list = list;
         this.context = context;
         this.iZonesViewAdapter = iZonesViewAdapter;
@@ -79,20 +83,17 @@ public class ZonesViewAdapter extends RecyclerView.Adapter<ZonesViewAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTitle, tvLocation, tvKeywords;
-        ImageView imgClick;
-        View bottomView;
-        LinearLayout llhead;
+        @BindView(R.id.tvTitle) TextView tvTitle;
+        @BindView(R.id.tvLocation) TextView tvLocation;
+        @BindView(R.id.tvKeywords) TextView tvKeywords;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.bottomView) View bottomView;
+        @BindView(R.id.llhead) LinearLayout llhead;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvTitle= itemView.findViewById(R.id.tvTitle);
-            tvLocation = itemView.findViewById(R.id.tvLocation);
-            tvKeywords = itemView.findViewById(R.id.tvKeywords);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
-            llhead = itemView.findViewById(R.id.llhead);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

@@ -17,6 +17,10 @@ public class AppOverview
     public int MarkedCount;
     public int ZoneCount;
     public int AlertsCount;
+    public int LogisticsAlertsCount;
+    public int SalesAlertCount;
+    public int SalesZoneCount;
+    public int LogisticsZoneCount;
     public List<VehicleCount> vehicleTypeCount;
 }
 

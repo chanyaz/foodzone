@@ -4,6 +4,8 @@ package com.maya.wadmin.fragments.rules_and_alerts.view;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 
@@ -29,7 +32,10 @@ import com.maya.wadmin.adapters.fragments.rules_and_alerts.AlertsAdapter;
 import com.maya.wadmin.adapters.fragments.testdrive.AssignVehicleAdapter;
 import com.maya.wadmin.apis.volley.VolleyHelperLayer;
 import com.maya.wadmin.constants.Constants;
+import com.maya.wadmin.dialogs.actions.ActionConfirmationDialog;
+import com.maya.wadmin.dialogs.other.LogoutDialog;
 import com.maya.wadmin.interfaces.adapters.rules_and_alerts.IAlertsAdapter;
+import com.maya.wadmin.interfaces.dialog.IActionConfirmationDialogAlert;
 import com.maya.wadmin.interfaces.fragments.IFragment;
 import com.maya.wadmin.models.AlertRule;
 import com.maya.wadmin.models.Vehicle;
@@ -40,12 +46,15 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AlertsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapter {
+public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapter, IActionConfirmationDialogAlert {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,13 +65,15 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
     private String mParam2;
 
 
-    CoordinatorLayout coordinatorLayout;
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView recyclerView;
-    ProgressBar progressBar;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+
     List<AlertRule> finalList,list;
     AlertsAdapter alertsAdapter;
     IAlertsAdapter iAlertsAdapter;
+    IActionConfirmationDialogAlert iActionConfirmationDialogAlert;
     int CategoryId = 0;
 
     public AlertsFragment() {
@@ -101,12 +112,11 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_alerts, container, false);
-        iAlertsAdapter = this;
+        ButterKnife.bind(this,view);
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        progressBar = view.findViewById(R.id.progressBar);
+        iAlertsAdapter = this;
+        iActionConfirmationDialogAlert = this;
+
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
         recyclerView.setNestedScrollingEnabled(true);
@@ -116,20 +126,17 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
             CategoryId = getArguments().getInt("CategoryId");
         }
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh()
+        swipeRefreshLayout.setOnRefreshListener(() ->
+        {
+            if(Utility.isNetworkAvailable(activity()))
             {
-                if(Utility.isNetworkAvailable(activity()))
-                {
-                    fetchAlertRules();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
-                swipeRefreshLayout.setRefreshing(false);
+                fetchAlertRules();
             }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+            }
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         if(Utility.isNetworkAvailable(activity()))
@@ -168,7 +175,7 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
     public void fetchAlertRules()
     {
         progressBar.setVisibility(View.VISIBLE);
-        String URL = Constants.URL_ALERTS_LIST_BASED_ON_CATEGORY + CategoryId  + "&DealerId=" + Utility.getString(Utility.getSharedPreferences(),Constants.DEALER_ID);
+        String URL = Constants.URL_ALERTS_LIST_BASED_ON_CATEGORY + CategoryId  + "&DealerId=" + Utility.getString(Utility.getSharedPreferences(),Constants.DEALER_ID) + Utility.addPortalTag();
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>()
         {
@@ -223,7 +230,8 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
                     Intent intent = new Intent(activity(),HelperActivity.class);
                     intent.putExtra(Constants.FRAGMENT_KEY, 611);
                     intent.putExtra("AlertRule",alertRuleDetails);
-                    startActivityForResult(intent,Utility.generateRequestCodes().get("ADD_ALERT"));
+                    intent.putExtra("CategoryId",CategoryId);
+                    startActivityForResult(intent,Utility.generateRequestCodes().get("EDIT_ZONE"));
                 }
 
             }
@@ -242,6 +250,18 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == Utility.generateRequestCodes().get("EDIT_ZONE"))
+        {
+            if(data != null)
+            {
+                fetchAlertRules();
+            }
+        }
+
+    }
 
     public void updateAlertsBySearch(String content)
     {
@@ -283,30 +303,9 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
 
 
     @Override
-    public void cloneAlert(AlertRule alertRule, int position) {
-        progressBar.setVisibility(View.VISIBLE);
-        String URL = Constants.URL_CLONE_ALERT + alertRule.AlertId;
-        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
-        Response.Listener<String> listener = new Response.Listener<String>()
-        {
-            @Override
-            public void onResponse(String response)
-            {
-                Logger.d("[response]", response);
-                progressBar.setVisibility(View.GONE);
-                fetchAlertRules();
-            }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Logger.d("[response]",Constants.CONNECTION_ERROR);
-                progressBar.setVisibility(View.GONE);
-                showSnackBar(Constants.CONNECTION_ERROR,2);
-            }
-        };
-        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+    public void cloneAlert(AlertRule alertRule, int position)
+    {
+        confirmationDialog("Clone this Alert",1,alertRule);
     }
 
     @Override
@@ -378,6 +377,30 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
     @Override
     public void deleteAlert(AlertRule alertRule, int position)
     {
+        confirmationDialog("Delete this Alert",0,alertRule);
+    }
+
+    @Override
+    public void openViolationVehicles(AlertRule alertRule, int position)
+    {
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,612);
+        intent.putExtra("AlertRule",alertRule);
+        startActivity(intent);
+    }
+
+    public void confirmationDialog(String content,int type,AlertRule alertRule)
+    {
+        ActionConfirmationDialog dialog = new ActionConfirmationDialog(type,activity(),content,iActionConfirmationDialogAlert,alertRule);
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    @Override
+    public void deleteAlertAction(AlertRule alertRule)
+    {
         progressBar.setVisibility(View.VISIBLE);
         String URL = Constants.URL_DELETE_ALERT + alertRule.AlertId;
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
@@ -404,11 +427,30 @@ public class AlertsFragment extends Fragment implements IFragment, IAlertsAdapte
     }
 
     @Override
-    public void openViolationVehicles(AlertRule alertRule, int position)
+    public void cloneAlertAction(AlertRule alertRule)
     {
-        Intent intent = new Intent(activity(),HelperActivity.class);
-        intent.putExtra(Constants.FRAGMENT_KEY,612);
-        intent.putExtra("AlertRule",alertRule);
-        startActivity(intent);
+        progressBar.setVisibility(View.VISIBLE);
+        String URL = Constants.URL_CLONE_ALERT + alertRule.AlertId;
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Logger.d("[response]", response);
+                progressBar.setVisibility(View.GONE);
+                fetchAlertRules();
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                progressBar.setVisibility(View.GONE);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
     }
 }

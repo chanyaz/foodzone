@@ -23,6 +23,9 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/1/2018.
  */
@@ -164,7 +167,7 @@ public class TestDriveVehiclesAdapter extends RecyclerView.Adapter<RecyclerView.
                     holder.llSalesPerson.setVisibility(View.GONE);
                     holder.imgSalesPerson.setVisibility(View.GONE);
                     holder.tvMarkedDate.setVisibility(View.VISIBLE);
-                    holder.llMarkForPDI.setVisibility(View.VISIBLE);
+                    holder.llMarkForPDI.setVisibility(View.GONE); // details of vehicle and assign for pdi
                     holder.tvAssignDate.setVisibility(View.GONE);
 
                 }
@@ -250,6 +253,10 @@ public class TestDriveVehiclesAdapter extends RecyclerView.Adapter<RecyclerView.
                     public void onClick(View v) {
                         iTestDriveVehiclesAdapter.onTestDriveVehicleClick(list.get(position), position);
                     }
+                });
+
+                holder.imgOption.setOnClickListener(v -> {
+                    iTestDriveVehiclesAdapter.openOptions(list.get(position),position);
                 });
 
 
@@ -496,7 +503,7 @@ public class TestDriveVehiclesAdapter extends RecyclerView.Adapter<RecyclerView.
                     holder.llSalesPerson.setVisibility(View.GONE);
                     holder.imgSalesPerson.setVisibility(View.GONE);
                     holder.tvMarkedDate.setVisibility(View.VISIBLE);
-                    holder.llMarkForPDI.setVisibility(View.VISIBLE);
+                    holder.llMarkForPDI.setVisibility(View.GONE); // vehicle info and assign for preparing
                     holder.tvAssignDate.setVisibility(View.GONE);
                     if(vehicleType.equals(Constants.DELIVERY_RECEIVED))
                         holder.tvMarkedDate.setText("Received: Yesterday 5:00 AM");
@@ -609,6 +616,10 @@ public class TestDriveVehiclesAdapter extends RecyclerView.Adapter<RecyclerView.
                     holder.imgClick.setImageResource(R.drawable.ic_arrow_down);
                 }
 
+                holder.imgOption.setOnClickListener(v -> {
+                    iTestDriveVehiclesAdapter.openOptions(list.get(position),position);
+                });
+
 
                 //end
             }
@@ -711,124 +722,113 @@ public class TestDriveVehiclesAdapter extends RecyclerView.Adapter<RecyclerView.
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvMake, tvSalesPerson,tvOther, tvCustomerName, tvCustomerPhone;
-        ImageView imgVehicle, imgOption,imgClick, imgSalesPerson;
-        View bottomView;
-        LinearLayout llhead,llhead1;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvMake) TextView tvMake;
+        @BindView(R.id.tvSalesPerson) TextView tvSalesPerson;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.tvCustomerName) TextView tvCustomerName;
+        @BindView(R.id.tvCustomerPhone) TextView tvCustomerPhone;
+
+
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.imgSalesPerson) ImageView imgSalesPerson;
+        @BindView(R.id.imgOption) ImageView imgOption;
+
+        @BindView(R.id.bottomView) View bottomView;
+
+        @BindView(R.id.llhead) LinearLayout llhead;
+        @BindView(R.id.llhead1) LinearLayout llhead1;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvMake= itemView.findViewById(R.id.tvMake);
-            tvSalesPerson = itemView.findViewById(R.id.tvSalesPerson);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            tvCustomerName = itemView.findViewById(R.id.tvCustomerName);
-            tvCustomerPhone = itemView.findViewById(R.id.tvCustomerPhone);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            imgSalesPerson = itemView.findViewById(R.id.imgSalesPerson);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            imgOption = itemView.findViewById(R.id.imgOption);
-            bottomView = itemView.findViewById(R.id.bottomView);
-            llhead = itemView.findViewById(R.id.llhead);
-            llhead1 = itemView.findViewById(R.id.llhead1);
+            ButterKnife.bind(this,itemView);
         }
     }
 
     public class PDIViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvMake, tvSalesPerson,tvOther, tvMarkedDate, tvInfo, tvAssignForPDI, tvAssignDate;
-        ImageView imgVehicle, imgClick, imgSalesPerson, imgSettings;
-        View bottomView;
-        ProgressBar content;
-        LinearLayout llhead,llhead1, llSalesPerson, llMarkForPDI;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvMake) TextView tvMake;
+        @BindView(R.id.tvSalesPerson) TextView tvSalesPerson;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.tvMarkedDate) TextView tvMarkedDate;
+        @BindView(R.id.tvInfo) TextView tvInfo;
+        @BindView(R.id.tvAssignForPDI) TextView tvAssignForPDI;
+        @BindView(R.id.tvAssignDate) TextView tvAssignDate;
+
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.imgSalesPerson) ImageView imgSalesPerson;
+        @BindView(R.id.imgSettings) ImageView imgSettings;
+        @BindView(R.id.imgOption) ImageView imgOption;
+
+        @BindView(R.id.bottomView) View bottomView;
+        @BindView(R.id.content) ProgressBar content;
+
+        @BindView(R.id.llhead) LinearLayout llhead;
+        @BindView(R.id.llhead1) LinearLayout llhead1;
+        @BindView(R.id.llSalesPerson) LinearLayout llSalesPerson;
+        @BindView(R.id.llMarkForPDI) LinearLayout llMarkForPDI;
 
         public PDIViewHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvMake= itemView.findViewById(R.id.tvMake);
-            tvSalesPerson = itemView.findViewById(R.id.tvSalesPerson);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            imgSalesPerson = itemView.findViewById(R.id.imgSalesPerson);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
-            llhead = itemView.findViewById(R.id.llhead);
-            llhead1 = itemView.findViewById(R.id.llhead1);
-
-            llSalesPerson = itemView.findViewById(R.id.llSalesPerson);
-            llMarkForPDI = itemView.findViewById(R.id.llMarkForPDI);
-            content = itemView.findViewById(R.id.content);
-            imgSettings = itemView.findViewById(R.id.imgSettings);
-            tvMarkedDate = itemView.findViewById(R.id.tvMarkedDate);
-            tvInfo = itemView.findViewById(R.id.tvInfo);
-            tvAssignForPDI = itemView.findViewById(R.id.tvAssignForPDI);
-            tvAssignDate = itemView.findViewById(R.id.tvAssignDate);
-
-
-
+            ButterKnife.bind(this,itemView);
         }
     }
 
     public class LotViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvMake, tvSalesPerson,tvOther, tvMarkedDate, tvInfo, tvAssignForPDI, tvAssignDate;
-        ImageView imgVehicle, imgClick, imgSalesPerson, imgSettings;
-        View bottomView;
-        ProgressBar content;
-        LinearLayout llhead,llhead1, llSalesPerson, llMarkForPDI;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvMake) TextView tvMake;
+        @BindView(R.id.tvSalesPerson) TextView tvSalesPerson;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.tvMarkedDate) TextView tvMarkedDate;
+        @BindView(R.id.tvInfo) TextView tvInfo;
+        @BindView(R.id.tvAssignForPDI) TextView tvAssignForPDI;
+        @BindView(R.id.tvAssignDate) TextView tvAssignDate;
+
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.imgSalesPerson) ImageView imgSalesPerson;
+        @BindView(R.id.imgSettings) ImageView imgSettings;
+        @BindView(R.id.imgOption) ImageView imgOption;
+
+        @BindView(R.id.bottomView) View bottomView;
+        @BindView(R.id.content) ProgressBar content;
+
+        @BindView(R.id.llhead) LinearLayout llhead;
+        @BindView(R.id.llhead1) LinearLayout llhead1;
+        @BindView(R.id.llSalesPerson) LinearLayout llSalesPerson;
+        @BindView(R.id.llMarkForPDI) LinearLayout llMarkForPDI;
 
         public LotViewHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvMake= itemView.findViewById(R.id.tvMake);
-            tvSalesPerson = itemView.findViewById(R.id.tvSalesPerson);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            imgSalesPerson = itemView.findViewById(R.id.imgSalesPerson);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
-            llhead = itemView.findViewById(R.id.llhead);
-            llhead1 = itemView.findViewById(R.id.llhead1);
-
-            llSalesPerson = itemView.findViewById(R.id.llSalesPerson);
-            llMarkForPDI = itemView.findViewById(R.id.llMarkForPDI);
-            content = itemView.findViewById(R.id.content);
-            imgSettings = itemView.findViewById(R.id.imgSettings);
-            tvMarkedDate = itemView.findViewById(R.id.tvMarkedDate);
-            tvInfo = itemView.findViewById(R.id.tvInfo);
-            tvAssignForPDI = itemView.findViewById(R.id.tvAssignForPDI);
-            tvAssignDate = itemView.findViewById(R.id.tvAssignDate);
-
-
-
+            ButterKnife.bind(this,itemView);
         }
     }
 
     public class SalesPersonVehiclesHolder extends RecyclerView.ViewHolder
     {
-        TextView tvVin, tvMake, tvOther, tvAssignDate;
-        ImageView imgVehicle, imgClick , imgSettings;
-        View bottomView;
-        ProgressBar content;
-        LinearLayout llhead,llhead1;
+        @BindView(R.id.tvVin) TextView tvVin;
+        @BindView(R.id.tvMake) TextView tvMake;
+        @BindView(R.id.tvOther) TextView tvOther;
+        @BindView(R.id.tvAssignDate) TextView tvAssignDate;
+        @BindView(R.id.imgVehicle) ImageView imgVehicle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.imgSettings) ImageView imgSettings;
+        @BindView(R.id.bottomView) View bottomView;
+        @BindView(R.id.content) ProgressBar content;
+        @BindView(R.id.llhead) LinearLayout llhead;
+        @BindView(R.id.llhead1) LinearLayout llhead1;
 
         public SalesPersonVehiclesHolder(View itemView)
         {
             super(itemView);
-            tvVin= itemView.findViewById(R.id.tvVin);
-            tvMake= itemView.findViewById(R.id.tvMake);
-            tvOther = itemView.findViewById(R.id.tvOther);
-            imgVehicle = itemView.findViewById(R.id.imgVehicle);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
-            llhead = itemView.findViewById(R.id.llhead);
-            llhead1 = itemView.findViewById(R.id.llhead1);
-            content = itemView.findViewById(R.id.content);
-            imgSettings = itemView.findViewById(R.id.imgSettings);
-            tvAssignDate = itemView.findViewById(R.id.tvAssignDate);
+            ButterKnife.bind(this,itemView);
 
         }
     }

@@ -12,13 +12,6 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <FrameLayout
-                android:id="@+id/frameLayout"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp">
-
-            </FrameLayout>
             <ProgressBar
                 android:visibility="gone"
                 android:layout_alignParentBottom="true"
@@ -28,6 +21,13 @@
                 android:layout_height="wrap_content"
                 android:indeterminateTint="@color/mainColorPrimary"
                 android:indeterminate="true"/>
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+            </FrameLayout>
             <LinearLayout
                 android:elevation="8dp"
                 android:orientation="horizontal"

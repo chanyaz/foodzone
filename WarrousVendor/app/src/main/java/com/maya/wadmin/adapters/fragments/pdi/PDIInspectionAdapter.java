@@ -21,6 +21,9 @@ import com.maya.wadmin.models.Inspection;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/12/2018.
  */
@@ -111,23 +114,19 @@ public class PDIInspectionAdapter extends RecyclerView.Adapter<PDIInspectionAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTitle;
-        TextView tvSelect, tvUnSelect;
-        RecyclerView recyclerView;
-        LinearLayout llClick,llhead,llhead1;
-        ImageView imgClick;
+        @BindView(R.id.tvTitle) TextView tvTitle;
+        @BindView(R.id.tvSelect) TextView tvSelect;
+        @BindView(R.id.tvUnSelect) TextView tvUnSelect;
+        @BindView(R.id.recyclerView) RecyclerView recyclerView;
+        @BindView(R.id.llClick) LinearLayout llClick;
+        @BindView(R.id.llhead) LinearLayout llhead;
+        @BindView(R.id.llhead1) LinearLayout llhead1;
+        @BindView(R.id.imgClick) ImageView imgClick;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvTitle= itemView.findViewById(R.id.tvTitle);
-            recyclerView = itemView.findViewById(R.id.recyclerView);
-            llClick = itemView.findViewById(R.id.llClick);
-            llhead = itemView.findViewById(R.id.llhead);
-            llhead1 = itemView.findViewById(R.id.llhead1);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            tvUnSelect = itemView.findViewById(R.id.tvUnSelect);
-            tvSelect = itemView.findViewById(R.id.tvSelect);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

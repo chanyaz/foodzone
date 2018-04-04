@@ -37,6 +37,9 @@ import com.maya.wadmin.utilities.Utility;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
@@ -52,12 +55,22 @@ public class HomeFragment extends Fragment implements IFragment, IUserRoleAdapte
     private String mParam1;
     private String mParam2;
     List<UserRole> list;
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
     ProgressDialog progressDialog;
     IUserRoleAdapter iUserRoleAdapter;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
     public HomeFragment()
     {
         // Required empty public constructor
@@ -95,31 +108,26 @@ public class HomeFragment extends Fragment implements IFragment, IUserRoleAdapte
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_home, container, false);
+        ButterKnife.bind(this,view);
+
         iUserRoleAdapter = this;
-        recyclerView = view.findViewById(R.id.recyclerView);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        progressBar = view.findViewById(R.id.progressBar);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
         progressBar.setVisibility(View.GONE);
 
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh()
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if(Utility.isNetworkAvailable(activity()))
             {
-
-                if(Utility.isNetworkAvailable(activity()))
-                {
-                    fetchAppOverview();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
-                swipeRefreshLayout.setRefreshing(false);
+                fetchAppOverview();
             }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+            }
+            swipeRefreshLayout.setRefreshing(false);
         });
+
         if(Utility.isNetworkAvailable(activity()))
         {
             fetchAppOverview();

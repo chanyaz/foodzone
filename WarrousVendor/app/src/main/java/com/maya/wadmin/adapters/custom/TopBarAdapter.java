@@ -16,6 +16,9 @@ import com.maya.wadmin.models.TopBarPanel;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Gokul Kalagara on 2/7/2018.
  */
@@ -85,17 +88,15 @@ public class TopBarAdapter extends RecyclerView.Adapter<TopBarAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvTitle, tvSubTitle;
-        ImageView imgClick;
-        View bottomView;
+        @BindView(R.id.tvTitle) TextView tvTitle;
+        @BindView(R.id.tvSubTitle) TextView tvSubTitle;
+        @BindView(R.id.imgClick) ImageView imgClick;
+        @BindView(R.id.bottomView) View bottomView;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            tvTitle= itemView.findViewById(R.id.tvTitle);
-            tvSubTitle = itemView.findViewById(R.id.tvSubTitle);
-            imgClick = itemView.findViewById(R.id.imgClick);
-            bottomView = itemView.findViewById(R.id.bottomView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

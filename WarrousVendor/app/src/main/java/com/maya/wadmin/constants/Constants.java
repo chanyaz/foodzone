@@ -52,6 +52,8 @@ public class Constants
 
     public static final String USER_NAME = "user_name";
 
+    public static final String USER_PASSWORD = "user_password";
+
     public static final String COMPLETE_USERNAME = "complete_username";
 
     public static final String FIRST_NAME = "first_name";
@@ -64,27 +66,42 @@ public class Constants
 
     public static final int VEHICLE_TYPE_IDS[] = {1,2,3,4,5,6,7,8,9,10,11,12,13};
 
-    public static final int ALERT_TYPE_IDS[] = {1,3,2,4,5,6,7,8,9};
+    public static final int ALERT_TYPE_IDS[] = {3,2,1,6,7,9,5,4,8 }; // 1,3,2,4,5,6,7,8,9
 
     public static final String portalsTypeIDS[] = {
             "Distribution & Logistics",
             "Sales Operations"
     };
 
+    public static final String portalKeyValues[] ={"logistics","sales"} ;
+
     public static final String PORTAL_TYPE = "PORTAL_TYPE";
 
     public static final String ALERT_TYPES[] =
     {
-        "Speed",
-        "Geofence",
-        "Mileage",
-        "Theft",
-        "Delivery",
-        "DTC",
-        "Billing",
-        "Vehicle Status",
-        "Customer Status"
+            "Geofence",
+            "Mileage",
+            "Speed",
+
+            "DTC",
+            "Billing",
+            "Customer",
+
+            "Delivery",
+            "Theft",
+            "Vehicle"
     };
+
+//        "Speed",
+//        "Geofence",
+//        "Mileage",
+//        "Theft",
+//        "Delivery",
+//        "DTC",
+//        "Billing",
+//        "Vehicle Status",
+//        "Customer Status"
+
 
     public static final String VEHICLE_TYPES[] =
     {
@@ -276,6 +293,8 @@ public class Constants
 
     public static final String URL_DELETE_TEST_DRIVE = URL + "warrous.ms.obdm/warrous.ms.obdm.api/api/Vehicle/DeleteTestDrive?vehicleId=";
 
+    public static final String URL_GET_VEHICLE_DETAILS_BY_VIN = URL + "warrous.ms.obdm/warrous.ms.obdm.api/api/Vehicle/GetVehicleDetailsByVin?Vin=";
+
     public static final String SUPER_ADMIN = "SuperAdmin";
 
     public static final String GENERAL_MANAGER = "GeneralManager";
@@ -341,4 +360,6 @@ public class Constants
     public static final String SAMPLE_APP_OVERVIEW = "{\"FleetCount\":69,   \"LotCount\":125,   \"TestCount\":30,   \"PDICount\":4,   \"VehicleDeliveryCount\":7,   \"FindVehicleCount\":125,   \"MarkedCount\":0,   \"ZoneCount\":19,   \"VehicleCount\":0,   \"Type\":null,   \"TypeId\":0,   \"TestDriveTypeId\":0,   \"vehicleTypeCount\":[        {           \"FleetCount\":0,         \"LotCount\":0,         \"TestCount\":0,         \"PDICount\":0,         \"VehicleDeliveryCount\":0,         \"FindVehicleCount\":0,         \"MarkedCount\":0,         \"ZoneCount\":0,         \"VehicleCount\":39,         \"Type\":\"Delivery Received\",         \"TypeId\":7,         \"TestDriveTypeId\":0,         \"vehicleTypeCount\":null      },      {           \"FleetCount\":0,         \"LotCount\":0,         \"TestCount\":0,         \"PDICount\":0,         \"VehicleDeliveryCount\":0,         \"FindVehicleCount\":0,         \"MarkedCount\":0,         \"ZoneCount\":0,         \"VehicleCount\":1,         \"Type\":\"Inventory\",         \"TypeId\":1,         \"TestDriveTypeId\":0,         \"vehicleTypeCount\":null      },      {           \"FleetCount\":0,         \"LotCount\":0,         \"TestCount\":0,         \"PDICount\":0,         \"VehicleDeliveryCount\":0,         \"FindVehicleCount\":0,         \"MarkedCount\":0,         \"ZoneCount\":0,         \"VehicleCount\":3,         \"Type\":\"Marked for PDI\",         \"TypeId\":9,         \"TestDriveTypeId\":0,         \"vehicleTypeCount\":null      },      {           \"FleetCount\":0,         \"LotCount\":0,         \"TestCount\":0,         \"PDICount\":0,         \"VehicleDeliveryCount\":0,         \"FindVehicleCount\":0,         \"MarkedCount\":0,         \"ZoneCount\":0,         \"VehicleCount\":25,         \"Type\":\"PDI Incomplete\",         \"TypeId\":10,         \"TestDriveTypeId\":0,         \"vehicleTypeCount\":null      },      {           \"FleetCount\":0,         \"LotCount\":0,         \"TestCount\":0,         \"PDICount\":0,         \"VehicleDeliveryCount\":0,         \"FindVehicleCount\":0,         \"MarkedCount\":0,         \"ZoneCount\":0,         \"VehicleCount\":27,         \"Type\":\"Preparing for Lot\",         \"TypeId\":8,         \"TestDriveTypeId\":0,         \"vehicleTypeCount\":null      },      {           \"FleetCount\":0,         \"LotCount\":0,         \"TestCount\":0,         \"PDICount\":0,         \"VehicleDeliveryCount\":0,         \"FindVehicleCount\":0,         \"MarkedCount\":0,         \"ZoneCount\":0,         \"VehicleCount\":30,         \"Type\":\"On Lot\",         \"TypeId\":2,         \"TestDriveTypeId\":1,         \"vehicleTypeCount\":null      }   ]}";
 
     public static final String ALL_TRUE_INSPECTION = "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1";
+
+    public static final String COLOR_CODES[] = {"#BA4141","#E07C5C","#00B3FF","#0069C9","#27BE60","#F9D006"};
 }

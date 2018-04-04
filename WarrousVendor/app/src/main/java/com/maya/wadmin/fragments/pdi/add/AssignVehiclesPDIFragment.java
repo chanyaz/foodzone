@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AssignVehiclesPDIFragment#newInstance} factory method to
@@ -53,10 +56,13 @@ public class AssignVehiclesPDIFragment extends Fragment implements IFragment,IAs
     private String mParam2;
 
 
-    CoordinatorLayout coordinatorLayout;
-    RecyclerView recyclerView;
-    SwipeRefreshLayout swipeRefreshLayout;
-    ProgressBar progressBar;
+
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+
+
     Vehicle vehicle;
     List<Vehicle> list, finalList;
     List<Vehicle> selectedList = new ArrayList<>();
@@ -101,29 +107,24 @@ public class AssignVehiclesPDIFragment extends Fragment implements IFragment,IAs
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assign_vehicles_pdi, container, false);
+        ButterKnife.bind(this,view);
+
         iAssignPDIVehiclesAdapter = this;
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view .findViewById(R.id.swipeRefreshLayout);
-        recyclerView = view .findViewById(R.id.recyclerView);
-        progressBar = view .findViewById(R.id.progressBar);
+
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh()
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            ((HelperActivity) activity()).clearSearchText();
+            if(Utility.isNetworkAvailable(activity()))
             {
-                ((HelperActivity) activity()).clearSearchText();
-                if(Utility.isNetworkAvailable(activity()))
-                {
-                    fetchAssignVehiclesForPDI();
-                }
-                else
-                {
-                    showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
-                }
-                swipeRefreshLayout.setRefreshing(false);
+                fetchAssignVehiclesForPDI();
             }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,0);
+            }
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         if(Utility.isNetworkAvailable(activity()))

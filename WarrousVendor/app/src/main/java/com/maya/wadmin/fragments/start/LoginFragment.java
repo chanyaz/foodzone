@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -38,6 +39,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link LoginFragment#newInstance} factory method to
@@ -54,10 +58,21 @@ public class LoginFragment extends Fragment implements IFragment{
     private String mParam2;
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
-    EditText etUserName,etPassword;
-    RelativeLayout rlCheckUserName, rlCheckPassword, rlPassword, rlUserName;
-    TextView tvPortalName;
+
+    @BindView(R.id.etUserName)
+    EditText etUserName;
+
+    @BindView(R.id.etPassword)
+    EditText etPassword;
+
+
+    @BindView(R.id.rlCheckUserName) RelativeLayout rlCheckUserName;
+    @BindView(R.id.rlCheckPassword) RelativeLayout rlCheckPassword;
+    @BindView(R.id.rlPassword) RelativeLayout rlPassword;
+    @BindView(R.id.rlUserName) RelativeLayout rlUserName;
+    @BindView(R.id.tvPortalName) TextView tvPortalName;
 
     String firstName = "Default";
     String lastName = "User";
@@ -101,21 +116,14 @@ public class LoginFragment extends Fragment implements IFragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        initialize(view);
+        ButterKnife.bind(this,view);
 
+        setUp();
         return view;
     }
 
-    private void initialize(View view) {
+    private void setUp() {
 
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        etUserName = view.findViewById(R.id.etUserName);
-        etPassword = view.findViewById(R.id.etPassword);
-        rlCheckUserName = view.findViewById(R.id.rlCheckUserName);
-        rlCheckPassword = view.findViewById(R.id.rlCheckPassword);
-        rlUserName = view.findViewById(R.id.rlUserName);
-        rlPassword = view.findViewById(R.id.rlPassword);
-        tvPortalName = view.findViewById(R.id.tvPortalName);
 
         tvPortalName.setText(Constants.portalsTypeIDS[ Utility.getPortalType()]);
 
@@ -160,7 +168,7 @@ public class LoginFragment extends Fragment implements IFragment{
         String username = ""+etUserName.getText();
         String password = ""+etPassword.getText();
 
-        if(username.trim().length()>0&&password.trim().length()>0)
+        if(username.trim().length()>0&&password.length()>0)
         {
             doApiVerify();
         }
@@ -179,7 +187,7 @@ public class LoginFragment extends Fragment implements IFragment{
         try
         {
             input.put("username",etUserName.getText().toString().trim());
-            input.put("password",etPassword.getText().toString().trim());
+            input.put("password",etPassword.getText().toString());
         }
         catch (Exception e)
         {
@@ -241,6 +249,7 @@ public class LoginFragment extends Fragment implements IFragment{
                                 Utility.setString(Utility.getSharedPreferences(),Constants.FIRST_NAME,firstName);
                                 Utility.setString(Utility.getSharedPreferences(),Constants.LAST_NAME,lastName);
                                 Utility.setString(Utility.getSharedPreferences(),Constants.USER_ROLL_NAME,userRoll);
+                                Utility.setString(Utility.getSharedPreferences(),Constants.USER_PASSWORD,etPassword.getText().toString());
                                 Utility.setInt(Utility.getSharedPreferences(),Constants.USER_TYPE,type);
                                 Utility.setBoolen(Utility.getSharedPreferences(),Constants.LOGIN,true);
                                 Utility.setString(Utility.getSharedPreferences(),Constants.USER_NAME,userName);

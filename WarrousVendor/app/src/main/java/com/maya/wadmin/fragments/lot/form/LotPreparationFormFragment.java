@@ -41,6 +41,9 @@ import com.squareup.picasso.Picasso;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link LotPreparationFormFragment#newInstance} factory method to
@@ -57,12 +60,28 @@ public class LotPreparationFormFragment extends Fragment implements IFragment, I
     private String mParam2;
 
 
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    TextView tvTime, tvSalesPerson, tvVin, tvOther, tvCancel, tvSave;
+
+    @BindView(R.id.tvTime) TextView tvTime;
+    @BindView(R.id.tvSalesPerson) TextView tvSalesPerson;
+    @BindView(R.id.tvVin) TextView tvVin;
+    @BindView(R.id.tvOther) TextView tvOther;
+    @BindView(R.id.tvCancel) TextView tvCancel;
+    @BindView(R.id.tvSave) TextView tvSave;
+
+    @BindView(R.id.imgSalesPerson)
     ImageView imgSalesPerson;
+
     Vehicle vehicle = null;
     List<CheckList> list;
     PDIChecklistAdapter pdiChecklistAdapter;
@@ -120,10 +139,12 @@ public class LotPreparationFormFragment extends Fragment implements IFragment, I
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_lot_preparation_form, container, false);
+        ButterKnife.bind(this,view);
+
         iPdiChecklistAdapter = this;
 
 
-        tvSave = view.findViewById(R.id.tvSave);
+
         if(getArguments()!=null)
         {
             vehicle = (Vehicle) getArguments().getSerializable("vehicle");
@@ -133,19 +154,8 @@ public class LotPreparationFormFragment extends Fragment implements IFragment, I
                 tvSave.setVisibility(View.GONE);
             }
         }
-        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setEnabled(false);
-        progressBar = view.findViewById(R.id.progressBar);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        tvOther = view.findViewById(R.id.tvOther);
-        tvVin = view.findViewById(R.id.tvVin);
-        tvSalesPerson = view.findViewById(R.id.tvSalesPerson);
-        tvTime = view.findViewById(R.id.tvTime);
-        tvSave = view.findViewById(R.id.tvSave);
-        tvCancel = view.findViewById(R.id.tvCancel);
-        imgSalesPerson = view.findViewById(R.id.imgSalesPerson);
 
+        swipeRefreshLayout.setEnabled(false);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
         recyclerView.setFocusable(false);
