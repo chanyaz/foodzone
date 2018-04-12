@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.maya.vgarages.customviews.RoundedImageView
+        android:id="@+id/imgGarage"
+        app:siBorderColor="@color/white"
+        app:siRadius="3dp"
+        android:background="@drawable/corner_radius_white_3"
+        android:backgroundTint="@color/light_gray"
+        android:layout_gravity="center"
+        android:src="@drawable/pin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
