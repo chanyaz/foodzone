@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/llhead"
+    android:background="@drawable/test_drive_item_selected">
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgVehicle"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/corner_radius_hash_pool_6"
+            android:layout_width="90dp"
+            android:layout_height="65dp" />
+        <LinearLayout
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.maya.wadmin.customviews.SFBoldTextView
+                android:id="@+id/tvVin"
+                android:maxLines="1"
+                android:textSize="16sp"
+                android:textColor="#5C5C5C"
+                android:text="3KPFL4A74JE177017"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+                    <com.maya.wadmin.customviews.SFMediumTextView
+                        android:id="@+id/tvModel"
+                        android:maxLines="1"
+                        android:textSize="16sp"
+                        android:textColor="#C45C5C5C"
+                        android:text="Soul"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llhead3"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgClick"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="16dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_arrow_down" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llhead1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.maya.wadmin.customviews.SFRegularTextView
+            android:id="@+id/tvOther"
+            android:maxLines="1"
+            android:layout_marginLeft="120dp"
+            android:layout_marginRight="8dp"
+            android:textSize="15sp"
+            android:textColor="#C45C5C5C"
+            android:text="Kia 2017"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp" />
+                <com.maya.wadmin.customviews.SFRegularTextView
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:id="@+id/tvReceived"
+                    android:maxLines="1"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/light_new_gray"
+                    android:text="Received: Yesterday, 02:11 PM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp" />
+                <com.maya.wadmin.customviews.SFRegularTextView
+                    android:id="@+id/tvStatus"
+                    android:maxLines="1"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/light_new_gray"
+                    android:textSize="15sp"
+                    android:text="Status : Marked for PDI"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp" />
+            </LinearLayout>
+
+
+    <View
+        android:id="@+id/bottomView"
+        android:layout_marginLeft="8dp"
+        android:background="#E3E5EC"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </View>
+</LinearLayout>

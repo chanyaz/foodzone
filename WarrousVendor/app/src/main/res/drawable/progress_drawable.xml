@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="8dp"/>
+            <solid android:color="@color/app_hash_pool"/>
+        </shape>
+    </item>
+
+    <item android:id="@android:id/progress"
+        android:top="2dp"
+        android:bottom="2dp"
+        android:left="2dp"
+        android:right="2dp">
+        <clip>
+            <shape>
+                <corners android:radius="8dp"/>
+                <solid android:color="@color/colorPrimaryDark"/>
+            </shape>
+        </clip>
+    </item>
+</selector>

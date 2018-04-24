@@ -1,0 +1,81 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.maya.wcustomer.fragments.parking.ParkingHomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- TODO: Update blank fragment layout -->
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="70dp"
+                    />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/tint_drawable"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp">
+                        <com.maya.wcustomer.customviews.SFMediumTextView
+                            android:id="@+id/tvRPM"
+                            android:layout_width="match_parent"
+                            android:text="Actions"
+                            android:textSize="14sp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="15dp"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <ProgressBar
+            android:layout_alignParentTop="true"
+            style="?android:progressBarStyleHorizontal"
+            android:indeterminateTint="@color/colorAccent"
+            android:indeterminate="true"
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+</FrameLayout>

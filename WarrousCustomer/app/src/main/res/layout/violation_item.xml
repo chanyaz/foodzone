@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginTop="5dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="15dp"
+    android:layout_marginBottom="5dp"
+    android:layout_height="110dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+      <LinearLayout
+          android:orientation="vertical"
+          android:layout_marginBottom="7dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <LinearLayout
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+              <ImageView
+                  android:id="@+id/imgAlert"
+                  android:src="@drawable/alert_red"
+                  android:layout_margin="10dp"
+                  android:layout_width="25dp"
+                  android:layout_height="25dp" />
+              <com.maya.wcustomer.customviews.SFSemiBoldTextView
+                  android:id="@+id/tvAlertName"
+                  android:layout_width="match_parent"
+                  android:layout_marginLeft="0dp"
+                  android:textColor="#404040"
+                  android:text="Speed Alert"
+                  android:textSize="16sp"
+                  android:layout_height="wrap_content" />
+
+          </LinearLayout>
+          <com.maya.wcustomer.customviews.SFRegularTextView
+              android:id="@+id/tvAlertMessage"
+              android:maxLines="1"
+              android:layout_marginTop="-3dp"
+              android:textSize="12sp"
+              android:textColor="#404040"
+              android:layout_marginLeft="45dp"
+              android:layout_marginRight="20dp"
+              android:text="Vehicle has passed 96mph"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />
+
+          <LinearLayout
+              android:layout_marginTop="2dp"
+              android:layout_marginBottom="5dp"
+              android:layout_marginLeft="43dp"
+              android:layout_marginRight="20dp"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+              <ImageView
+                  android:padding="1dp"
+                  android:tint="#A9B6C7"
+                  android:src="@drawable/ic_near_me"
+                  android:layout_width="18dp"
+                  android:layout_height="18dp" />
+          <com.maya.wcustomer.customviews.SFRegularTextView
+              android:id="@+id/tvAlertDetails"
+              android:maxLines="1"
+              android:layout_marginLeft="5dp"
+              android:drawableTint="#A9B6C7"
+              android:textSize="12sp"
+              android:textColor="#A9B6C7"
+              android:text="Yesterday 6:12 pm in San-Diego"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />
+          </LinearLayout>
+
+
+      </LinearLayout>
+    <ImageView
+        android:layout_marginLeft="-10dp"
+        android:layout_marginRight="-10dp"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="7dp" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

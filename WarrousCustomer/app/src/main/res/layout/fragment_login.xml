@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    tools:context=".fragments.start.LoginFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+  <android.support.design.widget.CoordinatorLayout
+      android:id="@+id/coordinatorLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <LinearLayout
+          android:gravity="center"
+          android:layout_gravity="center"
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+
+          <ImageView
+              android:tint="@color/splash_background"
+              android:src="@drawable/sample_dot"
+              android:layout_margin="25dp"
+              android:layout_width="90dp"
+              android:layout_height="90dp" />
+
+
+          <com.maya.wcustomer.customviews.RBMediumTextView
+              android:layout_marginBottom="25dp"
+              android:textColor="@color/gray"
+              android:textSize="14sp"
+              android:textAlignment="center"
+              android:text="Welcome to WCustomer!"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />
+
+
+          <LinearLayout
+          android:id="@+id/llGoogleSignIn"
+          android:elevation="2dp"
+          android:background="@drawable/corner_radius_white_3"
+          android:gravity="center"
+          android:layout_gravity="center"
+          android:layout_marginTop="10dp"
+          android:layout_marginBottom="10dp"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="46dp">
+          <ImageView
+              android:src="@drawable/google_plus"
+              android:layout_width="20dp"
+              android:layout_height="20dp" />
+          <com.maya.wcustomer.customviews.RBMediumTextView
+              android:textColor="@color/text_color"
+              android:textSize="16sp"
+              android:layout_marginLeft="15dp"
+              android:layout_marginRight="15dp"
+              android:text="Continue with Google"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" />
+
+      </LinearLayout>
+
+
+          <LinearLayout
+              android:id="@+id/llMSSignIn"
+              android:elevation="2dp"
+              android:background="@drawable/corner_radius_white_3"
+              android:gravity="center"
+              android:layout_gravity="center"
+              android:layout_marginTop="10dp"
+              android:layout_marginBottom="10dp"
+              android:layout_marginLeft="30dp"
+              android:layout_marginRight="30dp"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="46dp">
+              <ImageView
+                  android:padding="2dp"
+                  android:src="@drawable/ms_logo"
+                  android:layout_width="20dp"
+                  android:layout_height="20dp" />
+              <com.maya.wcustomer.customviews.RBMediumTextView
+                  android:textColor="@color/text_color"
+                  android:textSize="16sp"
+                  android:layout_marginLeft="14dp"
+                  android:layout_marginRight="15dp"
+                  android:text="Continue with Microsoft"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+
+          </LinearLayout>
+
+      </LinearLayout>
+
+  </android.support.design.widget.CoordinatorLayout>
+
+</FrameLayout>

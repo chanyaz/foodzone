@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="15dp"
+    android:layout_height="100dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginBottom="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.maya.wcustomer.customviews.SFSemiBoldTextView
+                    android:layout_weight="1"
+                    android:id="@+id/tvTripName"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#404040"
+                    android:text="Trip New york"
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.maya.wcustomer.customviews.SFRegularTextView
+                        android:layout_width="match_parent"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:id="@+id/tvTime"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/text_color"
+                        android:text="8:00am - 9:30 pm"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content" />
+
+                    <com.maya.wcustomer.customviews.SFRegularTextView
+                        android:layout_width="match_parent"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="3dp"
+                        android:gravity="right"
+                        android:id="@+id/tvDay"
+                        android:textColor="#a0a0a0"
+                        android:text="Today"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:tint="#816CD4"
+                        android:src="@drawable/alert_circle"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+                    <ImageView
+                        android:background="#909090"
+                        android:layout_height="10dp"
+                        android:layout_width="1dp"
+                         />
+
+                    <ImageView
+                        android:tint="#A550AE"
+                        android:src="@drawable/alert_circle"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:orientation="vertical"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.maya.wcustomer.customviews.SFRegularTextView
+                        android:textSize="12sp"
+                        android:maxLines="1"
+                        android:id="@+id/tvStart"
+                        android:ellipsize="end"
+                        android:text="142 Pineapple st."
+                        android:textColor="@color/text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.maya.wcustomer.customviews.SFRegularTextView
+                        android:textSize="12sp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:id="@+id/tvEnd"
+                        android:layout_marginTop="3dp"
+                        android:text="11 High Garden ave."
+                        android:textColor="@color/text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <ImageView
+            android:layout_marginLeft="-10dp"
+            android:layout_marginRight="-10dp"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="7dp" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

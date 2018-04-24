@@ -1,0 +1,60 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.maya.vgarages.fragments.home.HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v4.widget.NestedScrollView
+                android:scrollbars="none"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/recyclerViewServices"
+            android:layout_width="match_parent"
+            android:layout_height="110dp">
+
+        </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:nestedScrollingEnabled="false"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progress_bar"
+                style="?android:progressBarStyleHorizontal"
+                android:indeterminateTint="@color/colorPrimary"
+                android:indeterminate="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</FrameLayout>

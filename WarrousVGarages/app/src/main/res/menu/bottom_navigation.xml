@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/home_fill"
+        android:title="Home"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/search"
+        android:title="Search"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/navigation_location"
+        android:icon="@drawable/map_marker"
+        android:title="Location"
+        app:showAsAction="always|withText"/>
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/notifications"
+        android:title="Notification"
+        app:showAsAction="always|withText"/>
+
+    <item
+        android:id="@+id/navigation_remainder"
+        android:icon="@drawable/pin"
+        android:title="Remainder"
+        app:showAsAction="always|withText"/>
+
+
+
+
+
+
+</menu>

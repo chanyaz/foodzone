@@ -1,0 +1,212 @@
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
+            app:elevation="0dp"
+            android:background="#00000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                app:elevation="0dp"
+
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:scrimAnimationDuration="3"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlways">
+
+                <RelativeLayout
+                    app:layout_collapseMode="parallax"
+                    android:fitsSystemWindows="true"
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:layout_collapseParallaxMultiplier="0.5"
+                    >
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:elevation="4dp"
+                            android:background="@color/mainColorPrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:elevation="4dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:elevation="4dp"
+                        android:id="@+id/llMainHead"
+                        android:background="@drawable/corner_radius_white_8"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_centerVertical="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <com.maya.wadmin.customviews.SFRegularTextView
+                            android:id="@+id/tvTopBarItem"
+                            android:maxLines="1"
+                            android:layout_gravity="center"
+                            android:paddingRight="15dp"
+                            android:paddingLeft="15dp"
+                            android:drawableRight="@drawable/ic_top_bar_down"
+                            android:gravity="center"
+                            android:textSize="18sp"
+                            android:textColor="#58595B"
+                            android:text="bdbhcdbhb kdjn dj njn d jc j d n jdjdjd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:id="@+id/toolbar"
+                    android:layout_width="0.5dp"
+                    android:layout_height="8dp"
+                    app:layout_collapseMode="pin"/>
+
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            tools:context="com.maya.wadmin.fragments.delivery.VehicleDeliveryFragment">
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:id="@+id/mainTabLayout"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <ProgressBar
+                                    android:visibility="visible"
+                                    android:id="@+id/progressBar"
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:indeterminateTint="@color/mainColorPrimary"
+                                    android:indeterminate="true"/>
+                                <android.support.design.widget.TabLayout
+                                    android:id="@+id/tab_layout"
+                                    app:tabSelectedTextColor="#58595B"
+                                    app:tabTextColor="#8058595B"
+                                    app:tabIndicatorHeight="3dp"
+                                    app:tabIndicatorColor="#00E5E5E5"
+                                    app:tabGravity="center"
+                                    app:tabMode="scrollable"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="60dp">
+
+                                </android.support.design.widget.TabLayout>
+                                <TextView
+                                    android:background="#54B6B6CC"
+                                    android:elevation="2dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0.1dp" />
+
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <android.support.v4.view.ViewPager
+                                        android:id="@+id/view_pager"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <FrameLayout
+                                android:id="@+id/frameLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true">
+
+                            </FrameLayout>
+                        </RelativeLayout>
+
+
+
+
+
+                    </RelativeLayout>
+                </android.support.v4.widget.SwipeRefreshLayout>
+
+            </android.support.design.widget.CoordinatorLayout>
+
+        </FrameLayout>
+
+
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llTopBarPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewTopBar"
+            android:elevation="4dp"
+            android:background="@drawable/corner_radius_white_8"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+</RelativeLayout>

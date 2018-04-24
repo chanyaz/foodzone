@@ -1,0 +1,56 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.maya.wcustomer.fragments.my_way.trips.RecentTripsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/tint_drawable"
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+                <com.maya.wcustomer.customviews.SFMediumTextView
+                    android:layout_width="match_parent"
+                    android:text="Recent Trips"
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/imgTrips"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/ic_go"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+            </LinearLayout>
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:background="@color/white"
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

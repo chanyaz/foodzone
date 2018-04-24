@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+android:orientation="vertical"
+android:elevation="19dp"
+android:background="@drawable/corner_radius_white_12"
+android:layout_marginTop="10dp"
+android:layout_marginBottom="8.5dp"
+android:layout_marginLeft="15dp"
+android:layout_marginRight="15dp"
+    android:foreground="?android:attr/selectableItemBackground"
+xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+android:layout_height="140dp"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/imgUserRole"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/ic_notifications"
+        android:layout_width="25dp"
+        android:layout_height="25dp" />
+    <com.maya.wadmin.customviews.BoldTextView
+        android:id="@+id/tvUserRoleName"
+        android:maxLines="1"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:textColor="@color/bold_text_color"
+        android:text="Lot Management"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:padding="15dp"
+        android:src="@drawable/ic_arrow_red"
+        android:background="#8CECECEF"
+        android:layout_weight="0"
+        android:layout_width="55dp"
+        android:layout_height="55dp" />
+
+</LinearLayout>
+<View
+    android:background="@color/app_hash_pool"
+    android:layout_marginLeft="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="1dp">
+
+</View>
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/llhead"-->
+        <!--android:background="@drawable/corner_radius_hash_pool_6"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_width="160dp"-->
+        <!--android:layout_height="54dp">-->
+
+        <!--<com.maya.wadmin.customviews.SFBoldTextView-->
+            <!--android:id="@+id/tvCountVehicles"-->
+            <!--android:textColor="#C458595B"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="31sp"-->
+            <!--android:text="311"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<com.maya.wadmin.customviews.SFRegularTextView-->
+            <!--android:id="@+id/tvVehiclesContent"-->
+            <!--android:maxLines="2"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:textColor="#58595B"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:textStyle="normal"-->
+            <!--android:textSize="14sp"-->
+            <!--android:text="New vehicles-->
+<!--to prepare"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+    <!--</LinearLayout>-->
+    <!--<LinearLayout-->
+        <!--android:id="@+id/llhead1"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:layout_width="133dp"-->
+        <!--android:layout_height="54dp">-->
+
+        <!--<com.maya.wadmin.customviews.SFBoldTextView-->
+            <!--android:id="@+id/tvCountVehicles1"-->
+            <!--android:textColor="#C458595B"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="31sp"-->
+            <!--android:text="3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<com.maya.wadmin.customviews.SFRegularTextView-->
+            <!--android:id="@+id/tvVehiclesContent1"-->
+            <!--android:maxLines="2"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:textColor="#58595B"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:textStyle="normal"-->
+            <!--android:textSize="14sp"-->
+            <!--android:text="New vehicles to prepare"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+    <!--</LinearLayout>-->
+
+
+
+
+</LinearLayout>
+
+
+</LinearLayout>

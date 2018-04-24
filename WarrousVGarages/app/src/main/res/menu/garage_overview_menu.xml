@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        app:iconTint="@color/colorPrimary"
+        android:id="@+id/menu_fav"
+        android:icon="@drawable/ic_hallow_love"
+        android:title="Fav"
+        app:showAsAction="always|withText"/>
+
+    <item
+        app:iconTint="@color/colorPrimary"
+        android:id="@+id/menu_cart"
+        android:icon="@drawable/ic_shopping_bag"
+        android:title="Cart"
+        app:showAsAction="always|withText"/>
+    <item
+        app:iconTint="@color/colorPrimary"
+        android:id="@+id/menu_add_review"
+        android:icon="@drawable/ic_add_circular"
+        android:title="Add Review"
+        app:showAsAction="always|withText"/>
+</menu>

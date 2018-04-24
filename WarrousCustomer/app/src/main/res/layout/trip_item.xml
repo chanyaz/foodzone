@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/alert_circle"
+                android:tint="#816CD4" />
+
+            <ImageView
+                android:tint="#909090"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:src="@drawable/vertical_dots" />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/alert_circle"
+                android:tint="#A550AE" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.maya.wcustomer.customviews.SFRegularTextView
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:id="@+id/tvStart"
+                android:ellipsize="end"
+                android:text="142 Pineapple st."
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.maya.wcustomer.customviews.SFRegularTextView
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:id="@+id/tvEnd"
+                android:layout_marginTop="3dp"
+                android:text="11 High Garden ave."
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="right"
+            android:layout_gravity="center_vertical"
+            android:layout_width="80dp"
+            android:layout_marginRight="5dp"
+            android:layout_height="wrap_content">
+
+            <com.maya.wcustomer.customviews.SFRegularTextView
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:id="@+id/tvStartTime"
+                android:ellipsize="end"
+                android:text="07:34 am"
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.maya.wcustomer.customviews.SFRegularTextView
+                android:textSize="16sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:id="@+id/tvEndTime"
+                android:layout_marginTop="3dp"
+                android:text="11:40 am"
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_gravity="bottom"
+            android:rotation="180"
+            android:tint="#A9B8D4"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/ic_keyboard_arrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_arrow"
+                android:layout_width="15dp"
+                android:layout_height="15dp" />
+
+            <com.maya.wcustomer.customviews.SFMediumTextView
+                android:ellipsize="end"
+                android:textSize="15sp"
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="8dp"
+                android:id="@+id/tvLocation"
+                android:textColor="#A9B8D4"
+                android:text="New York"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_speedometer"
+                android:layout_width="15dp"
+                android:layout_height="15dp" />
+
+            <com.maya.wcustomer.customviews.SFMediumTextView
+                android:ellipsize="end"
+                android:id="@+id/tvDistance"
+                android:textSize="15sp"
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="8dp"
+                android:textColor="#A9B8D4"
+                android:text="5.2 miles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="right"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_timer"
+                android:layout_width="15dp"
+                android:layout_height="15dp" />
+
+            <com.maya.wcustomer.customviews.SFMediumTextView
+                android:ellipsize="end"
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="8dp"
+                android:textColor="#A9B8D4"
+                android:id="@+id/tvDuration"
+                android:text="29 min"
+                android:textSize="15sp"
+                android:gravity="right"
+                android:layout_gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llHead"
+        android:layout_marginLeft="15dp"
+        android:background="#54BDBDBD"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </LinearLayout>
+
+</LinearLayout>

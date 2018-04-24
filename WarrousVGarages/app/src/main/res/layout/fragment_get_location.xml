@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.start.GetLocationFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.maya.vgarages.customviews.WSSemiBoldTextView
+            android:id="@+id/tvTitle"
+            android:textColor="@color/light_new_gray"
+            android:textSize="18sp"
+            android:text="Getting Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_margin="10dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/imgLocation"
+                android:layout_margin="7dp"
+                android:padding="10dp"
+                android:tint="@color/light_gray"
+                android:src="@drawable/ic_location"
+                android:backgroundTint="@color/app_background_color"
+                android:background="@drawable/circle_white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+
+        <com.maya.vgarages.customviews.WSMediumTextView
+            android:id="@+id/tvEnable"
+            android:elevation="2dp"
+            android:text="Turn On"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:background="@drawable/corner_radius_white_3"
+            android:layout_width="90dp"
+            android:layout_height="25dp" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

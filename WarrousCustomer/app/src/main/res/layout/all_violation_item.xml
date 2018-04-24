@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="5dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="15dp"
+    android:layout_marginBottom="5dp"
+    android:layout_height="wrap_content">
+
+        <LinearLayout
+
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgAlert"
+                    android:src="@drawable/alert_red"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+                <com.maya.wcustomer.customviews.SFSemiBoldTextView
+                    android:layout_weight="1"
+                    android:id="@+id/tvAlertName"
+                    android:layout_width="match_parent"
+                    android:textColor="#404040"
+                    android:text="Speed Alert"
+                    android:textSize="20sp"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:rotation="180"
+                    android:tint="#A9B8D4"
+                    android:src="@drawable/ic_keyboard_arrow"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+
+            </LinearLayout>
+            <com.maya.wcustomer.customviews.SFRegularTextView
+
+                android:id="@+id/tvAlertMessage"
+                android:maxLines="1"
+                android:textSize="16sp"
+                android:textColor="#404040"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="20dp"
+                android:text="Vehicle has passed 96mph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:padding="1dp"
+                    android:tint="#A9B6C7"
+                    android:src="@drawable/ic_near_me"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp" />
+                <com.maya.wcustomer.customviews.SFRegularTextView
+                    android:id="@+id/tvAlertDetails"
+                    android:maxLines="1"
+                    android:layout_marginLeft="5dp"
+                    android:drawableTint="#A9B6C7"
+                    android:textSize="13sp"
+                    android:textColor="#A9B6C7"
+                    android:text="Yesterday 6:12 pm in San-Diego"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                android:id="@+id/llHead"
+                android:layout_marginTop="5dp"
+                android:background="#54BDBDBD"
+                android:layout_width="match_parent"
+                android:layout_height="1dp">
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+</LinearLayout>
