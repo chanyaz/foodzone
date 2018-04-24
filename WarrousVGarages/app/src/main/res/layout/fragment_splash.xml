@@ -63,9 +63,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                         <ImageView
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            android:scaleType="centerInside"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/vgarages_logo"
+                            android:src="@drawable/ic_vgarage_logo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                 </RelativeLayout>

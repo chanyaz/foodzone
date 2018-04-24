@@ -150,9 +150,15 @@ public class AddActionDialog extends Dialog
         setContentView(R.layout.add_action_dialog);
         ButterKnife.bind(this);
 
+//        if(operationList.size()==0)
+//        {
+//            return;
+//        }
 
 
-        tvFrom.setOnClickListener(click -> {
+
+
+            tvFrom.setOnClickListener(click -> {
 
             final Calendar calendar = Calendar.getInstance();
             int yy = calendar.get(Calendar.YEAR);
@@ -209,6 +215,7 @@ public class AddActionDialog extends Dialog
                    deleteAction();
                 }
         });
+
         operations = new String[operationList.size()];
         int i = 0;
         for (Operation operation : operationList)
@@ -318,7 +325,7 @@ public class AddActionDialog extends Dialog
             }
             else
             {
-                if(position==0)
+                if(position==1)
                     showSnackbar("Please enter the Speed", 2);
                 else
                 {

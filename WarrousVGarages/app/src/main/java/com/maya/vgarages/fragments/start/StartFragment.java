@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -33,6 +36,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.maya.vgarages.R;
+import com.maya.vgarages.activities.SplashActivity;
 import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.utilities.Logger;
@@ -62,11 +66,7 @@ public class StartFragment extends Fragment  implements IFragment, GoogleApiClie
     private String mParam1;
     private String mParam2;
 
-    CallbackManager callbackManager;
 
-    private GoogleSignInOptions gso;
-    //google api client
-    private GoogleApiClient mGoogleApiClient;
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
@@ -131,17 +131,27 @@ public class StartFragment extends Fragment  implements IFragment, GoogleApiClie
         View view = inflater.inflate(R.layout.fragment_start, container, false);
         ButterKnife.bind(this,view);
 
-        setUpFB();
 
-        setUpGoogle();
 
-        llGoogleSignIn.setOnClickListener(v -> {signInByGoogle();});
+        initialize();
+
+        llGoogleSignIn.setOnClickListener(v -> {((SplashActivity) activity()).signInByGoogle();});
 
         tvSignIn.setOnClickListener(v -> {goToSignInFragment();});
 
         return view;
     }
 
+    private void initialize()
+    {
+        ((SplashActivity) activity()).setUpGoogle();
+        ((SplashActivity)activity()).setUpFB();
+        fbSignIn.setText("Continue with Facebook");
+        fbSignIn.setCompoundDrawablePadding(Utility.dpSize(activity(),10));
+        fbSignIn.setTypeface(Typeface.createFromAsset(activity().getAssets(), "fonts/RalewayMedium.ttf"));
+        fbSignIn.setReadPermissions(Constants.FB_PERMISSIONS);
+        fbSignIn.registerCallback(((SplashActivity)activity()).callbackManager, ((SplashActivity)activity()).callback);
+    }
 
 
 
@@ -166,161 +176,7 @@ public class StartFragment extends Fragment  implements IFragment, GoogleApiClie
 
     }
 
-    private void signInByGoogle()
-    {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        this.startActivityForResult(signInIntent, Utility.generateRequestCodes().get("GOOGLE_SIGN_IN"));
-    }
 
-    private void setUpFB()
-    {
-        callbackManager = CallbackManager.Factory.create();
-        fbSignIn.setText("Continue with Facebook");
-        fbSignIn.setCompoundDrawablePadding(Utility.dpSize(activity(),10));
-        fbSignIn.setTypeface(Typeface.createFromAsset(activity().getAssets(), "fonts/RalewayMedium.ttf"));
-        fbSignIn.setReadPermissions(Constants.FB_PERMISSIONS);
-        FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult)
-            {
-                GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-
-                        JSONObject json = response.getJSONObject();
-                        Logger.d("Facebook Response",""+json.toString());
-                        parseFBJson(json);
-                    }
-                });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,link,gender,birthday,email,first_name,last_name,cover,picture.type(large)");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-            @Override
-            public void onCancel() {
-                showAlert();
-            }
-            @Override
-            public void onError(FacebookException e) {
-                showAlert();
-            }
-            private void showAlert()
-            {
-                showSnackBar("Not granted permission",2);
-            }
-        };
-        fbSignIn.registerCallback(callbackManager, callback);
-    }
-
-    private void setUpGoogle()
-    {
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        //Initializing google api client
-        if(mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(activity())
-                    .enableAutoManage(getActivity(), this)
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
-        }
-    }
-
-    private void parseGoogleResult(GoogleSignInResult result)
-    {
-        Logger.d("Google Response Status",""+result.getStatus().toString());
-        if (result.isSuccess())
-        {
-            GoogleSignInAccount acct = result.getSignInAccount();
-            String id = "GOOGLE:" + acct.getId();
-            Utility.setString(Utility.getSharedPreferences(), Constants.USER_ID, id);
-            Utility.setString(Utility.getSharedPreferences(), Constants.LAST_NAME, acct.getFamilyName());
-            Utility.setString(Utility.getSharedPreferences(), Constants.FIRST_NAME, acct.getGivenName());
-            Utility.setString(Utility.getSharedPreferences(), Constants.USER_EMAIL, acct.getEmail());
-            Utility.setString(Utility.getSharedPreferences(), Constants.USER_NAME, acct.getDisplayName());
-            try
-            {
-                if (!acct.getPhotoUrl().toString().isEmpty())
-                {
-                    Utility.setString(Utility.getSharedPreferences(), Constants.USER_PHOTO_URL, acct.getPhotoUrl().toString());
-                }
-                else
-                {
-                    Utility.setString(Utility.getSharedPreferences(), Constants.USER_PHOTO_URL, "");
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.setString(Utility.getSharedPreferences(), Constants.USER_PHOTO_URL, "");
-            }
-
-            Utility.setBoolen(Utility.getSharedPreferences(), Constants.LOGIN, true);
-            signOut();
-        }
-        else
-        {
-            showSnackBar("Login failed", 2);
-        }
-    }
-
-    public void parseFBJson(JSONObject json)
-    {
-        try
-        {
-            if (json != null)
-            {
-                String id = "FACEBOOK:"+json.getString("id");
-
-                Utility.setString(Utility.getSharedPreferences(),Constants.USER_ID,id);
-
-                Utility.setString(Utility.getSharedPreferences(),Constants.LAST_NAME,json.getString("last_name"));
-
-                Utility.setString(Utility.getSharedPreferences(),Constants.FIRST_NAME,json.getString("first_name"));
-
-                if(json.has("email"))
-                    Utility.setString(Utility.getSharedPreferences(),Constants.USER_EMAIL,json.getString("email"));
-                else
-                    Utility.setString(Utility.getSharedPreferences(),Constants.USER_EMAIL,"abc@warrous.com");
-
-                Utility.setString(Utility.getSharedPreferences(),Constants.USER_NAME,json.getString("name"));
-
-                String profilePicUrl = "";
-                if (json.has("picture"))
-                {
-                    profilePicUrl = json.getJSONObject("picture").getJSONObject("data").getString("url");
-                }
-                else
-                {
-                    profilePicUrl = "";
-                }
-                Utility.setString(Utility.getSharedPreferences(),Constants.USER_PHOTO_URL,profilePicUrl);
-
-                Utility.setBoolen(Utility.getSharedPreferences(),Constants.LOGIN,true);
-            }
-            else
-            {
-                showSnackBar(Constants.SOMETHING_WENT_WRONG,2);
-            }
-
-        }
-        catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    private void signOut()
-    {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status)
-                    {
-
-                    }
-                });
-    }
 
     private void goToSignInFragment()
     {
@@ -329,15 +185,4 @@ public class StartFragment extends Fragment  implements IFragment, GoogleApiClie
 
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == Utility.generateRequestCodes().get("GOOGLE_SIGN_IN"))
-        {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            parseGoogleResult(result);
-        }
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
 }

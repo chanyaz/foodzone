@@ -16,6 +16,7 @@ import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.fragments.garage.overview.GarageOverviewFragment;
 import com.maya.vgarages.fragments.profile.ProfileFragment;
 import com.maya.vgarages.interfaces.activities.IActivity;
+import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.utilities.Utility;
 
 import butterknife.BindView;
@@ -32,6 +33,10 @@ public class HelperActivity extends AppCompatActivity implements IActivity {
 
     @BindView(R.id.tvTitle)
     TextView tvTitle;
+
+    public boolean isBookmark = false;
+
+    MenuItem menuAddReview, menuFav, menuCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +74,7 @@ public class HelperActivity extends AppCompatActivity implements IActivity {
                 changeTitle("Account");
                 break;
             case 2222: // garage overview
-                fragment = GarageOverviewFragment.newInstance(null,null);
+                fragment = GarageOverviewFragment.newInstance((Garage) getIntent().getSerializableExtra("Garage"));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
                     toolbar.setElevation(1);
@@ -93,6 +98,10 @@ public class HelperActivity extends AppCompatActivity implements IActivity {
             case android.R.id.home:
                 onBackPressed();
                 break;
+            case R.id.menu_fav:
+                isBookmark = isBookmark?false:true;
+                menuFav.setIcon(isBookmark ? R.drawable.ic_fill_love :R.drawable.ic_hallow_love);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -109,6 +118,13 @@ public class HelperActivity extends AppCompatActivity implements IActivity {
 
             case 2222: // garage overview
                 getMenuInflater().inflate(R.menu.garage_overview_menu,menu);
+                menuFav = menu.findItem(R.id.menu_fav);
+                menuAddReview = menu.findItem(R.id.menu_add_review);
+                menuCart = menu.findItem(R.id.menu_cart);
+
+                hideMenuOption(R.id.menu_add_review);
+                hideMenuOption(R.id.menu_cart);
+
                 break;
         }
 
@@ -123,6 +139,42 @@ public class HelperActivity extends AppCompatActivity implements IActivity {
     @Override
     public void showSnackBar(String snackBarText, int type) {
         Utility.showSnackBar(activity(),coordinatorLayout,snackBarText,type);
+    }
+
+    public void hideMenuOption(int id)
+    {
+        switch (id)
+        {
+            case R.id.menu_add_review:
+                menuAddReview.setVisible(false);
+                break;
+
+            case R.id.menu_cart:
+                menuCart.setVisible(false);
+                break;
+
+            case R.id.menu_fav:
+                menuFav.setVisible(false);
+                break;
+        }
+    }
+
+    public void visibleMenuOption(int id)
+    {
+        switch (id)
+        {
+            case R.id.menu_add_review:
+                menuAddReview.setVisible(true);
+                break;
+
+            case R.id.menu_cart:
+                menuCart.setVisible(true);
+                break;
+
+            case R.id.menu_fav:
+                menuFav.setVisible(true);
+                break;
+        }
     }
 
     @Override

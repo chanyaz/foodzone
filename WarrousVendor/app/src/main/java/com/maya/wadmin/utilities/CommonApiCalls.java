@@ -26,6 +26,12 @@ public class CommonApiCalls
         {
             input.put("username",Utility.getString(Utility.getSharedPreferences(),Constants.USER_NAME));
             input.put("password",Utility.getString(Utility.getSharedPreferences(),Constants.USER_PASSWORD));
+            input.put("grant_type","password");
+            input.put("scope","api1 offline_access");
+            input.put("client_id","ro.client");
+            input.put("client_secret","secret");
+            input.put("org_name","Kia");
+            input.put("user_type_name","Dealer");
         }
         catch (Exception e)
         {

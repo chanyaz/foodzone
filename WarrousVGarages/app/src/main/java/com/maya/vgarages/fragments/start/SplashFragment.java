@@ -1,15 +1,20 @@
 package com.maya.vgarages.fragments.start;
 
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.maya.vgarages.R;
+import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.utilities.Utility;
 
@@ -30,6 +35,8 @@ public class SplashFragment extends Fragment implements IFragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    GetLocationFragment getLocationFragment;
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
@@ -72,8 +79,69 @@ public class SplashFragment extends Fragment implements IFragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_splash, container, false);
         ButterKnife.bind(this,view);
-        getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,StartFragment.newInstance(null,null)).addToBackStack(null).commit();
+        //getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,StartFragment.newInstance(null,null)).addToBackStack(null).commit();
+        setUpChildFragment(generateFragmentKey());
         return view;
+    }
+
+
+    public void setUpChildFragment(int value)
+    {
+        Fragment fragment = null;
+        switch (value)
+        {
+            case 101:
+                fragment = RequestPermissionFragment.newInstance(null,null);
+                break;
+            case 102:
+                getLocationFragment = GetLocationFragment.newInstance(null,null);
+                fragment = getLocationFragment;
+                break;
+            case 103:
+                fragment = StartFragment.newInstance(null,null);
+                break;
+        }
+        if(fragment!=null)
+        {
+            if(value!=103)
+            getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
+            else
+            {
+                getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).addToBackStack(null).commit();
+            }
+        }
+
+    }
+
+    public int generateFragmentKey()
+    {
+
+        if(Utility.getSharedPreferences().contains(Constants.LOGIN))
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                if (ContextCompat.checkSelfPermission(activity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return 101;
+                }
+                return 102;
+            } else {
+                return 102;
+            }
+        }
+        else
+        {
+            return 103;
+        }
+    }
+
+    public void openGetLocationFragment()
+    {
+        getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,getLocationFragment = GetLocationFragment.newInstance(null,null)).commit();
+    }
+
+    public void updateUIinLocationFragment()
+    {
+        getLocationFragment.updateUI();
     }
 
     public void goToSignIn()

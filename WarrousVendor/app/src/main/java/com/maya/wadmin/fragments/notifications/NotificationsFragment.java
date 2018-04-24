@@ -14,10 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.maya.wadmin.R;
 import com.maya.wadmin.adapters.fragments.notifications.AllNotificationsAdapter;
 import com.maya.wadmin.interfaces.fragments.IFragment;
 import com.maya.wadmin.utilities.Utility;
+
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -125,4 +133,6 @@ public class NotificationsFragment extends Fragment implements IFragment{
     public Activity activity() {
         return getActivity();
     }
+
+
 }

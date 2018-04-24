@@ -4,18 +4,15 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.maya.vgarages"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        jackOptions {
-            enabled true
-        }
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_8
-            targetCompatibility JavaVersion.VERSION_1_8
-        }
+//        compileOptions {
+//            sourceCompatibility JavaVersion.VERSION_1_8
+//            targetCompatibility JavaVersion.VERSION_1_8
+//        }
     }
     buildTypes {
         release {
@@ -23,10 +20,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.android.support:support-vector-drawable:27.0.2'
@@ -44,6 +45,15 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:11.8.0'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.omjoonkim.library:skeleton-loading-view:0.1.3'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
+    //implementation 'com.airbnb.android:lottie:2.5.4'
+//    implementation ("com.airbnb.android:lottie:2.5.4") {
+//        exclude group: "com.android.support", module: "support-annotations"
+//       // exclude group: "com.android.support", module: "support-annotations"
+//    }
+    //compile 'com.airbnb.android:lottie:2.5.1'
+
     testImplementation 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

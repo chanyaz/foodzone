@@ -38,150 +38,152 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
         <com.maya.vgarages.customviews.WSBoldTextView
             android:id="@+id/tvGarageName"
-            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/normal_text_color"
             android:text="Gokul Kalagara Garage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/normal_text_color"
+            android:textSize="18sp" />
 
         <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <com.maya.vgarages.customviews.WSMediumTextView
                 android:id="@+id/tvShopType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:text="EXPRESS SERVICE SHOP"
-                android:textSize="12sp"
                 android:textColor="@color/light_new_gray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:textSize="12sp" />
+
             <LinearLayout
-                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:gravity="right">
 
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
                     android:id="@+id/tvPriceRange1"
-                    android:textColor="@color/light_new_gray"
-                    android:layout_marginRight="3dp"
-                    android:textSize="12sp"
-                    android:text="$"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:text="*"
+                    android:textColor="@color/light_new_gray"
+                    android:textSize="12sp" />
+
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
                     android:id="@+id/tvPriceRange2"
-                    android:layout_marginRight="3dp"
-                    android:textColor="@color/light_new_gray"
-                    android:textSize="12sp"
-                    android:text="$"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:text="*"
+                    android:textColor="@color/light_new_gray"
+                    android:textSize="12sp" />
+
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
                     android:id="@+id/tvPriceRange3"
-                    android:layout_marginRight="3dp"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="12sp"
-                    android:text="$"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:text="*"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
                     android:id="@+id/tvPriceRange4"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="12sp"
-                    android:text="$"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <com.maya.vgarages.customviews.WSMediumTextView
                 android:id="@+id/tvOpen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:text="Open Now"
-                android:textSize="12sp"
                 android:textColor="@color/colorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="12sp" />
 
             <ImageView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:tint="@color/light_gray"
                 android:src="@drawable/circle_white"
-                android:layout_width="5dp"
-                android:layout_height="5dp" />
+                android:tint="@color/light_gray" />
 
             <com.maya.vgarages.customviews.WSMediumTextView
                 android:id="@+id/tvDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:text="400 meters from you"
-                android:textSize="12sp"
                 android:textColor="@color/light_new_gray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:textSize="12sp" />
 
 
             <ImageView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:tint="@color/light_gray"
                 android:src="@drawable/circle_white"
-                android:layout_width="5dp"
-                android:layout_height="5dp" />
+                android:tint="@color/light_gray" />
 
             <com.maya.vgarages.customviews.WSMediumTextView
                 android:id="@+id/tvLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:text="Madhapur Hyderbad"
-                android:textSize="12sp"
                 android:textColor="@color/light_new_gray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
+                android:textSize="12sp" />
 
 
         </LinearLayout>

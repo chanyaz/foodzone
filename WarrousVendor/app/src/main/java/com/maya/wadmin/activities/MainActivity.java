@@ -2,6 +2,8 @@ package com.maya.wadmin.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,14 +30,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.maya.wadmin.Manifest;
 import com.maya.wadmin.R;
+import com.maya.wadmin.apis.volley.VolleyHelperLayer;
 import com.maya.wadmin.constants.Constants;
 import com.maya.wadmin.dialogs.other.LogoutDialog;
 import com.maya.wadmin.fragments.home.HomeFragment;
 import com.maya.wadmin.interfaces.activities.IActivity;
+import com.maya.wadmin.utilities.CommonApiCalls;
+import com.maya.wadmin.utilities.Logger;
 import com.maya.wadmin.utilities.Utility;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,6 +88,86 @@ public class MainActivity extends AppCompatActivity implements IActivity
 
         initialize();
 
+        if(Utility.getSharedPreferences().contains(Constants.USER_FCM_TOKEN))
+        {
+            if (Utility.getSharedPreferences().contains(Constants.CURRENT_USER_FCM_TOKEN)) {
+                if (Utility.getString(Utility.getSharedPreferences(), Constants.USER_FCM_TOKEN).equalsIgnoreCase(Utility.getString(Utility.getSharedPreferences(), Constants.CURRENT_USER_FCM_TOKEN))) {
+                    return;
+                }
+                if (Utility.isNetworkAvailable(activity()))
+                    sendFcmToken(Utility.getString(Utility.getSharedPreferences(), Constants.USER_FCM_TOKEN));
+            } else {
+                if (Utility.isNetworkAvailable(activity()))
+                    sendFcmToken(Utility.getString(Utility.getSharedPreferences(), Constants.USER_FCM_TOKEN));
+            }
+        }
+
+
+    }
+
+    private void sendFcmToken(final String fcmToken)
+    {
+        if(fcmToken==null)
+        {
+            return;
+        }
+        JSONObject input = new JSONObject();
+        try
+        {
+            input.put("PNSId",Utility.getString(Utility.getSharedPreferences(),Constants.USER_FCM_TOKEN));
+            input.put("SecureId",Constants.SECURE_ID);
+            input.put("UserId",Utility.getString(Utility.getSharedPreferences(),Constants.USER_ID));
+            input.put("IMEI",Utility.getPhoneUniqueId(activity()));
+            input.put("FirstName",Utility.getString(Utility.getSharedPreferences(),Constants.FIRST_NAME));
+            input.put("LastName",Utility.getString(Utility.getSharedPreferences(),Constants.LAST_NAME));
+            input.put("EmailAddress",Utility.getString(Utility.getSharedPreferences(),Constants.USER_NAME));
+            input.put("PhoneNumber","");
+            input.put("RoleId","0");
+            input.put("Type","A");
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+            boolean success;
+            @Override
+            public void onResponse(JSONObject jsonObject)
+            {
+                Utility.setString(Utility.getSharedPreferences(),Constants.CURRENT_USER_FCM_TOKEN,fcmToken);
+                Logger.d("[response]",jsonObject.toString());
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Logger.d("[response]","Unable to contact server");
+                try
+                {
+                    if (volleyError.networkResponse.statusCode == 401)
+                    {
+                        CommonApiCalls.refreshAuthTokenCall();
+                        sendFcmToken(fcmToken);
+                    }
+                    else
+                    {
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    Utility.setString(Utility.getSharedPreferences(),Constants.CURRENT_USER_FCM_TOKEN,fcmToken);
+                }
+
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(Constants.URL_INSERT_USER_PNS,input,listener,errorListener, Request.Priority.NORMAL);
+
+
+
 
     }
 
@@ -108,6 +199,14 @@ public class MainActivity extends AppCompatActivity implements IActivity
         navigation.setTextVisibility(true);
 
         tvUserName.setText(Utility.getString(Utility.getSharedPreferences(), Constants.FIRST_NAME)+ " " +Utility.getString(Utility.getSharedPreferences(), Constants.LAST_NAME));
+        tvUserName.setOnClickListener(v -> {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("text",Utility.getString(Utility.getSharedPreferences(),Constants.USER_FCM_TOKEN));
+            clipboard.setPrimaryClip(clip);
+            showSnackBar("Copied fcm token",2);
+            drawer.closeDrawers();
+
+        });
         tvUserRoleName.setText(Utility.getString(Utility.getSharedPreferences(), Constants.USER_ROLL_NAME));
 
 

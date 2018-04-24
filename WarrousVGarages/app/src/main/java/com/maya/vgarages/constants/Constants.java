@@ -1,6 +1,7 @@
 package com.maya.vgarages.constants;
 
 import com.android.volley.Request;
+import com.google.android.gms.maps.model.LatLng;
 import com.maya.vgarages.R;
 
 import java.util.Arrays;
@@ -39,6 +40,8 @@ public class Constants
 
     public static final String FRAGMENT_KEY = "fragment_key";
 
+    public static final int LOCATION_CODE = 10101;
+
     public static final String COLOR_CODES[] = {"#BA4141","#E07C5C","#00B3FF","#0069C9"};
 
     public static final String TAG_COLOR_CODES[] = {"#000000","#8B4513","#990000","#0069C9"};
@@ -65,9 +68,33 @@ public class Constants
 
     public static final String USER_PHOTO_URL = "user_photo_url";
 
+    public static final String USER_ADDRESS = "user_address";
+
     public static final String LOGIN = "login";
 
     public static final int IMAGE_PLACE_HOLDER = R.drawable.place_holder;
 
+    public static final String AVATAR_IMAGE = "https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png";
+
     public static final String SAMPLE_ERROR_IMAGE = "https://i.pinimg.com/originals/3e/3e/14/3e3e14d932098c3c3140c419daaa61c6.jpg";
+
+    public static final String SAMPLE_CUSTOMER_PHONE_NUMBER = "1234567890";
+
+    public static final int SUCCESS_RESULT = 0;
+
+    public static final int FAILURE_RESULT = 1;
+
+    public static final String PACKAGE_NAME = "com.maya.vgarages";
+
+    public static final String RECEIVER = PACKAGE_NAME + ".AddressReceiver";
+
+    public static final String RESULT_DATA_KEY = PACKAGE_NAME + ".RESULT_DATA_KEY";
+
+    public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME + ".LOCATION_DATA_EXTRA";
+
+    public static final String URL = "http://13.59.34.59:8080/";
+
+    public static final String URL_GET_GARAGES_LIST_BY_TYPE = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetGaragesByLatLongnType";
+    //?latitude=17.473042 &longitude=78.562382 &GarageType=General%20Service &pagecount=1
+
 }

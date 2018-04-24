@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.maya.vgarages.fragments.garage.profile.GarageProfileFragment;
 import com.maya.vgarages.fragments.garage.reviews.GarageReviewsFragment;
 import com.maya.vgarages.fragments.garage.services.GarageServicesFragment;
+import com.maya.vgarages.models.Garage;
 
 import java.util.List;
 
@@ -20,16 +21,18 @@ public class CustomViewPagerAdapter extends FragmentPagerAdapter
 
     private int type = 0;
     private List<String> stringList;
+    Garage garage = null;
 
     public CustomViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public CustomViewPagerAdapter(FragmentManager fm, int type, List<String> stringList)
+    public CustomViewPagerAdapter(FragmentManager fm, int type, List<String> stringList, Garage garage)
     {
         super(fm);
         this.type = type;
         this.stringList = stringList;
+        this.garage = garage;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class CustomViewPagerAdapter extends FragmentPagerAdapter
             switch (position)
             {
                 case 0:
-                    fragment = GarageProfileFragment.newInstance(null,null);
+                    fragment = GarageProfileFragment.newInstance(garage);
                     break;
                 case 1:
                     fragment = GarageServicesFragment.newInstance(null,null);

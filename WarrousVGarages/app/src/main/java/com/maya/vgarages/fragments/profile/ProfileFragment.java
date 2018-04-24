@@ -8,10 +8,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.maya.vgarages.R;
+import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.utilities.Utility;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +38,15 @@ public class ProfileFragment extends Fragment implements IFragment{
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.tvAddress)
+    TextView tvAddress;
+
+    @BindView(R.id.tvUserName)
+    TextView tvUserName;
+
+    @BindView(R.id.imgUser)
+    ImageView imgUser;
 
 
 
@@ -75,7 +88,26 @@ public class ProfileFragment extends Fragment implements IFragment{
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this,view);
 
+
+        initialize();
         return view;
+    }
+
+    private void initialize()
+    {
+        tvUserName.setText(Utility.getCamelCase(Utility.getString(Utility.getSharedPreferences(), Constants.USER_NAME)));
+        Picasso.with(activity())
+                .load(Utility.getString(Utility.getSharedPreferences(),Constants.USER_PHOTO_URL))
+                .into(imgUser);
+
+        if(Utility.getSharedPreferences().contains(Constants.USER_ADDRESS))
+        {
+            tvAddress.setText(Utility.getCamelCase(Utility.getString(Utility.getSharedPreferences(),Constants.USER_ADDRESS)));
+        }
+        else
+        {
+            tvAddress.setText("");
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maya.vgarages.R;
+import com.maya.vgarages.adapters.custom.SkeletonViewHolder;
 import com.maya.vgarages.interfaces.adapter.other.IServiceAdapter;
 import com.maya.vgarages.models.Service;
 import com.maya.vgarages.utilities.Utility;
@@ -31,8 +32,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public Context context;
     int width = 0;
     IServiceAdapter iServiceAdapter;
-
-    public ServiceAdapter(List<Service> serviceList, Context context, IServiceAdapter iServiceAdapter) {
+    boolean isLoading = true;
+    public ServiceAdapter(List<Service> serviceList, Context context, IServiceAdapter iServiceAdapter,boolean isLoading) {
+        if(context==null)return;
+        this.isLoading = isLoading;
         this.serviceList = serviceList;
         this.context = context;
         this.iServiceAdapter = iServiceAdapter;
@@ -41,28 +44,46 @@ public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        if(isLoading)
+        {
+            return new SkeletonViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.skeleton_service_item,parent,false));
+        }
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.service_item,parent,false));
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder,final int position)
     {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.imgService.setImageResource(serviceList.get(position).Image);
-        viewHolder.tvServiceName.setText(serviceList.get(position).Name);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width/3, LinearLayout.LayoutParams.MATCH_PARENT);
-        params.setMargins(Utility.dpSize(context,15),Utility.dpSize(context, 5 ),Utility.dpSize(context, serviceList.size()-1 == position ? 15 : 0),Utility.dpSize(context,5));
-        viewHolder.itemView.setLayoutParams(params);
+        if(!isLoading)
+        {
+            ViewHolder viewHolder = (ViewHolder) holder;
+            viewHolder.imgService.setImageResource(serviceList.get(position).Image);
+            viewHolder.tvServiceName.setText(serviceList.get(position).Name);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width / 3, LinearLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(Utility.dpSize(context, 15), Utility.dpSize(context, 5), Utility.dpSize(context, serviceList.size() - 1 == position ? 15 : 0), Utility.dpSize(context, 5));
+            viewHolder.itemView.setLayoutParams(params);
 
-        viewHolder.llSelected.setBackgroundResource(serviceList.get(position).IsSelected? R.drawable.corner_radius_fb_3 : R.drawable.corner_radius_white_3);
-        viewHolder.itemView.setOnClickListener(view -> {iServiceAdapter.onItemClick(serviceList.get(position),position);});
+            viewHolder.llSelected.setBackgroundResource(serviceList.get(position).IsSelected ? R.drawable.corner_radius_fb_3 : R.drawable.corner_radius_white_3);
+            viewHolder.itemView.setOnClickListener(view -> {
+                iServiceAdapter.onItemClick(serviceList.get(position), position);
+            });
+        }
+        else
+        {
+            SkeletonViewHolder skeletonViewHolder = (SkeletonViewHolder) holder;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width / 3, LinearLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(Utility.dpSize(context, 15), Utility.dpSize(context, 5), Utility.dpSize(context, serviceList.size() - 1 == position ? 15 : 0), Utility.dpSize(context, 5));
+            skeletonViewHolder.itemView.setLayoutParams(params);
+
+        }
     }
 
     @Override
     public int getItemCount()
     {
-        return serviceList.size();
+        return isLoading?10:serviceList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder

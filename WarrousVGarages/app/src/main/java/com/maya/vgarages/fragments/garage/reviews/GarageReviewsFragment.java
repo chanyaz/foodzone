@@ -3,6 +3,7 @@ package com.maya.vgarages.fragments.garage.reviews;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -44,6 +45,8 @@ public class GarageReviewsFragment extends Fragment implements IFragment {
 
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+
 
 
     public GarageReviewsFragment() {
@@ -91,7 +94,22 @@ public class GarageReviewsFragment extends Fragment implements IFragment {
     private void initialize()
     {
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
-        recyclerView.setAdapter(new ReviewAdapter(Utility.generateReviews(),activity()));
+        fetchReviews();
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            fetchReviews();
+        });
+    }
+
+    private void fetchReviews()
+    {
+        recyclerView.setAdapter(new ReviewAdapter(Utility.generateReviews(),activity(),true));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.setAdapter(new ReviewAdapter(Utility.generateReviews(),activity(),false));
+            }
+        },3000);
     }
 
     @Override

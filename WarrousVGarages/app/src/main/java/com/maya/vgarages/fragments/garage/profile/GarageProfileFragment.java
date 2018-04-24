@@ -2,19 +2,29 @@ package com.maya.vgarages.fragments.garage.profile;
 
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.maya.vgarages.R;
 import com.maya.vgarages.adapters.fragments.garage.profile.GarageImagesAdapter;
+import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.interfaces.fragments.IFragment;
+import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.utilities.Utility;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +51,46 @@ public class GarageProfileFragment extends Fragment implements IFragment{
     @BindView(R.id.tvGarageContent)
     TextView tvGarageContent;
 
+    @BindView(R.id.tvGarageName)
+    TextView tvGarageName;
+
+    @BindView(R.id.tvValue)
+    TextView tvValue;
+
+    @BindView(R.id.tvLocation)
+    TextView tvLocation;
+
+    @BindView(R.id.tvShopType)
+    TextView tvShopType;
+
+    @BindView(R.id.tvOpen)
+    TextView tvOpen;
+
+    @BindView(R.id.tvPriceRange1)
+    TextView tvPriceRange1;
+
+    @BindView(R.id.tvPriceRange2)
+    TextView tvPriceRange2;
+
+    @BindView(R.id.tvPriceRange3)
+    TextView tvPriceRange3;
+
+    @BindView(R.id.tvPriceRange4)
+    TextView tvPriceRange4;
+
+    @BindView(R.id.tvTime)
+    TextView tvTime;
+
+    @BindView(R.id.llNavigate)
+    LinearLayout llNavigate;
+
+    @BindView(R.id.llCall)
+    LinearLayout llCall;
+
+    @BindView(R.id.imgBookmark)
+    ImageView imgBookmark;
+
+    LatLng myLocation = new LatLng(17.439091, 78.399097);
     public GarageProfileFragment() {
         // Required empty public constructor
     }
@@ -59,6 +109,15 @@ public class GarageProfileFragment extends Fragment implements IFragment{
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static GarageProfileFragment newInstance(Garage garage)
+    {
+        GarageProfileFragment fragment = new GarageProfileFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("Garage", garage);
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,15 +145,51 @@ public class GarageProfileFragment extends Fragment implements IFragment{
     private void initialize()
     {
         recyclerView.setLayoutManager(new LinearLayoutManager(activity(),LinearLayoutManager.HORIZONTAL,false));
-        recyclerView.setAdapter(new GarageImagesAdapter( Utility.generateImageUrls(),activity()));
+        recyclerView.setAdapter(new GarageImagesAdapter( Utility.generateImageUrls(),activity(),true));
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.setAdapter(new GarageImagesAdapter( Utility.generateImageUrls(),activity(),false));
+            }
+        },3000);
         tvGarageContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
+
+        llCall.setOnClickListener(v -> {Utility.openPhoneDialPad(activity(), Constants.SAMPLE_CUSTOMER_PHONE_NUMBER);});
+        llNavigate.setOnClickListener(v -> {Utility.openGoogleNavigate(activity(),myLocation);});
+        int value = new Random().nextInt(2);
+        imgBookmark.setColorFilter(ContextCompat.getColor(activity(),value%2==0 ? R.color.colorPrimary : R.color.icon_color));
+
+        updateUI();
     }
+
+    private void updateUI()
+    {
+        if(getArguments()==null || getArguments().getSerializable("Garage")==null)
+        {
+            return;
+        }
+        Garage garage = (Garage) getArguments().getSerializable("Garage");
+        tvGarageName.setText(garage.Name);
+        tvLocation.setText(garage.Location);
+        tvOpen.setText(garage.isOpen ? "Open Now" : "Closed Now");
+        tvOpen.setTextColor(ContextCompat.getColor(activity(), garage.isOpen ? R.color.colorPrimary : R.color.light_orange));
+        tvValue.setText(garage.Value);
+        tvPriceRange1.setTextColor(ContextCompat.getColor(
+                activity(), garage.PriceRange == 4 ? R.color.colorPrimary : R.color.light_new_gray));
+        tvPriceRange2.setTextColor(ContextCompat.getColor(
+                activity(), garage.PriceRange >= 3 ? R.color.colorPrimary : R.color.light_new_gray));
+        tvPriceRange3.setTextColor(ContextCompat.getColor(
+                activity(), garage.PriceRange >= 2 ? R.color.colorPrimary : R.color.light_new_gray));
+        tvPriceRange4.setTextColor(ContextCompat.getColor(
+                activity(), garage.PriceRange >= 1 ? R.color.colorPrimary : R.color.light_new_gray));
+    }
+
 
     @Override
     public void changeTitle(String title) {

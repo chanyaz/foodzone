@@ -77,7 +77,7 @@ public class LoginFragment extends Fragment implements IFragment{
     String firstName = "Default";
     String lastName = "User";
     int type = 0;
-    String userName= null, userRoll = null, dealerId = null;
+    String userName= null, userRoll = null, dealerId = null, userId = null;
 
 
     public LoginFragment() {
@@ -188,6 +188,13 @@ public class LoginFragment extends Fragment implements IFragment{
         {
             input.put("username",etUserName.getText().toString().trim());
             input.put("password",etPassword.getText().toString());
+            //&grant_type=password&scope=api1+offline_access&client_id=ro.client&client_secret=secret&org_name=Kia&user_type_name=Dealer
+            input.put("grant_type","password");
+            input.put("scope","api1 offline_access");
+            input.put("client_id","ro.client");
+            input.put("client_secret","secret");
+            input.put("org_name","Kia");
+            input.put("user_type_name","Dealer");
         }
         catch (Exception e)
         {
@@ -209,6 +216,7 @@ public class LoginFragment extends Fragment implements IFragment{
 
                     if(jsonObject.has(Constants.ACCESS_TOKEN))
                     {
+
                         Utility.setString(Utility.getSharedPreferences(),Constants.ACCESS_TOKEN,jsonObject.getString(Constants.ACCESS_TOKEN));
                         Utility.setString(Utility.getSharedPreferences(),Constants.EXPIRES_IN,jsonObject.getString(Constants.EXPIRES_IN));
                         Utility.setString(Utility.getSharedPreferences(),Constants.TOKEN_TYPE,jsonObject.getString(Constants.TOKEN_TYPE));
@@ -220,6 +228,7 @@ public class LoginFragment extends Fragment implements IFragment{
                             lastName  =  jwt.getClaim("LastName").asString();
                             userName  =  jwt.getClaim("UserName").asString();
                             dealerId  =  jwt.getClaim("dealerid").asString();
+                            userId  =  jwt.getClaim("userId").asString();
 
                             String[] roles = jwt.getClaim("role").asArray(String.class);
                             try
@@ -254,6 +263,7 @@ public class LoginFragment extends Fragment implements IFragment{
                                 Utility.setBoolen(Utility.getSharedPreferences(),Constants.LOGIN,true);
                                 Utility.setString(Utility.getSharedPreferences(),Constants.USER_NAME,userName);
                                 Utility.setString(Utility.getSharedPreferences(),Constants.DEALER_ID,dealerId);
+                                Utility.setString(Utility.getSharedPreferences(),Constants.USER_ID,userId);
                             }
                             else
                             {

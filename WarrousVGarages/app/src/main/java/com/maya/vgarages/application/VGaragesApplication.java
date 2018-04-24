@@ -31,6 +31,7 @@ public class VGaragesApplication extends Application
     public void onCreate()
     {
         super.onCreate();
+        //FacebookSdk.sdkInitialize(getApplicationContext());
         sharedPreferences = getSharedPreferences(Constants.PREFS, Context.MODE_PRIVATE);
         mInstance = this;
     }

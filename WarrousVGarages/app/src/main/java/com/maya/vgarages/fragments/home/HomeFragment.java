@@ -4,6 +4,7 @@ package com.maya.vgarages.fragments.home;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -112,13 +113,29 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
     private void initialize()
     {
         recyclerViewServices.setLayoutManager(new LinearLayoutManager(activity(),LinearLayoutManager.HORIZONTAL,false));
-        recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(list = Utility.generateServices(),activity(),iServiceAdapter));
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
-        recyclerView.setAdapter(new GaragesAdapter(Utility.generateGaragesList(),activity(),iGaragesAdapter));
+
+        fetchGarages();
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
             swipeRefreshLayout.setRefreshing(false);
+            fetchGarages();
         });
+    }
+
+    private void fetchGarages()
+    {
+        recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(list = Utility.generateServices(),activity(),iServiceAdapter,true));
+        recyclerView.setAdapter(new GaragesAdapter(Utility.generateGaragesList(),activity(),iGaragesAdapter,true));
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run()
+            {
+                recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(list = Utility.generateServices(),activity(),iServiceAdapter,false));
+                recyclerView.setAdapter(new GaragesAdapter(Utility.generateGaragesList(),activity(),iGaragesAdapter,false));
+            }
+        },3000);
     }
 
     @Override

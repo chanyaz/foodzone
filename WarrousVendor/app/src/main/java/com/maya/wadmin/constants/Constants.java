@@ -52,6 +52,8 @@ public class Constants
 
     public static final String USER_NAME = "user_name";
 
+    public static final String USER_ID = "user_id";
+
     public static final String USER_PASSWORD = "user_password";
 
     public static final String COMPLETE_USERNAME = "complete_username";
@@ -122,7 +124,7 @@ public class Constants
 
     public static final String URL = "http://13.59.34.59:8080/"; //http://18.218.212.109:8080  http://13.59.34.59:8080/
 
-    public static final String URL_LOGIN = URL + "warrous.ms.auth/warrous.ms.auth.api/api/user/login";
+    public static final String URL_LOGIN = URL + "warrous.ms.auth/warrous.ms.auth.api/connect/token"; // "warrous.ms.auth/warrous.ms.auth.api/api/user/login";
 
     public static final String URL_CHECK_USERNAME = URL + "warrous.ms.auth/warrous.ms.auth.api/api/User/GetUserCountByUserName?userName=";
 
@@ -295,6 +297,8 @@ public class Constants
 
     public static final String URL_GET_VEHICLE_DETAILS_BY_VIN = URL + "warrous.ms.obdm/warrous.ms.obdm.api/api/Vehicle/GetVehicleDetailsByVin?Vin=";
 
+    public static final String URL_INSERT_USER_PNS = URL + "warrous.ms.consumer/warrous.ms.consumer.api/api/Consumer/CustomerPNSInsert";
+
     public static final String SUPER_ADMIN = "SuperAdmin";
 
     public static final String GENERAL_MANAGER = "GeneralManager";
@@ -362,4 +366,11 @@ public class Constants
     public static final String ALL_TRUE_INSPECTION = "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1";
 
     public static final String COLOR_CODES[] = {"#BA4141","#E07C5C","#00B3FF","#0069C9","#27BE60","#F9D006"};
+
+    public static final String USER_FCM_TOKEN = "user_fcm_token";
+
+    public static final String CURRENT_USER_FCM_TOKEN = "current_user_fcm_token";
+
+    public static final String SECURE_ID = "15444076835";
+
 }

@@ -66,7 +66,7 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ViewHold
         holder.tvActionName.getPaint().setShader(shader);
         holder.tvActionName.setText(list.get(position).actionName);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(Utility.dpSize(context,120),Utility.dpSize(context,110));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(Utility.dpSize(context,100), LinearLayout.LayoutParams.MATCH_PARENT);
         params.setMargins(Utility.dpSize(context,15),Utility.dpSize(context,5),list.size()-1==position ? Utility.dpSize(context,15) : 0,Utility.dpSize(context,5));
         holder.itemView.setLayoutParams(params);
     }

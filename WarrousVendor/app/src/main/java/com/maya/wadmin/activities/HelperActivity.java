@@ -691,6 +691,8 @@ public class HelperActivity extends AppCompatActivity implements IActivity, IVeh
         bundle.putSerializable("deliveryTruck",deliveryTruck);
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, fragment).addToBackStack("Map").commitAllowingStateLoss();
+
+        // hide search and back press enable search view
     }
 
     @Override

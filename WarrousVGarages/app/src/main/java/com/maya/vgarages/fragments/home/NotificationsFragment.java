@@ -3,6 +3,7 @@ package com.maya.vgarages.fragments.home;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -89,8 +90,25 @@ public class NotificationsFragment extends Fragment implements IFragment {
 
     private void initialize()
     {
+        fetchNotifications();
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
-        recyclerView.setAdapter(new NotificationAdapter(Utility.generateNotificationsList(),activity()));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            fetchNotifications();
+        });
+
+    }
+
+    private void fetchNotifications()
+    {
+        recyclerView.setAdapter(new NotificationAdapter(Utility.generateNotificationsList(),activity(),true));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.setAdapter(new NotificationAdapter(Utility.generateNotificationsList(),activity(),false));
+            }
+        },3000);
+
     }
 
     @Override

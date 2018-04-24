@@ -7,4 +7,18 @@
     android:layout_height="match_parent"
     tools:context="com.maya.wcustomer.activities.SplashActivity">
 
+    <LinearLayout
+        android:background="@color/app_background_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

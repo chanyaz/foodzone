@@ -3,6 +3,7 @@ package com.maya.vgarages.utilities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,8 +11,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -25,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.maya.vgarages.R;
 import com.maya.vgarages.application.VGaragesApplication;
 import com.maya.vgarages.constants.Constants;
@@ -547,6 +551,7 @@ public class Utility
         HashMap<String,Integer> hashMap = new HashMap<>();
         hashMap.put("GOOGLE_SIGN_IN",18101);
         hashMap.put("FACEBOOK_SIGN_IN",18102);
+        hashMap.put("REQUEST_LOCATION_PERMISSION",18103);
         return hashMap;
     }
 
@@ -1042,6 +1047,28 @@ public class Utility
 
 
         return list;
+    }
+
+    public static void openPhoneDialPad(Context context,String phone)
+    {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:"+phone));
+        context.startActivity(intent);
+    }
+
+    public static void openGoogleNavigate(Context context, LatLng latLng)
+    {
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latLng.latitude + "," + latLng.longitude);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        context.startActivity(mapIntent);
+    }
+
+
+    public static boolean isGPSEnable(Activity activity)
+    {
+        LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
 

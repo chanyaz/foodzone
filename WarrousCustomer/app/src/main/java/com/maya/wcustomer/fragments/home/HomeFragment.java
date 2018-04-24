@@ -170,9 +170,11 @@ public class HomeFragment extends Fragment implements IFragment, IHomeOptionsAda
         switch (position) // + 2
         {
             case 0:
+                intent.putExtra(Constants.FRAGMENT_KEY,position+2);
                 break;
 
             case 1:
+                intent.putExtra(Constants.FRAGMENT_KEY,position+2);
                 break;
 
             case 2:

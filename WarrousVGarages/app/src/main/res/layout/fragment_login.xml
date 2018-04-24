@@ -8,10 +8,17 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+
+
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <LinearLayout
             android:gravity="center"
             android:layout_gravity="center"
@@ -104,7 +111,10 @@
             </LinearLayout>
 
         </LinearLayout>
+        </ScrollView>
 
     </android.support.design.widget.CoordinatorLayout>
+
+
 
 </FrameLayout>

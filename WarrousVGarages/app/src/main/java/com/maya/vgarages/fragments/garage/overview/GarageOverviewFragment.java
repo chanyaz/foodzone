@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.maya.vgarages.R;
+import com.maya.vgarages.activities.HelperActivity;
 import com.maya.vgarages.adapters.custom.CustomViewPagerAdapter;
 import com.maya.vgarages.interfaces.fragments.IFragment;
+import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.utilities.Utility;
 
 import butterknife.BindView;
@@ -70,6 +72,14 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
         return fragment;
     }
 
+    public static GarageOverviewFragment newInstance(Garage garage) {
+        GarageOverviewFragment fragment = new GarageOverviewFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("Garage", garage);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +104,8 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
     {
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(Utility.generateViewPageTitles(1).size());
-        viewPager.setAdapter(new CustomViewPagerAdapter(getFragmentManager(),1, Utility.generateViewPageTitles(1)));
+        viewPager.setAdapter(new CustomViewPagerAdapter(getFragmentManager(),1, Utility.generateViewPageTitles(1),
+                (Garage) getArguments().getSerializable("Garage")));
         Utility.updateTabLayout(tabLayout,activity());
         updateTab(0);
 
@@ -102,6 +113,7 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab)
             {
+                changeMenuOptions(viewPager.getCurrentItem());
                 TextView tv = (TextView) tab.getCustomView();
                 if (tv == null)
                     return;
@@ -128,6 +140,7 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
     {
         try
         {
+            changeMenuOptions(0);
             for (int i = 0; i < tabLayout.getTabCount(); i++)
             {
                 TextView tv = (TextView) tabLayout.getTabAt(i).getCustomView();
@@ -139,6 +152,31 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
         catch (Exception e)
         {
             e.printStackTrace();
+        }
+    }
+
+
+    public void changeMenuOptions(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                ((HelperActivity)activity()).hideMenuOption(R.id.menu_cart);
+                ((HelperActivity)activity()).hideMenuOption(R.id.menu_add_review);
+                ((HelperActivity)activity()).visibleMenuOption(R.id.menu_fav);
+                break;
+
+            case 1:
+                ((HelperActivity)activity()).visibleMenuOption(R.id.menu_cart);
+                ((HelperActivity)activity()).hideMenuOption(R.id.menu_add_review);
+                ((HelperActivity)activity()).hideMenuOption(R.id.menu_fav);
+                break;
+
+            case 2:
+                ((HelperActivity)activity()).hideMenuOption(R.id.menu_cart);
+                ((HelperActivity)activity()).visibleMenuOption(R.id.menu_add_review);
+                ((HelperActivity)activity()).hideMenuOption(R.id.menu_fav);
+                break;
         }
     }
 

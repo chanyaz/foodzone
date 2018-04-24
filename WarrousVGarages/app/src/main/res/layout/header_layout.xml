@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:orientation="vertical"
+<ScrollView android:orientation="vertical"
     android:background="@color/white"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <LinearLayout
     android:orientation="vertical"
@@ -62,13 +63,19 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_marginTop="-20dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/vgarages_logo"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
                 android:layout_width="wrap_content"
-                android:layout_height="200dp" />
+                android:layout_height="180dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_vgarage_logo" />
 
-        <com.maya.vgarages.customviews.CircularView
+        <com.maya.vgarages.customviews.RoundedImageView
+            android:scaleType="centerInside"
+            app:siRadius="50dp"
+            app:siBorderColor="@color/white"
+            app:siBorderWidth="1dp"
+            android:id="@+id/imgUser"
             android:layout_marginTop="-50dp"
             android:src="@drawable/sample_dot"
             android:layout_width="100dp"
@@ -86,12 +93,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <com.maya.vgarages.customviews.SFSemiBoldTextView
+            android:id="@+id/tvUserName"
             android:textSize="16sp"
             android:textColor="@color/normal_text_color"
             android:text="Gokul Kalagara"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <com.maya.vgarages.customviews.MediumTextView
+            android:id="@+id/tvAddress"
             android:layout_marginTop="10dp"
             android:textSize="14sp"
             android:textColor="@color/hash_text_color"

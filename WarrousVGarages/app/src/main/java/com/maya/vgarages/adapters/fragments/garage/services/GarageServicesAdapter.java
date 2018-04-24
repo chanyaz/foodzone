@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.maya.vgarages.R;
+import com.maya.vgarages.adapters.custom.SkeletonViewHolder;
 import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.models.GarageService;
@@ -27,69 +28,83 @@ import butterknife.ButterKnife;
  * Created by Gokul Kalagara on 4/12/2018.
  */
 
-public class GarageServicesAdapter extends RecyclerView.Adapter<GarageServicesAdapter.ViewHolder>
+public class GarageServicesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
 
 
     List<GarageService> list;
     Context context;
     int width = 0;
+    boolean isLoading = true;
 
-    public GarageServicesAdapter(List<GarageService> list, Context context)
+    public GarageServicesAdapter(List<GarageService> list, Context context, boolean isLoading)
     {
+        if(context == null) return;
+        this.isLoading = isLoading;
         this.list = list;
         this.context = context;
         width = context.getResources().getDisplayMetrics().widthPixels - Utility.dpSize(context,30);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        if(isLoading)
+        {
+            return new SkeletonViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.skeleton_garage_service_item,parent,false));
+        }
+        else
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.garage_service_item,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder,final int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder,final int position)
     {
-        holder.tvServiceName.setText(Utility.getCamelCase(list.get(position).Name));
-        holder.tvServiceContent.setText(list.get(position).Content);
-        holder.tvPrice.setText("Rs. "+list.get(position).Price);
-
-        //holder.rlTag.setVisibility(list.get(position).Tag? View.VISIBLE : View.GONE);
-        if(list.get(position).Tag)
+        if(!isLoading)
         {
-            holder.tvTag.setText(Utility.getCamelCase(list.get(position).TagContent));
-            holder.imgTag.setColorFilter(Color.parseColor(
-                    Constants.TAG_COLOR_CODES[
-                            Constants.TAG_COLOR_CODES.length < list.get(position).TagType
-                                    ? Constants.TAG_COLOR_CODES.length-1
-                                    :  list.get(position).TagType])
+            ViewHolder holder = (ViewHolder) viewHolder;
+            holder.tvServiceName.setText(Utility.getCamelCase(list.get(position).Name));
+            holder.tvServiceContent.setText(list.get(position).Content);
+            holder.tvPrice.setText("Rs. " + list.get(position).Price);
+
+            //holder.rlTag.setVisibility(list.get(position).Tag? View.VISIBLE : View.GONE);
+            if (list.get(position).Tag) {
+                holder.tvTag.setText(Utility.getCamelCase(list.get(position).TagContent));
+                holder.imgTag.setColorFilter(Color.parseColor(
+                        Constants.TAG_COLOR_CODES[
+                                Constants.TAG_COLOR_CODES.length < list.get(position).TagType
+                                        ? Constants.TAG_COLOR_CODES.length - 1
+                                        : list.get(position).TagType])
+                );
+            } else {
+                holder.imgTag.setVisibility(View.GONE);
+                holder.tvTag.setVisibility(View.GONE);
+            }
+
+            Picasso.with(context)
+                    .load(list.get(position).Image)
+                    .into(holder.imgGarageService);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(
+                    Utility.dpSize(context, 15),
+                    Utility.dpSize(context, 15),
+                    Utility.dpSize(context, 15),
+                    Utility.dpSize(context, list.size() - 1 == position ? 30 : 15)
             );
+
+            holder.itemView.setLayoutParams(params);
         }
         else
         {
-            holder.imgTag.setVisibility(View.GONE);
-            holder.tvTag.setVisibility(View.GONE);
+
         }
-
-        Picasso.with(context)
-                .load(list.get(position).Image)
-                .into(holder.imgGarageService);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                Utility.dpSize(context, 15),
-                Utility.dpSize(context, 15),
-                Utility.dpSize(context, 15),
-                Utility.dpSize(context, list.size() - 1 == position ? 30 : 15)
-        );
-
-        holder.itemView.setLayoutParams(params);
 
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return isLoading? 10 : list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder

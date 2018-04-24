@@ -241,6 +241,7 @@
                       android:layout_width="30dp"
                       android:layout_height="30dp" />
                   <com.maya.vgarages.customviews.WSMediumTextView
+                      android:id="@+id/tvTime"
                       android:textSize="10sp"
                       android:text="10AM - 7PM"
                       android:textColor="@color/light_gray"
@@ -249,6 +250,7 @@
 
               </LinearLayout>
               <LinearLayout
+                  android:id="@+id/llNavigate"
                   android:gravity="center"
                   android:layout_gravity="center"
                   android:layout_margin="7.5dp"
@@ -274,6 +276,7 @@
 
               </LinearLayout>
               <LinearLayout
+                  android:id="@+id/llCall"
                   android:gravity="center"
                   android:layout_gravity="center"
                   android:layout_margin="7.5dp"
@@ -310,6 +313,7 @@
                   android:layout_height="70dp">
 
                   <ImageView
+                      android:id="@+id/imgBookmark"
                       android:tint="@color/icon_color"
                       android:layout_margin="5dp"
                       android:src="@drawable/pin"

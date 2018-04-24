@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.maya.wcustomer.R;
@@ -41,7 +42,11 @@ import com.maya.wcustomer.models.Action;
 import com.maya.wcustomer.models.AlertRule;
 import com.maya.wcustomer.models.CarInfo;
 import com.maya.wcustomer.models.HomeOption;
+import com.maya.wcustomer.models.NearBy;
+import com.maya.wcustomer.models.TimeBasedTrips;
 import com.maya.wcustomer.models.TimeBasedViolations;
+import com.maya.wcustomer.models.Trip;
+import com.maya.wcustomer.models.TripPoint;
 import com.maya.wcustomer.models.Violation;
 
 
@@ -535,6 +540,7 @@ public class Utility
         hashMap.put("ADD_ZONE",14117);
         hashMap.put("EDIT_ZONE",14118);
         hashMap.put("APPLY_FILTER",14119);
+        hashMap.put("GOOGLE_SIGN_IN",14120);
         return hashMap;
     }
 
@@ -606,6 +612,14 @@ public class Utility
         list.add(new Action("Roadside\nSupport",R.drawable.roadside_support));
         list.add(new Action("Scan for\nError",R.drawable.scan_errors));
 
+        return list;
+    }
+
+    public static List<Action> generateActionsForParking()
+    {
+        List<Action> list = new ArrayList<>();
+        list.add(new Action("Start\nParking",R.drawable.other_parking));
+        list.add(new Action("Valet\nParking",R.drawable.valet_parking));
         return list;
     }
 
@@ -693,6 +707,189 @@ public class Utility
 
         list.add(new TimeBasedViolations("today",violationList));
         list.add(new TimeBasedViolations("yesterday",violationList1));
+        return list;
+    }
+
+    public static List<NearBy> generateNearByOptions()
+    {
+        List<NearBy> list = new ArrayList<>();
+
+        list.add(new NearBy("Gas",R.drawable.gas));
+        list.add(new NearBy("Dine",R.drawable.dine));
+        list.add(new NearBy("Coffee",R.drawable.hotel));
+        list.add(new NearBy("ATM",R.drawable.atm));
+        list.add(new NearBy("Parking",R.drawable.other_parking));
+
+        return list;
+    }
+
+    public static List<Trip> generateRecentTrips()
+    {
+        List<Trip> list = new ArrayList<>();
+
+        Trip trip = new Trip();
+        trip.tripName = "Trip 1";
+        trip.day = "Today";
+        trip.startPlace = "Pragathi Nagar";
+        trip.endPlace = "Jntu";
+        trip.startTime = "3:00 am";
+        trip.endTime = "6:00 am";
+
+
+        Trip trip1 = new Trip();
+        trip1.tripName = "Trip Hi-Tech";
+        trip1.day = "Today";
+        trip1.startPlace = "Hi-Tech";
+        trip1.endPlace = "Jntu";
+        trip1.startTime = "9:00 am";
+        trip1.endTime = "10:00 pm";
+
+
+        Trip trip2 = new Trip();
+        trip2.tripName = "Trip 3";
+        trip2.day = "Yesterday";
+        trip2.startPlace = "SR Nagar";
+        trip2.endPlace = "Nizampet";
+        trip2.startTime = "6:00 am";
+        trip2.endTime = "10:00 am";
+
+
+        Trip trip3 = new Trip();
+        trip3.tripName = "Trip 4";
+        trip3.day = "5 days ago";
+        trip3.startPlace = "Pragathi Nagar";
+        trip3.endPlace = "Jntu";
+        trip3.startTime = "12:40 pm";
+        trip3.endTime = "3:00 pm";
+
+
+
+        list.add(trip);
+        list.add(trip1);
+        list.add(trip2);
+        list.add(trip3);
+
+
+
+        return list;
+    }
+
+
+    public static double generateDistance(List<LatLng> list, int position)
+    {
+        double distance = 0;
+        if(list==null&& list.size()>0)
+        {
+            return 0;
+        }
+        if(position == 0)
+        {
+            return 0;
+        }
+        for(int i=0;i<=position-1;i++)
+        {
+            distance += getDistanceFromLatLonInKm(list.get(i).latitude, list.get(i).longitude,list.get(i + 1).latitude, list.get(i+1).longitude);
+        }
+        return distance;
+    }
+
+    public static double getDistanceFromLatLonInKm(double lat1, double lon1, double lat2, double lon2)
+    {
+        int R = 6371; // Radius of the earth in km
+        double dLat = deg2rad(lat2 - lat1);  // deg2rad below
+        double dLon = deg2rad(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                                Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                ;
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c; // Distance in km
+        return d;
+    }
+
+    public static double deg2rad(double deg)
+    {
+        return deg * (Math.PI / 180);
+    }
+
+
+
+
+    public static List<TimeBasedTrips> generatePastTrips()
+    {
+        List<TimeBasedTrips> timeBasedTrips = new ArrayList<>();
+
+        List<Trip> list = new ArrayList<>();
+        List<Trip> list1 = new ArrayList<>();
+
+        Trip trip = new Trip();
+        trip.tripName = "Trip 1";
+        trip.day = "Today";
+        trip.startPlace = "Pragathi Nagar";
+        trip.endPlace = "Jntu";
+        trip.startTime = "3:00 am";
+        trip.endTime = "6:00 am";
+        trip.duration = "3 hrs";
+        trip.distance = "15 miles";
+        trip.location = "Hyderabad";
+
+
+        Trip trip1 = new Trip();
+        trip1.tripName = "Trip 2";
+        trip1.day = "Today";
+        trip1.startPlace = "Hi-Tech";
+        trip1.endPlace = "Jntu";
+        trip1.startTime = "9:00 am";
+        trip1.endTime = "10:00 pm";
+        trip1.duration = "1 hrs";
+        trip1.location = "Hyderabad";
+        trip1.distance = "39 miles";
+
+
+        Trip trip2 = new Trip();
+        trip2.tripName = "Trip 3";
+        trip2.day = "Yesterday";
+        trip2.startPlace = "SR Nagar";
+        trip2.endPlace = "Nizampet";
+        trip2.startTime = "6:00 am";
+        trip2.endTime = "10:00 am";
+        trip2.duration = "4 hrs";
+        trip2.location = "Hyderabad";
+        trip2.distance = "8 miles";
+
+
+        Trip trip3 = new Trip();
+        trip3.tripName = "Trip 4";
+        trip3.day = "5 days ago";
+        trip3.startPlace = "Pragathi Nagar";
+        trip3.endPlace = "Jntu";
+        trip3.startTime = "12:40 pm";
+        trip3.endTime = "3:00 pm";
+        trip3.duration = "140 min";
+        trip3.location = "Hyderabad";
+        trip3.distance = "18.3 miles";
+
+
+
+        list.add(trip);
+        list.add(trip1);
+
+
+        list1.add(trip2);
+        list1.add(trip3);
+
+        timeBasedTrips.add(new TimeBasedTrips("Today",list));
+        timeBasedTrips.add(new TimeBasedTrips("yesterday",list1));
+        timeBasedTrips.add(new TimeBasedTrips("2 day ago",list));
+
+
+        return timeBasedTrips;
+    }
+
+    public static List<TripPoint> generateSampleTripPoints()
+    {
+        Gson gson = new Gson();
+        List<TripPoint> list = gson.fromJson(Constants.SAMPLE_TRIP_POINTS,new TypeToken<List<TripPoint>>(){}.getType());
         return list;
     }
 

@@ -4,6 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.Handler;
+import android.os.Message;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -13,12 +19,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.maya.vgarages.R;
 import com.maya.vgarages.constants.Constants;
@@ -28,7 +37,14 @@ import com.maya.vgarages.fragments.home.NotificationsFragment;
 import com.maya.vgarages.fragments.home.RemainderFragment;
 import com.maya.vgarages.fragments.home.SearchFragment;
 import com.maya.vgarages.interfaces.fragments.IFragment;
+import com.maya.vgarages.service.FetchAddressIntentService;
+import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,9 +69,17 @@ public class MainActivity extends AppCompatActivity implements IFragment {
     @BindView(R.id.tvTitle)
     TextView tvTitle;
 
+    private AddressResultReceiver mResultReceiver;
+
     int previous = R.id.navigation_home;
 
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
+
+    Location location = null;
+
+    View headerLayout;
+    TextView tvUserName, tvAddress;
+    ImageView imgUser;
 
 
     @Override
@@ -76,8 +100,13 @@ public class MainActivity extends AppCompatActivity implements IFragment {
 
     private void initialize()
     {
+        mResultReceiver = new AddressResultReceiver(new Handler());
+        if(getIntent().getParcelableExtra("Location")!=null)
+        {
+            location = getIntent().getParcelableExtra("Location");
+            startIntentService();
+        }
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
-
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -87,6 +116,37 @@ public class MainActivity extends AppCompatActivity implements IFragment {
         navigation.enableItemShiftingMode(false);
         navigation.setTextVisibility(false);
 
+        headerLayout = navigationView.getHeaderView(0);
+        tvAddress =  headerLayout.findViewById(R.id.tvAddress);
+        tvUserName =  headerLayout.findViewById(R.id.tvUserName);
+        imgUser =  headerLayout.findViewById(R.id.imgUser);
+
+        updateFields();
+    }
+
+    private void startIntentService()
+    {
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
+        startService(intent);
+    }
+
+    private void updateFields()
+    {
+        tvUserName.setText(Utility.getCamelCase(Utility.getString(Utility.getSharedPreferences(),Constants.USER_NAME)));
+        Picasso.with(activity())
+                .load(Utility.getString(Utility.getSharedPreferences(),Constants.USER_PHOTO_URL))
+                .into(imgUser);
+
+        if(Utility.getSharedPreferences().contains(Constants.USER_ADDRESS))
+        {
+            tvAddress.setText(Utility.getCamelCase(Utility.getString(Utility.getSharedPreferences(),Constants.USER_ADDRESS)));
+        }
+        else
+        {
+            tvAddress.setText("");
+        }
     }
 
     void setupDrawerToggle(){
@@ -129,7 +189,14 @@ public class MainActivity extends AppCompatActivity implements IFragment {
                 case R.id.navigation_location:
                     toolbar.setVisibility(View.VISIBLE);
                     changeTitle("Geo Search");
-                    fragment = LocationFragment.newInstance(null,null);
+                    if(location!=null)
+                    {
+                        fragment = LocationFragment.newInstance(new LatLng(location.getLatitude(), location.getLongitude()));
+                    }
+                    else
+                    {
+                        fragment = LocationFragment.newInstance(null,null);
+                    }
                     break;
 
                 case R.id.navigation_notifications:
@@ -195,4 +262,32 @@ public class MainActivity extends AppCompatActivity implements IFragment {
     public Activity activity() {
         return this;
     }
+
+
+
+    private class AddressResultReceiver extends ResultReceiver
+    {
+        AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData)
+        {
+            // Display the address string or an error message sent from the intent service.
+            if (resultCode == Constants.SUCCESS_RESULT)
+            {
+                String address = resultData.getString(Constants.RESULT_DATA_KEY);
+                Logger.d("ADDRESS",address);
+                Utility.setString(Utility.getSharedPreferences(),Constants.USER_ADDRESS,address);
+                updateFields();
+            }
+            else
+            {
+
+            }
+        }
+
+    }
+
 }

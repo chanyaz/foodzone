@@ -14,6 +14,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -116,8 +117,17 @@ public class Utility
 
     public static void deleteSharedPreferences()
     {
+        String fcmToken = "";
+        if(getSharedPreferences().contains(Constants.USER_FCM_TOKEN))
+        {
+            fcmToken = getString(getSharedPreferences(), Constants.USER_FCM_TOKEN);
+        }
+
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.clear().commit();
+
+        if(fcmToken.length()>0)
+        setString(getSharedPreferences(),Constants.USER_FCM_TOKEN,fcmToken);
     }
 
 
@@ -1793,6 +1803,11 @@ public class Utility
         list.add("Theft");
         list.add("Vehicle");
         return list;
+    }
+
+    public static String getPhoneUniqueId(Context context)
+    {
+        return  Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
 

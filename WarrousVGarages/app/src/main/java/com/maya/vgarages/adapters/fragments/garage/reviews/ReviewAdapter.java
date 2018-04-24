@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maya.vgarages.R;
+import com.maya.vgarages.adapters.custom.SkeletonViewHolder;
 import com.maya.vgarages.models.Review;
 import com.maya.vgarages.utilities.Utility;
 import com.squareup.picasso.Picasso;
@@ -23,54 +24,71 @@ import butterknife.ButterKnife;
  * Created by Gokul Kalagara on 4/12/2018.
  */
 
-public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder>
+public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
 
     List<Review> list;
     Context context;
     int width = 0;
+    boolean isLoading = true;
 
-    public ReviewAdapter(List<Review> list, Context context)
+    public ReviewAdapter(List<Review> list, Context context, boolean isLoading)
     {
+        if(context==null) return;
+        this.isLoading = isLoading;
         this.list = list;
         this.context = context;
         width = context.getResources().getDisplayMetrics().widthPixels - Utility.dpSize(context,30);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        if(isLoading)
+        {
+            return new SkeletonViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.skeleton_review_item,parent,false));
+        }
+        else
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.review_item,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder,final int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder,final int position)
     {
-        holder.tvUserName.setText(Utility.getCamelCase(list.get(position).UserName));
-        holder.tvRatting.setText(list.get(position).Ratting+ "/10");
-        holder.tvReviewContent.setText(list.get(position).Content);
-        holder.tvTimeAgo.setText(list.get(position).TimeAgo);
+        if(!isLoading)
+        {
+            ViewHolder holder = (ViewHolder) viewHolder;
+            holder.tvUserName.setText(Utility.getCamelCase(list.get(position).UserName));
+            holder.tvRatting.setText(list.get(position).Ratting + "/10");
+            holder.tvReviewContent.setText(list.get(position).Content);
+            holder.tvTimeAgo.setText(list.get(position).TimeAgo);
 
 
-        Picasso.with(context)
-                .load(list.get(position).Image)
-                .into(holder.imgUser);
+            Picasso.with(context)
+                    .load(list.get(position).Image)
+                    .into(holder.imgUser);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                Utility.dpSize(context, 15),
-                Utility.dpSize(context, 15),
-                Utility.dpSize(context, 15),
-                Utility.dpSize(context, list.size() - 1 == position ? 30 : 15)
-        );
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(
+                    Utility.dpSize(context, 15),
+                    Utility.dpSize(context, 15),
+                    Utility.dpSize(context, 15),
+                    Utility.dpSize(context, list.size() - 1 == position ? 30 : 15)
+            );
 
-        holder.itemView.setLayoutParams(params);
+            holder.itemView.setLayoutParams(params);
+        }
+        else
+        {
+
+        }
 
     }
 
     @Override
     public int getItemCount()
     {
-        return list.size();
+        return isLoading? 10 :list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder

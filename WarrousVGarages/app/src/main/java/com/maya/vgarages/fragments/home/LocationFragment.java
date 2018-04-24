@@ -2,10 +2,13 @@ package com.maya.vgarages.fragments.home;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -13,9 +16,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,9 +33,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.SphericalUtil;
 import com.maya.vgarages.R;
 import com.maya.vgarages.activities.HelperActivity;
 import com.maya.vgarages.adapters.fragments.home.GaragesAdapter;
@@ -35,7 +51,14 @@ import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.interfaces.adapter.home.IGaragesAdapter;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.models.Garage;
+import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +68,7 @@ import butterknife.ButterKnife;
  * Use the {@link LocationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LocationFragment extends Fragment implements IFragment, OnMapReadyCallback, IGaragesAdapter{
+public class LocationFragment extends Fragment implements IFragment, OnMapReadyCallback, IGaragesAdapter,GoogleMap.OnMarkerClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -55,7 +78,17 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
     private String mParam1;
     private String mParam2;
 
+    int previous = -1;
+
+    @BindView(R.id.llGarage)
+    LinearLayout llGarage;
+
     IGaragesAdapter iGaragesAdapter;
+    Polyline curvedPolyline;
+
+    Marker markerYou;
+    List<Marker> markerList;
+    List<Garage> garageList;
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
@@ -67,6 +100,41 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
     MapView mapView;
 
     GoogleMap googleMap;
+
+    @BindView(R.id.tvGarageName)
+    TextView tvGarageName;
+
+    @BindView(R.id.tvValue)
+    TextView tvValue;
+
+    @BindView(R.id.tvDistance)
+    TextView tvDistance;
+
+    @BindView(R.id.tvLocation)
+    TextView tvLocation;
+
+    @BindView(R.id.tvShopType)
+    TextView tvShopType;
+
+    @BindView(R.id.tvOpen)
+    TextView tvOpen;
+
+    @BindView(R.id.tvPriceRange1)
+    TextView tvPriceRange1;
+
+    @BindView(R.id.tvPriceRange2)
+    TextView tvPriceRange2;
+
+    @BindView(R.id.tvPriceRange3)
+    TextView tvPriceRange3;
+
+    @BindView(R.id.tvPriceRange4)
+    TextView tvPriceRange4;
+
+    @BindView(R.id.rlLocation)
+    RelativeLayout rlLocation;
+
+    LatLng myLocation = new LatLng(17.439091, 78.399097);
 
     public LocationFragment() {
         // Required empty public constructor
@@ -89,6 +157,15 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
         fragment.setArguments(args);
         return fragment;
     }
+
+    public static LocationFragment newInstance(LatLng latLng) {
+        LocationFragment fragment = new LocationFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("Location", latLng);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,6 +193,19 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
 
     private void initialize()
     {
+        if(getArguments().getParcelable("Location")!=null)
+        {
+            myLocation = getArguments().getParcelable("Location");
+        }
+
+        llGarage.setVisibility(View.GONE);
+        llGarage.setOnClickListener(v -> {
+            Intent intent = new Intent(activity(), HelperActivity.class);
+            intent.putExtra(Constants.FRAGMENT_KEY,2222);
+            intent.putExtra("Garage",garageList.get(previous));
+            startActivity(intent);
+        });
+        markerList = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(activity(),LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setAdapter(new GaragesAdapter(Utility.generateGaragesList(),activity(),1,iGaragesAdapter));
     }
@@ -138,6 +228,12 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+        rlLocation.setOnClickListener(v ->
+        {
+            zoomToPosition(myLocation,13);
+        });
+        googleMap.setOnMarkerClickListener(this);
+
         try
         {
             boolean success = googleMap.setMapStyle(
@@ -150,19 +246,30 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
 
         }
 
-        LatLng latLng = new LatLng(17.439091, 78.399097);
+
         MarkerOptions marker2 = new MarkerOptions();
         marker2.title("you");
         marker2.icon(getBitmapDescriptor(R.drawable.user_marker,75,75));
         marker2.anchor(.5f, .5f);
-        marker2.position(latLng);
+        marker2.position(myLocation);
         //marker2.rotation((float) bearingBetweenLocations(latLng,new LatLng(17.439042, 78.399146)));
-        googleMap.addMarker(marker2);
-        zoomToPostion(latLng,15);
+        markerYou = googleMap.addMarker(marker2);
+        markerYou.setTag(143914);
+        zoomToPosition(myLocation,11);
+        garageList = Utility.generateGaragesList();
+
+        for(int i=0;i<garageList.size();i++)
+        {
+            double offset =  (i+1) / 30d;
+            LatLng latLng = new LatLng(myLocation.latitude + offset, myLocation.longitude + offset);
+            generateGarageMarkerView(Utility.generateGaragesList().get(i),false,latLng,i);
+        }
+
+
     }
 
 
-    public void zoomToPostion(final LatLng location, float value)
+    public void zoomToPosition(final LatLng location, float value)
     {
 
         activity().runOnUiThread(new Runnable() {
@@ -198,6 +305,92 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
         Canvas canvas = new Canvas(bm);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bm);
+    }
+
+
+    public void generateGarageMarkerView(Garage garage,boolean focus,LatLng latLng,int tag)
+    {
+         View view = ((LayoutInflater) activity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.garage_marker_layout, null);
+         ImageView imgBack = view.findViewById(R.id.imgBack);
+         ImageView imgGarage = view.findViewById(R.id.imgGarage);
+         imgBack.setColorFilter(ContextCompat.getColor(activity(),focus ? R.color.colorPrimary : R.color.light_gray));
+
+         Picasso.with(activity())
+                .load(garage.Image)
+                .into(imgGarage, new Callback() {
+                    @Override
+                    public void onSuccess()
+                    {
+
+
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        activity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+                        view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+                        view.buildDrawingCache();
+                        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+
+                        Canvas canvas = new Canvas(bitmap);
+                        view.draw(canvas);
+
+                        MarkerOptions garageMarker = new MarkerOptions();
+
+                        garageMarker.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+                        garageMarker.anchor(.5f, .5f);
+                        garageMarker.position(latLng);
+                        Marker marker = googleMap.addMarker(garageMarker);
+                        marker.setTag(tag);
+                        //marker2.rotation((float) bearingBetweenLocations(latLng,new LatLng(17.439042, 78.399146)));
+                        markerList.add(marker);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+
+
+
+
+    }
+
+
+    public void updateViewOfMarker(Garage garage,boolean focus,Marker marker)
+    {
+        View view = ((LayoutInflater) activity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.garage_marker_layout, null);
+        ImageView imgBack = view.findViewById(R.id.imgBack);
+        ImageView imgGarage = view.findViewById(R.id.imgGarage);
+        imgBack.setColorFilter(ContextCompat.getColor(activity(),focus ? R.color.colorPrimary : R.color.light_gray));
+
+        Picasso.with(activity())
+                .load(garage.Image)
+                .into(imgGarage, new Callback() {
+                    @Override
+                    public void onSuccess()
+                    {
+
+
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        activity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+                        view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+                        view.buildDrawingCache();
+                        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+
+                        Canvas canvas = new Canvas(bitmap);
+                        view.draw(canvas);
+
+                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
     }
 
 
@@ -252,5 +445,128 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
         intent.putExtra(Constants.FRAGMENT_KEY,2222);
         intent.putExtra("Garage",garage);
         startActivity(intent);
+    }
+
+
+    private void showCurvedPolyline(LatLng p1, LatLng p2, double k) {
+        //Calculate distance and heading between two points
+        if(curvedPolyline!=null)
+        {
+            curvedPolyline.remove();
+        }
+        double d = SphericalUtil.computeDistanceBetween(p1,p2);
+        double h = SphericalUtil.computeHeading(p1, p2);
+
+        //Midpoint position
+        LatLng p = SphericalUtil.computeOffset(p1, d*0.5, h);
+
+        //Apply some mathematics to calculate position of the circle center
+        double x = (1-k*k)*d*0.5/(2*k);
+        double r = (1+k*k)*d*0.5/(2*k);
+
+        LatLng c = SphericalUtil.computeOffset(p, x, h + 90.0);
+
+        //Polyline options
+        PolylineOptions options = new PolylineOptions();
+        options.width(3);
+        List<PatternItem> pattern = Arrays.<PatternItem>asList(new Dash(30), new Gap(20));
+
+        //Calculate heading between circle center and two points
+        double h1 = SphericalUtil.computeHeading(c, p1);
+        double h2 = SphericalUtil.computeHeading(c, p2);
+
+        //Calculate positions of points on circle border and add them to polyline options
+        int numpoints = 100;
+        double step = (h2 -h1) / numpoints;
+
+        for (int i=0; i < numpoints; i++) {
+            LatLng pi = SphericalUtil.computeOffset(c, r, h1 + i * step);
+            options.add(pi);
+        }
+
+        //Draw polyline
+        curvedPolyline = googleMap.addPolyline(options.width(10).color(ContextCompat.getColor(activity(),R.color.colorPrimary)).geodesic(false).pattern(pattern));
+        zoomPolyline(p1,p2);
+    }
+
+
+
+    @Override
+    public boolean onMarkerClick(Marker marker)
+    {
+        if(marker.getTag()!=null)
+        {
+
+            try
+            {
+
+                Integer value = (Integer) marker.getTag();
+                if(value==143914)
+                {
+                    return false;
+                }
+
+                if(previous != -1)
+                {
+                    updateViewOfMarker(garageList.get(previous),false,markerList.get(previous));
+                }
+                updateViewOfMarker(garageList.get(value),true,marker);
+                previous = value;
+
+                showCurvedPolyline(markerYou.getPosition(),marker.getPosition(),0.2);
+                updateUI(garageList.get(value));
+                return true;
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+    private void zoomPolyline(LatLng l1, LatLng l2)
+    {
+        LatLngBounds.Builder boundsPoints = new LatLngBounds.Builder();
+            boundsPoints.include(l1);
+            boundsPoints.include(l2);
+
+        LatLngBounds bounds = boundsPoints.build();
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height =  getResources().getDisplayMetrics().heightPixels - Utility.dpSize(activity(),300);
+        Logger.d("Height " + height);
+        int padding = (int) (width * 0.15);
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,width,height,padding);
+        googleMap.moveCamera(cu);
+        googleMap.animateCamera(cu);
+    }
+
+
+    public void updateUI(Garage garage)
+    {
+        recyclerView.setVisibility(View.GONE);
+        llGarage.setVisibility(View.VISIBLE);
+        tvGarageName.setText(garage.Name);
+        tvLocation.setText(garage.Location);
+        tvDistance.setText(garage.Distance + " meters from you");
+        tvOpen.setText(garage.isOpen ? "Open Now" : "Closed Now");
+        tvOpen.setTextColor(ContextCompat.getColor(activity(), garage.isOpen ? R.color.colorPrimary : R.color.light_orange));
+        tvValue.setText(garage.Value);
+        tvPriceRange1.setTextColor(ContextCompat.getColor(
+                activity(), garage.PriceRange == 4 ? R.color.colorPrimary : R.color.light_new_gray));
+        tvPriceRange2.setTextColor(ContextCompat.getColor(
+                activity(), garage.PriceRange >= 3 ? R.color.colorPrimary : R.color.light_new_gray));
+        tvPriceRange3.setTextColor(ContextCompat.getColor(
+                activity(), garage.PriceRange >= 2 ? R.color.colorPrimary : R.color.light_new_gray));
+        tvPriceRange4.setTextColor(ContextCompat.getColor(
+                activity(), garage.PriceRange >= 1 ? R.color.colorPrimary : R.color.light_new_gray));
+
     }
 }
