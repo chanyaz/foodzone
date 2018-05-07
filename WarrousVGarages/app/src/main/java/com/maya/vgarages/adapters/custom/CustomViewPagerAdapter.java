@@ -47,10 +47,10 @@ public class CustomViewPagerAdapter extends FragmentPagerAdapter
                     fragment = GarageProfileFragment.newInstance(garage);
                     break;
                 case 1:
-                    fragment = GarageServicesFragment.newInstance(null,null);
+                    fragment = GarageServicesFragment.newInstance(garage);
                     break;
                 case 2:
-                    fragment = GarageReviewsFragment.newInstance(null,null);
+                    fragment = GarageReviewsFragment.newInstance(garage);
                     break;
             }
         }

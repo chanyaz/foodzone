@@ -18,9 +18,17 @@ import android.widget.TextView;
 import com.maya.vgarages.R;
 import com.maya.vgarages.activities.HelperActivity;
 import com.maya.vgarages.adapters.custom.CustomViewPagerAdapter;
+import com.maya.vgarages.constants.Constants;
+import com.maya.vgarages.fragments.garage.reviews.GarageReviewsFragment;
+import com.maya.vgarages.fragments.garage.services.GarageServicesFragment;
+import com.maya.vgarages.interfaces.dialog.IToPickVehicle;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.models.Garage;
+import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
+
+import java.io.PipedOutputStream;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +38,7 @@ import butterknife.ButterKnife;
  * Use the {@link GarageOverviewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GarageOverviewFragment extends Fragment implements IFragment {
+public class GarageOverviewFragment extends Fragment implements IFragment, IToPickVehicle {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,6 +56,8 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+
+    IToPickVehicle iToPickVehicle;
 
 
     public GarageOverviewFragment() {
@@ -94,6 +104,7 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_garage_overview, container, false);
+        iToPickVehicle = this;
         ButterKnife.bind(this,view);
 
         initialize();
@@ -109,11 +120,34 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
         Utility.updateTabLayout(tabLayout,activity());
         updateTab(0);
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                if(position==1)
+                {
+                    if(!Utility.getSharedPreferences().contains(Constants.DEFAULT_CAR_DATA))
+                    ((HelperActivity)activity()).pickVehicleDialog(iToPickVehicle);
+                }
+                changeMenuOptions(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab)
             {
-                changeMenuOptions(viewPager.getCurrentItem());
+                //changeMenuOptions(viewPager.getCurrentItem());
                 TextView tv = (TextView) tab.getCustomView();
                 if (tv == null)
                     return;
@@ -134,6 +168,29 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
 
             }
         });
+    }
+
+
+
+    public void updateCar()
+    {
+        try
+        {
+            List<Fragment> list = getFragmentManager().getFragments();
+            Logger.d("FRAGMENT SIZE " + list.size());
+            try
+            {
+                ((GarageServicesFragment) (list.get(2))).updateBottomBar();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void updateTab(int position)
@@ -187,11 +244,59 @@ public class GarageOverviewFragment extends Fragment implements IFragment {
 
     @Override
     public void showSnackBar(String snackBarText, int type) {
-
+        Utility.showSnackBar(activity(),coordinatorLayout,snackBarText,type);
     }
 
     @Override
     public Activity activity() {
         return getActivity();
+    }
+
+    public void updateGarageServices()
+    {
+        try
+        {
+            List<Fragment> list = getFragmentManager().getFragments();
+            Logger.d("FRAGMENT SIZE " + list.size());
+            try
+            {
+                ((GarageServicesFragment) (list.get(2))).updateGarageService();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void goToVehicles()
+    {
+        ((HelperActivity) activity()).goToUserVehicles(Utility.generateRequestCodes().get("ADD_VEHICLE"));
+    }
+
+    public void updateRatting()
+    {
+        try
+        {
+            List<Fragment> list = getFragmentManager().getFragments();
+            Logger.d("FRAGMENT SIZE " + list.size());
+            try
+            {
+                ((GarageReviewsFragment) (list.get(3))).fetchReviews();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

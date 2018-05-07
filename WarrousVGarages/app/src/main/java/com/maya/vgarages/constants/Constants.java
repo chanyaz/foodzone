@@ -58,6 +58,14 @@ public class Constants
     
     public static final String USER_ID = "user_id";
 
+    public static final int SAMPLE_USER_ID = 3;
+
+    public static final String ACCESS_TOKEN = "access_token";
+
+    public static final String EXPIRES_IN = "expires_in";
+
+    public static final String TOKEN_TYPE = "token_type";
+
     public static final String LAST_NAME = "last_name";
 
     public static final String FIRST_NAME = "first_name";
@@ -70,7 +78,15 @@ public class Constants
 
     public static final String USER_ADDRESS = "user_address";
 
+    public static final String USER_COMPLETE_ADDRESS = "user_complete_address";
+
+    public static final String USER_LOCALITY_ADDRESS = "user_locality_address";
+
     public static final String LOGIN = "login";
+
+    public static final String CART_DATA = "cart_data";
+
+    public static final String DEFAULT_CAR_DATA = "DEFAULT_CAR_DATA";
 
     public static final int IMAGE_PLACE_HOLDER = R.drawable.place_holder;
 
@@ -92,9 +108,67 @@ public class Constants
 
     public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME + ".LOCATION_DATA_EXTRA";
 
+    public static final int RUPEE_PAISA = 100;
+
+    public static final String URL_APP_LOGO = "http://devassets.warrous.com/Mobile%20Assets/png/app_logo.png";
+
     public static final String URL = "http://13.59.34.59:8080/";
+    //main url
 
     public static final String URL_GET_GARAGES_LIST_BY_TYPE = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetGaragesByLatLongnType";
     //?latitude=17.473042 &longitude=78.562382 &GarageType=General%20Service &pagecount=1
 
+    public static final String URL_GET_GARAGES_SERVICES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetServicesByDealerId";
+    //?dealerId=1&pageCount=1
+
+    public static final String URL_GET_USER_BOOKMARK_GARAGES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/BookmarksByUserIdGet";
+    //?userId=3 &pageCount=1 &latitude=17.473042 &longitude=78.562382";
+
+    public static final String URL_GET_REVIEW_OF_GARAGES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/ReviewsByDealerIdGet";
+    //?dealerId=1&pageCount=1";
+
+    public static final String URL_FOR_SEARCH_GARAGES = URL + "/warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetGaragesByLatLongnsearchparm";
+    //?latitude=17.473042&longitude=78.562382&searchParm=sri&pagecount=1";
+
+    public static final String URL_LOGIN = URL + "warrous.ms.auth/warrous.ms.vgarage_auth.api/connect/token";
+    //username & password post
+
+    public static final String URL_REGISTER = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Admin/Register";
+    //?
+
+    public static final String URL_GARAGE_SERVICE_TYPES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetGarageTypes";
+    //?pageCount=1";
+
+    public static final String URL_RECOMMENDED_GARAGES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetRecomendedGaragesByLatLongnType";
+    //?latitude=17.473042&longitude=78.562382&GarageType=all&pagecount=1";
+
+    public static final String URL_ADD_REVIEW = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/SaveReview";
+    //?dealerId=1&userId=1&review=testreview&rating=8&isEdit=0";
+
+    public static final String URL_ADD_REMOVE_BOOKMARK = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/SaveBookmark";
+    //?dealerId=1&userId=1&isBookmark=1";
+
+    public static final String URL_GET_IS_BOOKMARK = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/IsBookMarkByDealerIdGet";
+    //?dealerid=10&user_id=7"
+
+    public static final String URL_GET_GARAGE_IMAGES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/MediaByDealerIdGet";
+    //?dealerId=1&pageCount=1";
+
+    public static final String URL_GET_MAKES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetVehicleMakes";
+    //?
+
+    public static final String URL_GET_MAKE_MODELS = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetVehicleModels";
+    //?make=Acura";
+
+    public static final String URL_GET_MODEL_YEARS = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetVehicleYear";
+    //?model=ILX";
+
+    public static final String URL_SAVE_VEHICLE = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/SaveVehicleByUserId";
+    //?userId=1&makeModelYearId=484&vehicleName=Test";
+
+    public static final String URL_DELETE_VEHICLE  = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/VehicleByVehicleIdDelete";
+    //?userId=1&vehicleId=1";
+
+    public static final String URL_USER_VEHICLES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/VehiclesByUseridGet";
+    //?userId=1";
 }

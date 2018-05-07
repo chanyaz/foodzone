@@ -17,8 +17,10 @@
     <color name="little_gray_background">#8CECECEF</color>
     <color name="gray">#505050</color>
     <color name="light_gray">#C4c4c4</color>
+    <color name="light_primary">#848FD6</color>
     <color name="app_hash_pool">#ECECEF</color>
     <color name="app_snack_bar_true">#27BE60</color>
+    <color name="green_checkout">#5FB343</color>
     <color name="light_new_gray">#C45C5C5C</color>
     <color name="light_orange">#fe5722</color>
     <color name="app_transparent">#00000000</color>

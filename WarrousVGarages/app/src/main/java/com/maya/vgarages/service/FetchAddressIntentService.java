@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.utilities.Logger;
+import com.maya.vgarages.utilities.Utility;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -111,14 +112,19 @@ public class FetchAddressIntentService extends IntentService
             // getPostalCode() ("94043", for example)
             // getCountryCode() ("US", for example)
             // getCountryName() ("United States", for example)
-            //            for(int i = 0; i <= address.getMaxAddressLineIndex(); i++)
-            //            {
-            //                addressFragments.add(address.getAddressLine(i));
-            //            }
+
+                        for(int i = 0; i <= address.getMaxAddressLineIndex(); i++)
+                        {
+                            addressFragments.add(address.getAddressLine(i));
+                        }
 
             addressFragments.add(address.getLocality());
             addressFragments.add(address.getAdminArea());
             addressFragments.add(address.getCountryName());
+
+            Utility.setString(Utility.getSharedPreferences(),Constants.USER_LOCALITY_ADDRESS,address.getLocality());
+            Utility.setString(Utility.getSharedPreferences(),Constants.USER_COMPLETE_ADDRESS,TextUtils.join(System.getProperty("line.separator"), addressFragments));
+
             Logger.d(TAG, "ADDRESS FOUND");
             //deliverResultToReceiver(Constants.SUCCESS_RESULT, TextUtils.join(System.getProperty("line.separator"), addressFragments));
             deliverResultToReceiver(Constants.SUCCESS_RESULT, address.getLocality()+", "+address.getAdminArea());

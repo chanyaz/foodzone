@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="0dip"
+            android:src="@drawable/sample_car_image"
+            android:layout_margin="15dp"
+            android:layout_width="80dp"
+            android:layout_height="50dp" />
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+                app:baseColor="#fffbfbfb"
+                app:deepColor="#fff2f2f2"
+                app:duration="1500"
+                app:interval="1000"
+                app:progressLength="120.0dip"
+                app:radius="0dip"
+                android:id="@+id/tvName"
+                android:textColor="@color/normal_text_color"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Kia Exteme"
+                android:layout_width="match_parent"
+                android:layout_height="14dp" />
+
+            <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+                app:baseColor="#fffbfbfb"
+                app:deepColor="#fff2f2f2"
+                app:duration="1500"
+                android:layout_marginTop="8dp"
+                app:interval="1000"
+                app:progressLength="120.0dip"
+                app:radius="0dip"
+                android:id="@+id/tvVehicleName"
+                android:textColor="@color/normal_text_color"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Kia Exteme"
+                android:layout_width="match_parent"
+                android:layout_height="12dp" />
+
+            <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+                app:baseColor="#fffbfbfb"
+                app:deepColor="#fff2f2f2"
+                app:duration="1500"
+                app:interval="1000"
+                app:progressLength="120.0dip"
+                app:radius="0dip"
+                android:visibility="gone"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="15dp"
+                android:id="@+id/tvYear"
+                android:textColor="@color/light_new_gray"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="2008"
+                android:layout_width="70dp"
+                android:layout_height="12dp" />
+
+
+
+
+        </LinearLayout>
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="0dip"
+            android:layout_margin="15dp"
+            android:id="@+id/imgClose"
+            android:layout_gravity="center"
+            android:tint="#C4C6C8"
+            android:src="@drawable/ic_close"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+    </LinearLayout>
+    <View
+        android:id="@+id/view"
+        android:background="@color/app_background_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </View>
+
+</LinearLayout>

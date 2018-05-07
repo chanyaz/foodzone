@@ -107,11 +107,20 @@
                           android:layout_height="wrap_content">
 
                           <com.maya.vgarages.customviews.WSSemiBoldTextView
-                              android:id="@+id/tvPriceRange1"
+                              android:id="@+id/tvPriceRange"
                               android:textColor="@color/light_new_gray"
-                              android:layout_marginRight="3dp"
                               android:textSize="12sp"
                               android:text="*"
+                              android:layout_marginRight="3dp"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content" />
+
+                          <com.maya.vgarages.customviews.WSSemiBoldTextView
+                              android:id="@+id/tvPriceRange1"
+                              android:textColor="@color/light_new_gray"
+                              android:textSize="12sp"
+                              android:text="*"
+                              android:layout_marginRight="3dp"
                               android:layout_width="wrap_content"
                               android:layout_height="wrap_content" />
                           <com.maya.vgarages.customviews.WSSemiBoldTextView
@@ -139,13 +148,7 @@
                               android:layout_width="wrap_content"
                               android:layout_height="wrap_content" />
 
-                          <com.maya.vgarages.customviews.WSSemiBoldTextView
-                              android:id="@+id/tvPriceRange5"
-                              android:textColor="@color/colorPrimary"
-                              android:textSize="12sp"
-                              android:text="*"
-                              android:layout_width="wrap_content"
-                              android:layout_height="wrap_content" />
+
 
                       </LinearLayout>
 
@@ -153,7 +156,6 @@
                   </LinearLayout>
 
                   <LinearLayout
-                      android:gravity="center"
                       android:layout_gravity="center_vertical"
                       android:layout_marginTop="10dp"
                       android:orientation="horizontal"
@@ -173,6 +175,7 @@
                           android:layout_height="wrap_content" />
 
                       <ImageView
+                          android:layout_marginTop="11dp"
                           android:layout_marginLeft="10dp"
                           android:layout_marginRight="10dp"
                           android:tint="@color/light_gray"
@@ -186,10 +189,10 @@
                           android:id="@+id/tvLocation"
                           android:layout_weight="1"
                           android:ellipsize="end"
-                          android:maxLines="1"
+                          android:maxLines="2"
                           android:layout_marginTop="5dp"
                           android:layout_marginBottom="5dp"
-                          android:text="Madhapur Hyderbad"
+                          android:text="Madhapur Hyderbad Madhapur Hyderbad Madhapur Hyderbad"
                           android:textSize="12sp"
                           android:textColor="@color/light_new_gray"
                           android:layout_width="match_parent"
@@ -313,10 +316,18 @@
                   android:layout_height="70dp">
 
                   <ImageView
+                      android:visibility="visible"
                       android:id="@+id/imgBookmark"
                       android:tint="@color/icon_color"
                       android:layout_margin="5dp"
                       android:src="@drawable/pin"
+                      android:layout_width="30dp"
+                      android:layout_height="30dp" />
+
+                  <ProgressBar
+                      android:visibility="gone"
+                      android:layout_margin="5dp"
+                      android:id="@+id/progressBar"
                       android:layout_width="30dp"
                       android:layout_height="30dp" />
                   <com.maya.vgarages.customviews.WSMediumTextView

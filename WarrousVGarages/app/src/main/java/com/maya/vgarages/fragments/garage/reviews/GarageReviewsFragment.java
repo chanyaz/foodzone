@@ -13,11 +13,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.maya.vgarages.R;
+import com.maya.vgarages.adapters.custom.EmptyDataAdapter;
 import com.maya.vgarages.adapters.fragments.garage.reviews.ReviewAdapter;
-import com.maya.vgarages.adapters.fragments.home.RemainderAdapter;
+import com.maya.vgarages.adapters.fragments.garage.services.GarageServicesAdapter;
+import com.maya.vgarages.apis.volley.VolleyHelperLayer;
+import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.interfaces.fragments.IFragment;
+import com.maya.vgarages.models.Garage;
+import com.maya.vgarages.models.GarageService;
+import com.maya.vgarages.models.Review;
+import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +61,10 @@ public class GarageReviewsFragment extends Fragment implements IFragment {
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    List<Review> list;
+
+    Garage garage;
+
 
 
 
@@ -67,6 +86,15 @@ public class GarageReviewsFragment extends Fragment implements IFragment {
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static GarageReviewsFragment newInstance(Garage garage)
+    {
+        GarageReviewsFragment fragment = new GarageReviewsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("Garage", garage);
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,6 +121,13 @@ public class GarageReviewsFragment extends Fragment implements IFragment {
 
     private void initialize()
     {
+
+        if(getArguments()==null || getArguments().getSerializable("Garage")==null)
+        {
+        return;
+        }
+        garage = (Garage) getArguments().getSerializable("Garage");
+
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
         fetchReviews();
         swipeRefreshLayout.setOnRefreshListener(() -> {
@@ -101,15 +136,44 @@ public class GarageReviewsFragment extends Fragment implements IFragment {
         });
     }
 
-    private void fetchReviews()
+    public void fetchReviews()
     {
         recyclerView.setAdapter(new ReviewAdapter(Utility.generateReviews(),activity(),true));
-        new Handler().postDelayed(new Runnable() {
+        String URL = Constants.URL_GET_REVIEW_OF_GARAGES + "?dealerId="+garage.DealerId+"&pageCount=1";
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        Response.Listener<String> listener = new Response.Listener<String>()
+        {
             @Override
-            public void run() {
-                recyclerView.setAdapter(new ReviewAdapter(Utility.generateReviews(),activity(),false));
+            public void onResponse(String response) {
+                Logger.d("[response]", response);
+
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<Review>>() {
+                }.getType();
+                list = gson.fromJson(response, type);
+                if(list!=null && list.size()>0)
+                {
+                    recyclerView.setAdapter(new ReviewAdapter(list,activity(),false));
+                }
+                else
+                {
+                    recyclerView.setAdapter(new EmptyDataAdapter(activity(),1));
+                }
+
             }
-        },3000);
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError)
+            {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                recyclerView.setAdapter(new EmptyDataAdapter(activity(),0));
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+
     }
 
     @Override

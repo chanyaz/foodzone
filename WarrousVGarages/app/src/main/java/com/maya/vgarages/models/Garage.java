@@ -8,17 +8,18 @@ import java.io.Serializable;
 
 public class Garage implements Serializable
 {
-    public String Name;
-    public String Image;
-    public String Location;
-    public String Distance;
-    public String ShopType;
-    public int PriceRange = 0;
-    public String Value;
-    public int Review = 0;
+//    public String Name;
+//    public String Image;
+//    public String Location;
 
-    public int DealerId;
+    public String ShopType;
+    //public int PriceRange = 0;
+    //public String Value;
+   // public int Review = 0;
+
+    public int DealerId = 0;
     public String DealerGuid;
+    public String DealerName;
     public String DealerDesc;
     public String Address1;
     public String Address2;
@@ -34,6 +35,7 @@ public class Garage implements Serializable
     public double Longitude;
     public double CustomerRating;
     public double DealerRating;
+    public double Distance;
 
     public String ImageUrl;
     public String LogoUrl;
@@ -41,8 +43,7 @@ public class Garage implements Serializable
     public String EndHr;
     public String Types;
 
-    public boolean IsClosed;
-    public boolean isOpen = false;
+    public boolean IsClosed = false;
 
 
 }

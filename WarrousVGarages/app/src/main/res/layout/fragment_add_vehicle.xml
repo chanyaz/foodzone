@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:layout_gravity="bottom"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_alignParentBottom="true"
+    tools:context=".fragments.vehicle.add.AddVehicleFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--<LinearLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<LinearLayout-->
+                <!--android:elevation="8dp"-->
+                <!--android:background="@color/app_background_color"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2dp">-->
+
+            <!--</LinearLayout>-->
+
+        <LinearLayout
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.maya.vgarages.customviews.WSSemiBoldTextView
+                android:id="@+id/tvTitle"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@color/white"
+                android:text="PICK MAKE"
+                android:elevation="2dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+
+
+
+            <com.maya.vgarages.customviews.WSMediumTextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Name"
+                android:textColor="@color/normal_text_color"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/llApply"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+                <com.maya.vgarages.customviews.WSEditText
+                    android:id="@+id/etVehicleName"
+                    android:hint=""
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_weight="1"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/normal_text_color"
+                    android:backgroundTint="@color/map_transparent"
+                    android:background="@drawable/corner_radius_unselect_30"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp" />
+
+                <ImageView
+                    android:id="@+id/imgCreate"
+                    android:elevation="1dp"
+                    android:padding="10dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:background="@drawable/circle_white"
+                    android:src="@drawable/checked"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp" />
+
+            </LinearLayout>
+
+            <com.maya.vgarages.customviews.WSMediumTextView
+                android:id="@+id/tvMake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Make"
+                android:textColor="@color/normal_text_color"
+                android:textSize="16sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewMake"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+            <com.maya.vgarages.customviews.WSMediumTextView
+                android:id="@+id/tvModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Model"
+                android:textColor="@color/normal_text_color"
+                android:textSize="16sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewModel"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <com.maya.vgarages.customviews.WSMediumTextView
+                android:id="@+id/tvYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Year"
+                android:textColor="@color/normal_text_color"
+                android:textSize="16sp" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewYear"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp">
+
+            </View>
+
+        </LinearLayout>
+        <!--</LinearLayout>/-->
+
+    </android.support.design.widget.CoordinatorLayout>
+
+        <ProgressBar
+            android:layout_marginTop="46dp"
+            android:visibility="visible"
+            android:id="@+id/progressBar"
+            style="?android:progressBarStyleHorizontal"
+            android:indeterminate="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</FrameLayout>

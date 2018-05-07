@@ -4,7 +4,6 @@ package com.maya.vgarages.fragments.home;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,18 +13,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.maya.vgarages.R;
 import com.maya.vgarages.activities.HelperActivity;
+import com.maya.vgarages.adapters.custom.EmptyDataAdapter;
 import com.maya.vgarages.adapters.fragments.home.GaragesAdapter;
 import com.maya.vgarages.adapters.fragments.home.ServiceAdapter;
+import com.maya.vgarages.apis.volley.VolleyHelperLayer;
 import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.interfaces.adapter.home.IGaragesAdapter;
 import com.maya.vgarages.interfaces.adapter.other.IServiceAdapter;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.models.Service;
+import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,9 +70,11 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
     SwipeRefreshLayout swipeRefreshLayout;
 
     List<Service> list;
+    List<Garage> garageList;
     IServiceAdapter iServiceAdapter;
     ServiceAdapter serviceAdapter;
 
+    LatLng myLocation = new LatLng(17.439091, 78.399097);
 
     public HomeFragment() {
         // Required empty public constructor
@@ -83,6 +94,14 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static HomeFragment newInstance(LatLng latLng) {
+        HomeFragment fragment = new HomeFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("Location", latLng);
         fragment.setArguments(args);
         return fragment;
     }
@@ -112,14 +131,30 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
 
     private void initialize()
     {
+        if(getArguments().getParcelable("Location")!=null)
+        {
+            myLocation = getArguments().getParcelable("Location");
+        }
+
         recyclerViewServices.setLayoutManager(new LinearLayoutManager(activity(),LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
 
+        if(Utility.isNetworkAvailable(activity()))
         fetchGarages();
+        else
+        {
+            showSnackBar(Constants.PLEASE_CHECK_INTERNET,2);
+        }
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
             swipeRefreshLayout.setRefreshing(false);
+
+            if(Utility.isNetworkAvailable(activity()))
             fetchGarages();
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,2);
+            }
         });
     }
 
@@ -128,14 +163,44 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
         recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(list = Utility.generateServices(),activity(),iServiceAdapter,true));
         recyclerView.setAdapter(new GaragesAdapter(Utility.generateGaragesList(),activity(),iGaragesAdapter,true));
 
-        new Handler().postDelayed(new Runnable() {
+
+        String URL = Constants.URL_GET_GARAGES_LIST_BY_TYPE + "?latitude="+myLocation.latitude+"&longitude="+myLocation.longitude+"&GarageType=All&pagecount=1" ;
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        Response.Listener<String> listener = new Response.Listener<String>()
+        {
             @Override
-            public void run()
-            {
+            public void onResponse(String response) {
+                Logger.d("[response]", response);
+
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<Garage>>() {
+                }.getType();
+                garageList = gson.fromJson(response, type);
                 recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(list = Utility.generateServices(),activity(),iServiceAdapter,false));
-                recyclerView.setAdapter(new GaragesAdapter(Utility.generateGaragesList(),activity(),iGaragesAdapter,false));
+                if(garageList!=null && garageList.size()>0)
+                {
+                    recyclerView.setAdapter(new GaragesAdapter(garageList,activity(),iGaragesAdapter,false));
+                }
+                else
+                {
+                    recyclerView.setAdapter(new EmptyDataAdapter(activity(),1));
+                }
+
             }
-        },3000);
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError)
+            {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                recyclerView.setAdapter(new EmptyDataAdapter(activity(),0));
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+
+
     }
 
     @Override

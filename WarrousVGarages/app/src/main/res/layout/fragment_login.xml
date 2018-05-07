@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content">
 
                 <com.maya.vgarages.customviews.WSRegularTextView
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/hash_text_color"
                     android:text="Not Already Register ?"
                     android:layout_width="wrap_content"
@@ -96,14 +96,14 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/hash_text_color"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:text="New"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
                     android:id="@+id/tvSignUp"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:text="Sign-Up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

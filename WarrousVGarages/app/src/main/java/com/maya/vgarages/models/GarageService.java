@@ -6,13 +6,18 @@ package com.maya.vgarages.models;
 
 public class GarageService
 {
-    public String Name;
-    public String Image;
-    public String Content;
-    public String Price;
-    public Boolean Tag;
+    public double Price;
+    public Boolean Tag = false;
     public int TagType;
     public String TagContent;
 
+    public int DealerId;
+    public int OpCodeId;
+    public String OpCodeName;
+    public String OpCodeContent;
+    public String Code;
+    public String ImageUrl;
+
     public boolean isAdded = false;
+    public boolean isPending = false;
 }

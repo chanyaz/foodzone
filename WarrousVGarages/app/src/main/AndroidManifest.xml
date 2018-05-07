@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.maya.vgarages">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -20,9 +21,13 @@
         android:name=".application.VGaragesApplication"
         android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:largeHeap="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
 
-
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_9jRxdMsQLOLmmM" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -47,12 +52,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustNothing"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
 
         <activity android:name=".activities.HelperActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"></activity>
+
+        <!--android:configChanges="orientation|keyboardHidden"-->
+        <!--android:windowSoftInputMode="adjustNothing"-->
 
 
 

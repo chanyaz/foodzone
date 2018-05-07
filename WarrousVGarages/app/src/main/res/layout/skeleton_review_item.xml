@@ -3,15 +3,27 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="15.0dip">
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:id="@id/imgUser" android:layout_width="50.0dip" android:layout_height="50.0dip" n2:autoStart="true" n2:baseColor="#fffbfbfb" n2:deepColor="#fff2f2f2" n2:duration="1500" n2:interval="1000" n2:progressLength="120.0dip" n2:radius="25.0dip" xmlns:n2="http://schemas.android.com/apk/res-auto" />
+            <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:id="@+id/imgUser" android:layout_width="50.0dip" android:layout_height="50.0dip" n2:autoStart="true" n2:baseColor="#fffbfbfb" n2:deepColor="#fff2f2f2" n2:duration="1500" n2:interval="1000" n2:progressLength="120.0dip" n2:radius="25.0dip" xmlns:n2="http://schemas.android.com/apk/res-auto" />
             <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip">
                 <LinearLayout android:gravity="center_vertical" android:layout_gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                    <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:textSize="16.0sp" android:textColor="@color/normal_text_color" android:ellipsize="end" android:id="@id/tvUserName" android:layout_width="fill_parent" android:layout_height="16.0sp" android:layout_marginRight="15.0dip" android:text="Sai Teja" android:maxLines="1" android:layout_weight="1.0" n3:autoStart="true" n3:baseColor="#fffbfbfb" n3:deepColor="#fff2f2f2" n3:duration="1500" n3:interval="1000" n3:progressLength="120.0dip" n3:radius="0.0dip" xmlns:n3="http://schemas.android.com/apk/res-auto" />
-                    <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:id="@id/tvRatting" android:layout_width="50.0dip" android:layout_height="16.0sp" n4:autoStart="true" n4:baseColor="#fffbfbfb" n4:deepColor="#fff2f2f2" n4:duration="1500" n4:interval="1000" n4:progressLength="120.0dip" n4:radius="0.0dip" xmlns:n4="http://schemas.android.com/apk/res-auto" />
+                    <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:textSize="16.0sp" android:textColor="@color/normal_text_color" android:ellipsize="end" android:id="@+id/tvUserName" android:layout_width="fill_parent" android:layout_height="16.0sp" android:layout_marginRight="15.0dip" android:text="Sai Teja" android:maxLines="1" android:layout_weight="1.0" n3:autoStart="true" n3:baseColor="#fffbfbfb" n3:deepColor="#fff2f2f2" n3:duration="1500" n3:interval="1000" n3:progressLength="120.0dip" n3:radius="0.0dip" xmlns:n3="http://schemas.android.com/apk/res-auto" />
+                    <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:id="@+id/tvRatting" android:layout_width="50.0dip" android:layout_height="16.0sp" n4:autoStart="true" n4:baseColor="#fffbfbfb" n4:deepColor="#fff2f2f2" n4:duration="1500" n4:interval="1000" n4:progressLength="120.0dip" n4:radius="0.0dip" xmlns:n4="http://schemas.android.com/apk/res-auto" />
                 </LinearLayout>
-                <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:id="@id/tvTimeAgo" android:layout_width="90.0dip" android:layout_height="14.0sp" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" n5:autoStart="true" n5:baseColor="#fffbfbfb" n5:deepColor="#fff2f2f2" n5:duration="1500" n5:interval="1000" n5:progressLength="100.0dip" n5:radius="0.0dip" xmlns:n5="http://schemas.android.com/apk/res-auto" />
+                <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:id="@+id/tvTimeAgo" android:layout_width="90.0dip" android:layout_height="14.0sp" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" n5:autoStart="true" n5:baseColor="#fffbfbfb" n5:deepColor="#fff2f2f2" n5:duration="1500" n5:interval="1000" n5:progressLength="100.0dip" n5:radius="0.0dip" xmlns:n5="http://schemas.android.com/apk/res-auto" />
             </LinearLayout>
         </LinearLayout>
-        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:id="@id/tvReviewContent" android:layout_width="fill_parent" android:layout_height="15.0sp" android:layout_marginTop="15.0dip" n6:autoStart="true" n6:baseColor="#fffbfbfb" n6:deepColor="#fff2f2f2" n6:duration="1500" n6:interval="1000" n6:progressLength="100.0dip" n6:radius="0.0dip" xmlns:n6="http://schemas.android.com/apk/res-auto" />
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            android:id="@+id/tvReviewContent"
+            android:layout_width="fill_parent"
+            android:layout_height="15.0sp"
+            android:layout_marginTop="15.0dip"
+            n6:autoStart="true"
+            n6:baseColor="#fffbfbfb"
+            n6:deepColor="#fff2f2f2"
+            n6:duration="1500"
+            n6:interval="1000"
+            n6:progressLength="100.0dip"
+            n6:radius="0.0dip"
+            xmlns:n6="http://schemas.android.com/apk/res-auto" />
     </LinearLayout>
 </LinearLayout>

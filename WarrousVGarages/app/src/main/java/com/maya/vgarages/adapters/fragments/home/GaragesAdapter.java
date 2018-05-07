@@ -47,9 +47,11 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         width = context.getResources().getDisplayMetrics().widthPixels - Utility.dpSize(context,30);
     }
 
-    public GaragesAdapter(List<Garage> list,Context context,int type,IGaragesAdapter iGaragesAdapter)
+    public GaragesAdapter(List<Garage> list,Context context,int type,IGaragesAdapter iGaragesAdapter,boolean isLoading)
     {
-        this.isLoading = false;
+        if(context==null)return;
+
+        this.isLoading = isLoading;
         this.type = type;
         this.list = list;
         this.context = context;
@@ -62,18 +64,39 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     {
         if(isLoading)
         {
-            return new SkeletonViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.skeleton_garage_item, parent, false));
+            int layout = R.layout.skeleton_garage_item;
+
+            switch (type)
+            {
+                case 0:
+                    layout = R.layout.skeleton_garage_item;
+                    break;
+                case 1:
+                    layout = R.layout.skeleton_location_garage_item;
+                    break;
+                case 2:
+                    layout = R.layout.skeleton_recommended_garage_item;
+                    break;
+
+            }
+
+            return new SkeletonViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
         }
         else
         {
             if (type == 0) // garage
+            {
                 return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.garage_item, parent, false));
+            }
             else if (type == 1) // garage by location
             {
                 return new LocationViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.location_garage_item, parent, false));
-            } else if (type == 2) {
+            }
+            else if (type == 2) {
                 return new RecommendedViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recommended_garage_item, parent, false));
-            } else {
+            }
+            else
+            {
                 return null;
             }
         }
@@ -87,21 +110,31 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (type == 0) // garage list
             {
                 ViewHolder viewHolder = (ViewHolder) holder;
-                viewHolder.tvGarageName.setText(list.get(position).Name);
-                viewHolder.tvLocation.setText(list.get(position).Location);
-                viewHolder.tvDistance.setText(list.get(position).Distance + " meters from you");
-                viewHolder.tvOpen.setText(list.get(position).isOpen ? "Open Now" : "Closed Now");
-                viewHolder.tvOpen.setTextColor(ContextCompat.getColor(context, list.get(position).isOpen ? R.color.colorPrimary : R.color.light_orange));
-                viewHolder.tvValue.setText(list.get(position).Value);
-                viewHolder.tvPriceRange1.setTextColor(ContextCompat.getColor(context, list.get(position).PriceRange == 4 ? R.color.colorPrimary : R.color.light_new_gray));
-                viewHolder.tvPriceRange2.setTextColor(ContextCompat.getColor(context, list.get(position).PriceRange >= 3 ? R.color.colorPrimary : R.color.light_new_gray));
-                viewHolder.tvPriceRange3.setTextColor(ContextCompat.getColor(context, list.get(position).PriceRange >= 2 ? R.color.colorPrimary : R.color.light_new_gray));
-                viewHolder.tvPriceRange4.setTextColor(ContextCompat.getColor(context, list.get(position).PriceRange >= 1 ? R.color.colorPrimary : R.color.light_new_gray));
 
                 Picasso.with(context)
-                        .load(list.get(position).Image)
-                        //.placeholder(Constants.IMAGE_PLACE_HOLDER)
+                        .load(list.get(position).ImageUrl)
                         .into(viewHolder.imgGarage);
+
+                viewHolder.tvShopType.setText(list.get(position).Types);
+                viewHolder.tvGarageName.setText(Utility.getCamelCase(list.get(position).DealerName));
+                viewHolder.tvLocation.setText(list.get(position).Address1);
+                viewHolder.tvDistance.setText(list.get(position).Distance + " km from you");
+                viewHolder.tvOpen.setText(!list.get(position).IsClosed ? "Open Now" : "Closed Now");
+                viewHolder.tvOpen.setTextColor(ContextCompat.getColor(context, !list.get(position).IsClosed ? R.color.colorPrimary : R.color.light_orange));
+                viewHolder.tvValue.setText("" + list.get(position).CustomerRating);
+                viewHolder.tvPriceRange.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating == 5 ? R.color.colorPrimary : R.color.light_new_gray));
+                viewHolder.tvPriceRange1.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 4 ? R.color.colorPrimary : R.color.light_new_gray));
+                viewHolder.tvPriceRange2.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 3 ? R.color.colorPrimary : R.color.light_new_gray));
+                viewHolder.tvPriceRange3.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 2 ? R.color.colorPrimary : R.color.light_new_gray));
+                viewHolder.tvPriceRange4.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 1 ? R.color.colorPrimary : R.color.light_new_gray));
+
+                //if(list.get(position).ImageUrl!=null)
+
+//                else
+//                {
+//                    viewHolder.imgGarage.setImageResource(R.drawable.corner_radius_white_3);
+//                    viewHolder.imgGarage.setColorFilter(ContextCompat.getColor(context,R.color.app_hash_pool));
+//                }
 
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -115,15 +148,16 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             } else if (type == 1) {
 
                 LocationViewHolder locationViewHolder = (LocationViewHolder) holder;
-                locationViewHolder.tvGarageName.setText(list.get(position).Name);
-                locationViewHolder.tvDistance.setText(list.get(position).Distance + " meters from you");
-                locationViewHolder.tvOpen.setText(list.get(position).isOpen ? "Open Now" : "Closed Now");
-                locationViewHolder.tvOpen.setTextColor(ContextCompat.getColor(context, list.get(position).isOpen ? R.color.colorPrimary : R.color.light_orange));
-                locationViewHolder.tvValue.setText(list.get(position).Value);
+                locationViewHolder.tvGarageName.setText(Utility.getCamelCase(list.get(position).DealerName));
+                locationViewHolder.tvDistance.setText(list.get(position).Distance + " km from you");
+                locationViewHolder.tvOpen.setText(!list.get(position).IsClosed ? "Open Now" : "Closed Now");
+                locationViewHolder.tvOpen.setTextColor(ContextCompat.getColor(context, !list.get(position).IsClosed ? R.color.colorPrimary : R.color.light_orange));
+                locationViewHolder.tvValue.setText("" + list.get(position).CustomerRating);
+
+
                 Picasso.with(context)
-                        .load(list.get(position).Image)
-                        //.placeholder(Constants.IMAGE_PLACE_HOLDER)
-                        .into(locationViewHolder.imgGarage);
+                            .load(list.get(position).ImageUrl)
+                            .into(locationViewHolder.imgGarage);
 
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -137,21 +171,20 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             } else if (type == 2) {
                 RecommendedViewHolder recommendedViewHolder = (RecommendedViewHolder) holder;
-                recommendedViewHolder.tvGarageName.setText(list.get(position).Name);
-                recommendedViewHolder.tvValue.setText(list.get(position).Value);
-                recommendedViewHolder.tvDistance.setText(list.get(position).Distance + " meters from you");
-                recommendedViewHolder.tvOpen.setText(list.get(position).isOpen ? "Open Now" : "Closed Now");
-                recommendedViewHolder.tvOpen.setTextColor(ContextCompat.getColor(context, list.get(position).isOpen ? R.color.colorPrimary : R.color.light_orange));
-                recommendedViewHolder.tvPriceRange1.setTextColor(ContextCompat.getColor(context, list.get(position).Review == 4 ? R.color.colorPrimary : R.color.light_new_gray));
-                recommendedViewHolder.tvPriceRange2.setTextColor(ContextCompat.getColor(context, list.get(position).Review >= 3 ? R.color.colorPrimary : R.color.light_new_gray));
-                recommendedViewHolder.tvPriceRange3.setTextColor(ContextCompat.getColor(context, list.get(position).Review >= 2 ? R.color.colorPrimary : R.color.light_new_gray));
-                recommendedViewHolder.tvPriceRange4.setTextColor(ContextCompat.getColor(context, list.get(position).Review >= 1 ? R.color.colorPrimary : R.color.light_new_gray));
+                recommendedViewHolder.tvGarageName.setText(Utility.getCamelCase(list.get(position).DealerName));
+                recommendedViewHolder.tvValue.setText("" + list.get(position).CustomerRating);
+                recommendedViewHolder.tvDistance.setText(list.get(position).Distance + " km from you");
+                recommendedViewHolder.tvOpen.setText(!list.get(position).IsClosed ? "Open Now" : "Closed Now");
+                recommendedViewHolder.tvOpen.setTextColor(ContextCompat.getColor(context, !list.get(position).IsClosed ? R.color.colorPrimary : R.color.light_orange));
+                recommendedViewHolder.tvPriceRange1.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating == 4 ? R.color.colorPrimary : R.color.light_new_gray));
+                recommendedViewHolder.tvPriceRange2.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 3 ? R.color.colorPrimary : R.color.light_new_gray));
+                recommendedViewHolder.tvPriceRange3.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 2 ? R.color.colorPrimary : R.color.light_new_gray));
+                recommendedViewHolder.tvPriceRange4.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 1 ? R.color.colorPrimary : R.color.light_new_gray));
+
 
                 Picasso.with(context)
-                        .load(list.get(position).Image)
-                        //.placeholder(Constants.IMAGE_PLACE_HOLDER)
-                        .into(recommendedViewHolder.imgGarage);
-
+                            .load(list.get(position).ImageUrl)
+                            .into(recommendedViewHolder.imgGarage);
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.setMargins(
@@ -172,15 +205,20 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         else
         {
-//            SkeletonViewHolder skeletonViewHolder = (SkeletonViewHolder) holder;
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            params.setMargins(
-//                    Utility.dpSize(context, position == 0 ? 30 : 15),
-//                    Utility.dpSize(context, 15),
-//                    Utility.dpSize(context, position == 10 ? 30 : 0),
-//                    Utility.dpSize(context, 20)
-//            );
-//            skeletonViewHolder.itemView.setLayoutParams(params);
+            if(type==1)
+            {
+                SkeletonViewHolder skeletonViewHolder = (SkeletonViewHolder) holder;
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(
+                        Utility.dpSize(context, position == 0 ? 30 : 15),
+                        Utility.dpSize(context, 15),
+                        Utility.dpSize(context, position == 9 ? 30 : 0),
+                        Utility.dpSize(context, 20)
+                );
+                skeletonViewHolder.itemView.setLayoutParams(params);
+
+            }
+
         }
 
     }
@@ -213,6 +251,9 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @BindView(R.id.tvOpen)
         TextView tvOpen;
+
+        @BindView(R.id.tvPriceRange)
+        TextView tvPriceRange;
 
         @BindView(R.id.tvPriceRange1)
         TextView tvPriceRange1;
@@ -278,6 +319,9 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @BindView(R.id.tvOpen)
         TextView tvOpen;
+
+        @BindView(R.id.tvPriceRange)
+        TextView tvPriceRange;
 
         @BindView(R.id.tvPriceRange1)
         TextView tvPriceRange1;

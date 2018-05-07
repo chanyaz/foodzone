@@ -89,18 +89,40 @@ dcjnddjc dvdvvfv "
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.maya.vgarages.customviews.WSSemiBoldTextView
+        <RelativeLayout
             android:layout_marginTop="10dp"
             android:textAlignment="center"
-            android:id="@+id/tvAdd"
             android:gravity="center"
             android:layout_gravity="right"
             android:text="Add"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/colorPrimaryLight"
-            android:background="@drawable/corner_radius_white_8"
-            android:layout_width="50dp"
-            android:layout_height="22dp" />
+            android:layout_width="25dp"
+            android:layout_height="25dp" >
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
+
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/circle_white"
+                android:layout_width="19dp"
+                android:layout_height="19dp" />
+            <ImageView
+                android:elevation="2dp"
+                android:background="@drawable/circle_white"
+                android:tint="@color/light_new_gray"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_add_black"
+                android:id="@+id/imgAction"
+                android:layout_width="19dp"
+                android:layout_height="19dp" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

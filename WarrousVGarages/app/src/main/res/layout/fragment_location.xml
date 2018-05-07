@@ -29,7 +29,7 @@
 
            <ProgressBar
                android:visibility="gone"
-               android:id="@+id/progress_bar"
+               android:id="@+id/progressBar"
                style="?android:progressBarStyleHorizontal"
                android:indeterminateTint="@color/colorPrimary"
                android:indeterminate="true"
@@ -113,6 +113,15 @@
                            android:layout_gravity="center_vertical"
                            android:layout_marginLeft="15dp"
                            android:gravity="right">
+
+                           <com.maya.vgarages.customviews.WSSemiBoldTextView
+                               android:id="@+id/tvPriceRange"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_marginRight="3dp"
+                               android:text="*"
+                               android:textColor="@color/light_new_gray"
+                               android:textSize="12sp" />
 
                            <com.maya.vgarages.customviews.WSSemiBoldTextView
                                android:id="@+id/tvPriceRange1"

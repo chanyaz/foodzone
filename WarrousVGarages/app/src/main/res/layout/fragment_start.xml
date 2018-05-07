@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content">
 
                 <com.maya.vgarages.customviews.WSRegularTextView
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/hash_text_color"
                     android:text="Already Register ?"
                     android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
                     android:id="@+id/tvSignIn"
                     android:layout_marginLeft="10dp"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:text="Login"
                     android:textColor="@color/colorPrimary"
                     android:layout_width="wrap_content"
@@ -98,14 +98,14 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/hash_text_color"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:text="New"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
                     android:id="@+id/tvSignUp"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:text="Sign-Up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content">
 
                 <com.maya.vgarages.customviews.WSRegularTextView
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="@color/hash_text_color"
                     android:text="I agree to"
                     android:layout_width="wrap_content"
@@ -127,7 +127,7 @@
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
                     android:id="@+id/tvPrivacyPolicy"
                     android:layout_marginLeft="10dp"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:text="Privacy Policy"
                     android:textColor="@color/colorPrimary"
                     android:layout_width="wrap_content"
@@ -136,14 +136,14 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/hash_text_color"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:text="and"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
                     android:id="@+id/tvTerms"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:text="Terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

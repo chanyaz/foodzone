@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:background="@drawable/corner_radius_white_3" android:layout_width="fill_parent" android:layout_height="100.0dip" android:layout_margin="15.0dip"
+<LinearLayout android:background="@drawable/corner_radius_white_3"
+    android:layout_width="fill_parent" android:layout_height="100.0dip" android:layout_margin="15.0dip"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:layout_gravity="center_vertical" android:id="@id/imgNotification" android:layout_width="70.0dip" android:layout_height="70.0dip" android:layout_marginLeft="15.0dip" n2:autoStart="true" n2:baseColor="#fffbfbfb" n2:deepColor="#fff2f2f2" n2:duration="1500" n2:interval="1000" n2:progressLength="120.0dip" n2:radius="3.0dip" xmlns:n2="http://schemas.android.com/apk/res-auto" />
+    <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+        android:layout_gravity="center_vertical"
+        android:id="@+id/imgNotification"
+        android:layout_width="70.0dip"
+        android:layout_height="70.0dip"
+        android:layout_marginLeft="15.0dip"
+        app:autoStart="true"
+        app:baseColor="#fffbfbfb"
+        app:deepColor="#fff2f2f2"
+        app:duration="1500"
+        app:interval="1000"
+        app:progressLength="120.0dip"
+        app:radius="3.0dip"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
     <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_marginRight="15.0dip">
-        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:textSize="15.0sp" android:textColor="@color/colorPrimary" android:ellipsize="end" android:id="@id/tvTitle" android:layout_width="fill_parent" android:layout_height="12.0sp" android:text="Discount 10%" android:maxLines="1" n3:autoStart="true" n3:baseColor="#fffbfbfb" n3:deepColor="#fff2f2f2" n3:duration="1500" n3:interval="1000" n3:progressLength="120.0dip" n3:radius="0.0dip" xmlns:n3="http://schemas.android.com/apk/res-auto" />
-        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:textSize="13.0sp" android:textColor="@color/normal_text_color" android:ellipsize="end" android:id="@id/tvContent" android:layout_width="fill_parent" android:layout_height="12.0dip" android:layout_marginTop="7.0dip" android:text="In Sai Garage for water wash" android:maxLines="1" n4:autoStart="true" n4:baseColor="#fffbfbfb" n4:deepColor="#fff2f2f2" n4:duration="1500" n4:interval="1000" n4:progressLength="120.0dip" n4:radius="0.0dip" xmlns:n4="http://schemas.android.com/apk/res-auto" />
-        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:textSize="12.0sp" android:textColor="@color/light_gray" android:ellipsize="end" android:id="@id/tvTimeAgo" android:layout_width="80.0dip" android:layout_height="12.0dip" android:layout_marginTop="7.0dip" android:text="15 days ago" android:maxLines="1" n5:autoStart="true" n5:baseColor="#fffbfbfb" n5:deepColor="#fff2f2f2" n5:duration="1500" n5:interval="1000" n5:progressLength="120.0dip" n5:radius="0.0dip" xmlns:n5="http://schemas.android.com/apk/res-auto" />
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            android:textSize="15.0sp" android:textColor="@color/colorPrimary" android:ellipsize="end" android:id="@+id/tvTitle" android:layout_width="fill_parent" android:layout_height="12.0sp" android:text="Discount 10%" android:maxLines="1" n3:autoStart="true" n3:baseColor="#fffbfbfb" n3:deepColor="#fff2f2f2" n3:duration="1500" n3:interval="1000" n3:progressLength="120.0dip" n3:radius="0.0dip" xmlns:n3="http://schemas.android.com/apk/res-auto" />
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:textSize="13.0sp" android:textColor="@color/normal_text_color" android:ellipsize="end" android:id="@+id/tvContent" android:layout_width="fill_parent" android:layout_height="12.0dip" android:layout_marginTop="7.0dip" android:text="In Sai Garage for water wash" android:maxLines="1" n4:autoStart="true" n4:baseColor="#fffbfbfb" n4:deepColor="#fff2f2f2" n4:duration="1500" n4:interval="1000" n4:progressLength="120.0dip" n4:radius="0.0dip" xmlns:n4="http://schemas.android.com/apk/res-auto" />
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView android:textSize="12.0sp" android:textColor="@color/light_gray" android:ellipsize="end" android:id="@+id/tvTimeAgo" android:layout_width="80.0dip" android:layout_height="12.0dip" android:layout_marginTop="7.0dip" android:text="15 days ago" android:maxLines="1" n5:autoStart="true" n5:baseColor="#fffbfbfb" n5:deepColor="#fff2f2f2" n5:duration="1500" n5:interval="1000" n5:progressLength="120.0dip" n5:radius="0.0dip" xmlns:n5="http://schemas.android.com/apk/res-auto" />
     </LinearLayout>
 </LinearLayout>

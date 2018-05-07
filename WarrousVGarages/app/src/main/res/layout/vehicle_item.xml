@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/sample_car_image"
+            android:layout_margin="15dp"
+            android:layout_width="70dp"
+            android:layout_height="50dp" />
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <com.maya.vgarages.customviews.WSSemiBoldTextView
+                android:id="@+id/tvVehicleName"
+                android:textColor="@color/normal_text_color"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:text="Test Vehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+                <RelativeLayout
+                    android:layout_marginRight="15dp"
+                    android:id="@+id/rlDefault"
+                    android:layout_gravity="center"
+                    android:background="@drawable/black_border"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_weight="1"
+                    android:layout_width="120dp"
+                    android:layout_height="18dp">
+                 <com.maya.vgarages.customviews.WSRegularTextView
+                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="DEFAULT"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="10sp"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+           </LinearLayout>
+
+            <com.maya.vgarages.customviews.WSRegularTextView
+                android:id="@+id/tvVehicleDetails"
+                android:textColor="@color/light_new_gray"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:text="Kia Exteme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.maya.vgarages.customviews.WSRegularTextView
+                android:visibility="gone"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:id="@+id/tvYear"
+                android:textColor="@color/light_new_gray"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="2008"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+
+        </LinearLayout>
+        <ImageView
+            android:layout_margin="15dp"
+            android:id="@+id/imgClose"
+            android:layout_gravity="center"
+            android:tint="#C4C6C8"
+            android:src="@drawable/ic_close"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+    </LinearLayout>
+    <View
+        android:id="@+id/view"
+        android:background="@color/app_background_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </View>
+
+</LinearLayout>

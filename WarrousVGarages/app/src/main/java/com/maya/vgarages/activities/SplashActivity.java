@@ -317,7 +317,7 @@ public class SplashActivity extends AppCompatActivity implements IFragment, Goog
     }
 
 
-    private void attachNextFragment()
+    public void attachNextFragment()
     {
         splashFragment.setUpChildFragment(splashFragment.generateFragmentKey());
     }

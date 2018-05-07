@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_gravity="center"
+    android:focusable="false"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:background="@android:color/transparent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:background="@drawable/corner_radius_white_6"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ProgressBar
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_marginBottom="-20dp"
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.hsalf.smilerating.SmileRating
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        app:angryColor="#f29a68"
+        app:drawingColor="#353431"
+        app:normalColor="#fDdd68"
+        android:id="@+id/smileRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.maya.vgarages.customviews.WSEditText
+        android:id="@+id/etComment"
+        android:padding="10dp"
+        android:gravity="left"
+        android:hint="Write comment here..."
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/app_background_color"
+        android:background="@drawable/corner_radius_white_6"
+        android:layout_width="match_parent"
+        android:layout_height="90dp" />
+
+    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/checked"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
+</LinearLayout>

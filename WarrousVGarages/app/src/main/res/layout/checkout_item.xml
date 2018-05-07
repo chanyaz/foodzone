@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_margin="15dp"
+            android:src="@drawable/ic_wrench"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.maya.vgarages.customviews.WSMediumTextView
+                android:id="@+id/tvServiceName"
+                android:textColor="@color/normal_text_color"
+                android:textSize="13sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Madhapur, HYderabad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.maya.vgarages.customviews.WSRegularTextView
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:id="@+id/tvPrice"
+                android:textColor="@color/light_new_gray"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Rs. 1500"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_margin="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/progressBar"
+                android:layout_width="27dp"
+                android:layout_height="27dp" />
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/circle_white"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+        <ImageView
+            android:id="@+id/imgClose"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:tint="#C4C6C8"
+            android:src="@drawable/ic_close"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:background="@color/app_background_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+
+    </View>
+
+
+
+</LinearLayout>

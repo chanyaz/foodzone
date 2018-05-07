@@ -187,12 +187,12 @@ public class MainActivity extends AppCompatActivity implements IFragment {
                 case R.id.navigation_home:
                     toolbar.setVisibility(View.VISIBLE);
                     changeTitle("Garages List");
-                    fragment = HomeFragment.newInstance(null,null);
+                    fragment = HomeFragment.newInstance(new LatLng(location.getLatitude(), location.getLongitude()));
                     break;
                 case R.id.navigation_search:
                     changeTitle("Search");
                     toolbar.setVisibility(View.GONE);
-                    fragment = SearchFragment.newInstance(null,null);
+                    fragment = SearchFragment.newInstance(new LatLng(location.getLatitude(),location.getLongitude()));
                     break;
 
                 case R.id.navigation_location:
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements IFragment {
                 case R.id.navigation_remainder:
                     toolbar.setVisibility(View.VISIBLE);
                     changeTitle("Bookmarks");
-                    fragment = RemainderFragment.newInstance(null,null);
+                    fragment = RemainderFragment.newInstance(new LatLng(location.getLatitude(), location.getLongitude()));
                     break;
             }
             if(fragment!=null)

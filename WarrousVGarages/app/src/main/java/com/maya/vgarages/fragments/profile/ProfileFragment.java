@@ -4,15 +4,19 @@ package com.maya.vgarages.fragments.profile;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maya.vgarages.R;
+import com.maya.vgarages.activities.HelperActivity;
 import com.maya.vgarages.constants.Constants;
+import com.maya.vgarages.fragments.vehicle.UserVehiclesFragment;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.utilities.Utility;
 import com.squareup.picasso.Picasso;
@@ -48,6 +52,17 @@ public class ProfileFragment extends Fragment implements IFragment{
     @BindView(R.id.imgUser)
     ImageView imgUser;
 
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
+    @BindView(R.id.llProfile)
+    LinearLayout llProfile;
+
+    UserVehiclesFragment userVehiclesFragment;
+
+    boolean isProfile = true;
+
+
 
 
     public ProfileFragment() {
@@ -68,6 +83,14 @@ public class ProfileFragment extends Fragment implements IFragment{
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ProfileFragment newInstance(boolean isProfile) {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("isProfile", isProfile);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,6 +118,11 @@ public class ProfileFragment extends Fragment implements IFragment{
 
     private void initialize()
     {
+        if(!getArguments().getBoolean("isProfile",true))
+        {
+            isProfile = false;
+        }
+        llProfile.setVisibility(isProfile?View.VISIBLE:View.GONE);
         tvUserName.setText(Utility.getCamelCase(Utility.getString(Utility.getSharedPreferences(), Constants.USER_NAME)));
         Picasso.with(activity())
                 .load(Utility.getString(Utility.getSharedPreferences(),Constants.USER_PHOTO_URL))
@@ -108,6 +136,17 @@ public class ProfileFragment extends Fragment implements IFragment{
         {
             tvAddress.setText("");
         }
+        getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,userVehiclesFragment = UserVehiclesFragment.newInstance(isProfile)).commit();
+
+        fab.setOnClickListener(v -> {
+            ((HelperActivity) activity()).openAddVehicle();
+        });
+    }
+
+
+    public void refreshVehicles()
+    {
+        userVehiclesFragment.fetchUserVehicles();
     }
 
     @Override

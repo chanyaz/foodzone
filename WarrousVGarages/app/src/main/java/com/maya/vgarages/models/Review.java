@@ -6,9 +6,19 @@ package com.maya.vgarages.models;
 
 public class Review
 {
-    public String UserName;
-    public String Image;
-    public String Ratting;
-    public String Content;
-    public String TimeAgo;
+    public int ReviewId;
+
+    public int UserId;
+
+    public int DealerId;
+
+    public String FullName;
+
+    public String ImageUrl;
+
+    public double Rating;
+
+    public String Review;
+
+    public String CreatedDt;
 }

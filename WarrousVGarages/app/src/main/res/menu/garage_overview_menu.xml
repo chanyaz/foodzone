@@ -12,7 +12,7 @@
     <item
         app:iconTint="@color/colorPrimary"
         android:id="@+id/menu_cart"
-        android:icon="@drawable/ic_shopping_bag"
+        android:icon="@drawable/cart_with_badge"
         android:title="Cart"
         app:showAsAction="always|withText"/>
     <item
