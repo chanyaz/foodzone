@@ -426,47 +426,73 @@ public class GarageServicesFragment extends Fragment implements IFragment, IGara
             }
         }
 
-        if(garageService.isAdded)
-        {
-            for (int i = 0; i < ((HelperActivity) activity()).cartGarageServices.size(); i++)
-            {
-                if (((HelperActivity) activity()).cartGarageServices.get(i).DealerId == garageService.DealerId
-                        &&
-                        ((HelperActivity) activity()).cartGarageServices.get(i).OpCodeId == garageService.OpCodeId)
-                {
-                    ((HelperActivity) activity()).cartGarageServices.remove(i);
-                    break;
-                }
-            }
 
-        }
-        else
-        {
-            ((HelperActivity) activity()).cartGarageServices.add(garageService);
-        }
 
         //Logger.d("SIZE  "+((HelperActivity) activity()).cartGarageServices.size() );
 
 
         list.get(position).isPending = true;
         garageServicesAdapter.notifyDataSetChanged();
+        actionOpcodeFromCart(garageService,position);
 
 
-        new Handler().postDelayed(new Runnable() {
+    }
+
+
+    public void actionOpcodeFromCart(GarageService garageService,int position)
+    {
+        if(garageService==null)
+            return;
+
+        String URL = (!garageService.isAdded ?
+                Constants.URL_INSERT_CART_OPCODE :Constants.URL_DELETE_CART_OPCODE )+
+                "?userId="+Utility.getString(Utility.getSharedPreferences(),Constants.USER_ID)+
+                "&dealerId=" + garageService.DealerId +
+                "&opCodeId=" +  garageService.OpCodeId;
+
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        final Response.Listener<String> listener = new Response.Listener<String>()
+        {
             @Override
-            public void run()
+            public void onResponse(String response)
             {
+                Logger.d("[response]", response);
+                if(garageService.isAdded)
+                {
+                    for (int i = 0; i < ((HelperActivity) activity()).cartGarageServices.size(); i++)
+                    {
+                        if (((HelperActivity) activity()).cartGarageServices.get(i).DealerId == garageService.DealerId
+                                &&
+                                ((HelperActivity) activity()).cartGarageServices.get(i).OpCodeId == garageService.OpCodeId)
+                        {
+                            ((HelperActivity) activity()).cartGarageServices.remove(i);
+                            break;
+                        }
+                    }
+
+                }
+                else
+                {
+                    ((HelperActivity) activity()).cartGarageServices.add(garageService);
+                }
 
                 list.get(position).isPending = false;
                 list.get(position).isAdded = list.get(position).isAdded ?  false : true;
                 garageServicesAdapter.notifyDataSetChanged();
                 Logger.d("SIZE "+ ((HelperActivity) activity()).cartGarageServices.size());
-
                 ((HelperActivity) activity()).updateCart(((HelperActivity) activity()).cartGarageServices.size());
-                ((HelperActivity) activity()).saveCart();
             }
-        },1000);
-
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError)
+            {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
     }
 
     @Override

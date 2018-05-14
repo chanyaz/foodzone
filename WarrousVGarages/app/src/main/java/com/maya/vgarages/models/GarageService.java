@@ -14,9 +14,15 @@ public class GarageService
     public int DealerId;
     public int OpCodeId;
     public String OpCodeName;
+    public String Description;
     public String OpCodeContent;
     public String Code;
     public String ImageUrl;
+
+    //cart
+    public int OpCodeUserCartId;
+    public String UniqueCode;
+
 
     public boolean isAdded = false;
     public boolean isPending = false;

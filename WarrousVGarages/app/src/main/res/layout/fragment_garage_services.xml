@@ -40,6 +40,7 @@
    </android.support.design.widget.CoordinatorLayout>
 
         <LinearLayout
+            android:elevation="48dp"
             android:layout_alignParentBottom="true"
             android:id="@+id/llBottom"
             android:orientation="vertical"
@@ -47,9 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <View
-                android:background="@color/map_transparent"
+                android:background="@color/light_orange"
                 android:layout_width="match_parent"
-                android:layout_height="2dp">
+                android:layout_height="0.5dp">
 
             </View>
 
@@ -65,15 +66,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <com.maya.vgarages.customviews.WSRegularTextView
-                        android:text="Services for"
+                        android:text="SERVICES FOR CAR"
                         android:maxLines="1"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/black"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <com.maya.vgarages.customviews.WSSemiBoldTextView
                         android:text="Honda"
                         android:maxLines="1"
+                        android:ellipsize="end"
                         android:textSize="14sp"
                         android:id="@+id/tvCarName"
                         android:textColor="@color/light_primary"
@@ -84,6 +86,7 @@
 
                 <RelativeLayout
                     android:elevation="2dp"
+                    android:foreground="?attr/selectableItemBackground"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:gravity="center_vertical"
@@ -94,7 +97,7 @@
                     android:layout_weight="1"
                     android:layout_width="150dp"
                     android:layout_height="22dp">
-                    <com.maya.vgarages.customviews.WSRegularTextView
+                    <com.maya.vgarages.customviews.WSMediumTextView
                         android:layout_width="wrap_content"
                         android:layout_marginLeft="1dp"
                         android:layout_marginRight="5dp"

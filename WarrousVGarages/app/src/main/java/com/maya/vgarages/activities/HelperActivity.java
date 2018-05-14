@@ -1,6 +1,7 @@
 package com.maya.vgarages.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,9 +24,14 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.maya.vgarages.R;
+import com.maya.vgarages.fragments.appointments.AppointmentsOverviewFragment;
+import com.maya.vgarages.apis.volley.VolleyHelperLayer;
 import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.customviews.BadgeDrawable;
 import com.maya.vgarages.dialogs.cart.ReplaceCartDialog;
@@ -36,6 +42,7 @@ import com.maya.vgarages.dialogs.vehicle.AddVehicleDialog;
 import com.maya.vgarages.fragments.cart.checkout.CheckOutFragment;
 import com.maya.vgarages.fragments.garage.overview.GarageOverviewFragment;
 import com.maya.vgarages.fragments.profile.ProfileFragment;
+import com.maya.vgarages.fragments.transactions.TransactionsFragment;
 import com.maya.vgarages.fragments.vehicle.add.AddVehicleFragment;
 import com.maya.vgarages.interfaces.activities.IActivity;
 import com.maya.vgarages.interfaces.dialog.IAddReviewDialog;
@@ -44,7 +51,6 @@ import com.maya.vgarages.interfaces.dialog.IAppointmentDetailsDialog;
 import com.maya.vgarages.interfaces.dialog.IReplaceCartDialog;
 import com.maya.vgarages.interfaces.dialog.IToPickVehicle;
 import com.maya.vgarages.models.Appointment;
-import com.maya.vgarages.models.Cart;
 import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.models.GarageService;
 import com.maya.vgarages.models.Vehicle;
@@ -80,7 +86,7 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
     @BindView(R.id.frameLayoutBottom)
     FrameLayout frameLayoutBottom;
 
-    public Cart cart;
+   // public Cart cart;
     public Garage cartGarage;
     public Appointment appointment;
 
@@ -94,7 +100,7 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
     GarageOverviewFragment garageOverviewFragment;
 
 
-    public List<GarageService> cartGarageServices;
+    public List<GarageService> cartGarageServices = new ArrayList<>();
 
     public boolean isBookmark = false;
 
@@ -103,7 +109,8 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
     IAddReviewDialog iAddReviewDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_helper);
         ButterKnife.bind(this);
@@ -117,8 +124,9 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
     private void initialize()
     {
         iAddReviewDialog = this;
-        cart = generateCart();
-        Checkout.preload(getApplicationContext());
+        //cart = generateCart();
+
+
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -135,14 +143,17 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         });
 
+        Checkout.preload(getApplicationContext());
+
 
     }
 
     public void refreshCart()
     {
-        cartGarageServices = cart.listServices;
-        cartGarage = cart.garage;
+//        cartGarageServices = cart.listServices;
+//        cartGarage = cart.garage;
 
+        if(cartGarageServices!=null)
         updateCart(cartGarageServices.size());
     }
 
@@ -162,6 +173,14 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
                 changeTitle("Account");
                 break;
             case 2222: // garage overview
+                if(Utility.isNetworkAvailable(activity()))
+                {
+                    fetchOpcodesOfCart();
+                }
+                else
+                {
+                    finish();
+                }
                 fragment = garageOverviewFragment =  GarageOverviewFragment.newInstance((Garage) getIntent().getSerializableExtra("Garage"));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
@@ -177,6 +196,22 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
                     toolbar.setElevation(1);
                 }
                 changeTitle("");
+                break;
+            case 2224:
+                fragment =  AppointmentsOverviewFragment.newInstance(null,null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    toolbar.setElevation(1);
+                }
+                changeTitle("My Appointments");
+                break;
+            case 2225:
+                fragment =  TransactionsFragment.newInstance(null,null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    toolbar.setElevation(1);
+                }
+                changeTitle("Transactions");
                 break;
         }
         if(fragment!=null)
@@ -212,6 +247,11 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
 
     private void openCartCheckout()
     {
+        if(!Utility.getSharedPreferences().contains(Constants.DEFAULT_CAR_DATA))
+        {
+            pickVehicleDialog(garageOverviewFragment.iToPickVehicle);
+            return;
+        }
         if(cartGarageServices == null || cartGarageServices.size()==0)
         {
             garageOverviewFragment.showSnackBar("Cart is empty",2);
@@ -247,7 +287,11 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
 
     public void startPayment(double value)
     {
-
+        if(value <= 0)
+        {
+            showSnackBar(Constants.ERROR,2);
+            return;
+        }
         final Checkout checkout = new Checkout();
         try
         {
@@ -428,7 +472,8 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
         garageOverviewFragment.updateGarageServices();
     }
 
-    public void setBadgeCount(Context context, LayerDrawable icon, String count) {
+    public void setBadgeCount(Context context, LayerDrawable icon, String count)
+    {
 
         BadgeDrawable badge;
         // Reuse drawable if possible
@@ -457,7 +502,8 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
     }
 
     @Override
-    public void onPaymentSuccess(String s) {
+    public void onPaymentSuccess(String s)
+    {
         Logger.d("PAYMENT ID",s);
         onBackPressed();
         showSnackBar("Payment success",1);
@@ -498,36 +544,36 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
 
     }
 
-    public void saveCart()
-    {
-        Gson gson = new Gson();
-        Type type = new TypeToken<Cart>()
-        {
-        }.getType();
-        cart.garage = cartGarage;
-        cart.listServices = cartGarageServices;
-        Utility.setString(Utility.getSharedPreferences(),Constants.CART_DATA,gson.toJson(cart,type));
-    }
+//    public void saveCart()
+//    {
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<Cart>()
+//        {
+//        }.getType();
+//        cart.garage = cartGarage;
+//        cart.listServices = cartGarageServices;
+//        Utility.setString(Utility.getSharedPreferences(),Constants.CART_DATA,gson.toJson(cart,type));
+//    }
 
-    public Cart generateCart()
-    {
-        Gson gson = new Gson();
-        Type type = new TypeToken<Cart>(){}.getType();
-        if(Utility.getSharedPreferences().contains(Constants.CART_DATA))
-        {
-            return gson.fromJson(Utility.getString(Utility.getSharedPreferences(),Constants.CART_DATA),type);
-        }
-        else
-        {
-            return new Cart();
-        }
-    }
+//    public Cart generateCart()
+//    {
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<Cart>(){}.getType();
+//        if(Utility.getSharedPreferences().contains(Constants.CART_DATA))
+//        {
+//            return gson.fromJson(Utility.getString(Utility.getSharedPreferences(),Constants.CART_DATA),type);
+//        }
+//        else
+//        {
+//            return new Cart();
+//        }
+//    }
 
     public void replaceCart(Garage garage)
     {
         cartGarageServices = new ArrayList<>();
         cartGarage = garage;
-        saveCart();
+        //saveCart();
         updateCart(cartGarageServices.size());
     }
 
@@ -567,7 +613,8 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode)
         {
@@ -609,4 +656,185 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
          garageOverviewFragment.updateRatting();
      }
     }
+
+
+
+    public void deleteOpcodeFromCart(GarageService garageService)
+    {
+        if(garageService==null)
+        return;
+
+        String URL = Constants.URL_DELETE_CART_OPCODE + "?userId="+Utility.getString(Utility.getSharedPreferences(),Constants.USER_ID)+
+                "&dealerId=" + garageService.DealerId + "&opCodeId==" +  garageService.OpCodeId;
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        final Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Logger.d("[response]", response);
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError)
+            {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+    }
+
+    public void insertOpcodeToCart(GarageService garageService)
+    {
+        if(garageService==null)
+        return;
+
+        String URL = Constants.URL_INSERT_CART_OPCODE + "?userId="+Utility.getString(Utility.getSharedPreferences(),Constants.USER_ID)+
+                "&dealerId=" + garageService.DealerId + "&opCodeId==" +  garageService.OpCodeId;
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        final Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Logger.d("[response]", response);
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError)
+            {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+    }
+
+    public void fetchOpcodesOfCart()
+    {
+        final ProgressDialog progressDialog = Utility.generateProgressDialog(activity());
+        String URL = Constants.URL_USER_CART_OPCODES + "?userId="+Utility.getString(Utility.getSharedPreferences(),Constants.USER_ID);
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        final Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Logger.d("[response]", response);
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<GarageService>>() {
+                }.getType();
+                cartGarageServices = gson.fromJson(response, type);
+                updateCart(cartGarageServices.size());
+                if(cartGarageServices!=null && cartGarageServices.size()>0)
+                {
+                    fetchDealerById(cartGarageServices.get(0).DealerId);
+                    refreshGarageServices();
+                }
+
+                Utility.closeProgressDialog(progressDialog);
+
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError)
+            {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+                Utility.closeProgressDialog(progressDialog);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+    }
+
+    public void fetchDealerById(int dealerId)
+    {
+        final ProgressDialog progressDialog = Utility.generateProgressDialog(activity());
+        String URL = Constants.URL_GET_DEALER_DETAILS + "?dealerId="+dealerId;
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        final Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Logger.d("[response]", response);
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<Garage>>() {
+                }.getType();
+                List<Garage> garages = gson.fromJson(response, type);
+                cartGarage = garages.get(0);
+                Utility.closeProgressDialog(progressDialog);
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError)
+            {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+                Utility.closeProgressDialog(progressDialog);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+    }
+
+
+
+    public void saveUserAddress(String address)
+    {
+
+    }
+
+    public void fetchUserAddress()
+    {
+        String URL = Constants.URL_USER_ADDRESS + "?userId="+Utility.getString(Utility.getSharedPreferences(),Constants.USER_ID);
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        final Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Logger.d("[response]", response);
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError)
+            {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+    }
+
+    public String generateCartOpCodes()
+    {
+        String result = "";
+        if(cartGarageServices!=null && cartGarageServices.size()>0)
+        {
+            for(int i=0;i<cartGarageServices.size();i++)
+            {
+                if(i==cartGarageServices.size()-1)
+                {
+                    result += cartGarageServices.get(i).OpCodeId;
+                }
+                else
+                result += cartGarageServices.get(i).OpCodeId+ ",";
+            }
+        }
+
+        return result;
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.maya.vgarages.adapters.fragments.garage.services;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -96,14 +97,16 @@ public class GarageServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             holder.imgAction.setColorFilter(ContextCompat.getColor(context,list.get(position).isAdded ? R.color.light_orange : R.color.green_checkout));
 
-            holder.imgAction.setOnClickListener(v -> iGarageServicesAdapter.applyAction(list.get(position),position));
+            holder.imgAction.setOnClickListener(v -> {
+                        iGarageServicesAdapter.applyAction(list.get(position), position);
+            });
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(
                     Utility.dpSize(context, 15),
                     Utility.dpSize(context, 15),
                     Utility.dpSize(context, 15),
-                    Utility.dpSize(context, list.size() - 1 == position ? 30 : 15)
+                    Utility.dpSize(context, list.size() - 1 == position ? 60 : 15)
             );
 
 

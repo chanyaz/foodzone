@@ -57,7 +57,7 @@ public class GarageOverviewFragment extends Fragment implements IFragment, IToPi
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
-    IToPickVehicle iToPickVehicle;
+    public IToPickVehicle iToPickVehicle;
 
 
     public GarageOverviewFragment() {

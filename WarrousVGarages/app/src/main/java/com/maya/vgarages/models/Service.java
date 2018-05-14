@@ -7,12 +7,17 @@ package com.maya.vgarages.models;
 public class Service
 {
     public int Id;
-    public String Name;
-    public int Image;
+    public int Image = 0;
+    public String GarageType;
     public boolean IsSelected = false;
 
+    public int GarageTypeId;
+    public String GarageTypeGuid;
+    public String TypeDescription;
+    public String TypeImageUrl;
+
     public Service(String name, int image,boolean isSelected) {
-        Name = name;
+        GarageType = name;
         Image = image;
         this.IsSelected = isSelected;
     }

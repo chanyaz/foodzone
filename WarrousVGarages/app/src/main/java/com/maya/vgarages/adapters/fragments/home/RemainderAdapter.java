@@ -68,7 +68,8 @@ public class RemainderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if(!isLoading)
         {
             ViewHolder holder = (ViewHolder) viewHolder;
-            holder.tvGarageName.setText(list.get(position).DealerName);
+            holder.tvGarageName.setText(Utility.getCamelCase(list.get(position).DealerName));
+            holder.tvShopType.setText(list.get(position).Types);
             holder.tvDistance.setText(list.get(position).Distance + " km from you");
             holder.tvOpen.setText(!list.get(position).IsClosed ? "Open Now" : "Closed Now");
             holder.tvOpen.setTextColor(ContextCompat.getColor(context, !list.get(position).IsClosed ? R.color.colorPrimary : R.color.light_orange));

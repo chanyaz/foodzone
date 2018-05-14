@@ -147,12 +147,14 @@
 
         </View>
         <com.maya.vgarages.customviews.SFSemiBoldTextView
+            android:id="@+id/tvAppointments"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
+            android:gravity="center"
             android:textSize="16sp"
             android:textColor="@color/light_new_gray"
-            android:text="Manage"
-            android:layout_width="wrap_content"
+            android:text="My Appointments"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <View
@@ -168,12 +170,14 @@
 
 
         <com.maya.vgarages.customviews.SFSemiBoldTextView
+            android:id="@+id/tvTransactions"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
             android:textSize="16sp"
             android:textColor="@color/light_new_gray"
-            android:text="Languages"
-            android:layout_width="wrap_content"
+            android:text="Transactions"
+            android:gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <View

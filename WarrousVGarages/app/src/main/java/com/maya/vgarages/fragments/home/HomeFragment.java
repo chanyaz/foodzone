@@ -35,6 +35,7 @@ import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -73,6 +74,11 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
     List<Garage> garageList;
     IServiceAdapter iServiceAdapter;
     ServiceAdapter serviceAdapter;
+
+    int selectedPosition = 0;
+
+    boolean isDoneService = false ,isDoneGarage = false, isOnlyGarage = false;
+
 
     LatLng myLocation = new LatLng(17.439091, 78.399097);
 
@@ -140,7 +146,10 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
 
         if(Utility.isNetworkAvailable(activity()))
-        fetchGarages();
+        {
+            fetchGarageServices();
+            fetchGarages("All");
+        }
         else
         {
             showSnackBar(Constants.PLEASE_CHECK_INTERNET,2);
@@ -150,7 +159,14 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
             swipeRefreshLayout.setRefreshing(false);
 
             if(Utility.isNetworkAvailable(activity()))
-            fetchGarages();
+            {
+                selectedPosition = 0;
+                isOnlyGarage = false;
+                isDoneGarage = false;
+                isDoneService = false;
+                fetchGarageServices();
+                fetchGarages("All");
+            }
             else
             {
                 showSnackBar(Constants.PLEASE_CHECK_INTERNET,2);
@@ -158,13 +174,10 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
         });
     }
 
-    private void fetchGarages()
+    private void fetchGarages(String value)
     {
-        recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(list = Utility.generateServices(),activity(),iServiceAdapter,true));
         recyclerView.setAdapter(new GaragesAdapter(Utility.generateGaragesList(),activity(),iGaragesAdapter,true));
-
-
-        String URL = Constants.URL_GET_GARAGES_LIST_BY_TYPE + "?latitude="+myLocation.latitude+"&longitude="+myLocation.longitude+"&GarageType=All&pagecount=1" ;
+        String URL = Constants.URL_GET_GARAGES_LIST_BY_TYPE + "?latitude="+myLocation.latitude+"&longitude="+myLocation.longitude+"&GarageType="+value.trim().replace(" ","%20")+"&pagecount=1" ;
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>()
         {
@@ -176,15 +189,9 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
                 Type type = new TypeToken<List<Garage>>() {
                 }.getType();
                 garageList = gson.fromJson(response, type);
-                recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(list = Utility.generateServices(),activity(),iServiceAdapter,false));
-                if(garageList!=null && garageList.size()>0)
-                {
-                    recyclerView.setAdapter(new GaragesAdapter(garageList,activity(),iGaragesAdapter,false));
-                }
-                else
-                {
-                    recyclerView.setAdapter(new EmptyDataAdapter(activity(),1));
-                }
+                isDoneGarage = true;
+                reflectItems();
+
 
             }
         };
@@ -201,6 +208,74 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
         volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
 
 
+    }
+
+
+
+    private void fetchGarageServices()
+    {
+        recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(Utility.generateServices(),activity(),iServiceAdapter,true));
+        String URL = Constants.URL_GARAGE_SERVICE_TYPES + "?pagecount=1" ;
+        VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
+        Response.Listener<String> listener = new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response)
+            {
+                Logger.d("[response]", response);
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<Service>>() {
+                }.getType();
+                list = new ArrayList<>();
+                list.add(new Service("All",R.drawable.all,true));
+                list.addAll(gson.fromJson(response, type));
+                isDoneService = true;
+                reflectItems();
+
+
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError volleyError)
+            {
+                Logger.d("[response]",Constants.CONNECTION_ERROR);
+                recyclerViewServices.setAdapter(new EmptyDataAdapter(activity(),0));
+                showSnackBar(Constants.CONNECTION_ERROR,2);
+            }
+        };
+        volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+
+    }
+
+
+    public void reflectItems()
+    {
+        if(isDoneService == true && isDoneGarage == true)
+        {
+            if (garageList != null && garageList.size() > 0)
+            {
+                recyclerView.setAdapter(new GaragesAdapter(garageList, activity(), iGaragesAdapter, false));
+            }
+            else
+            {
+                recyclerView.setAdapter(new EmptyDataAdapter(activity(), 1));
+            }
+
+            if (list != null && list.size() > 0)
+            {
+                if(isOnlyGarage == false)
+                {
+                    isOnlyGarage = true;
+                    recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(list, activity(), iServiceAdapter, false));
+                }
+            }
+            else
+            {
+                recyclerViewServices.setAdapter(serviceAdapter = new ServiceAdapter(list = Utility.generateServices(), activity(), iServiceAdapter, false));
+            }
+        }
     }
 
     @Override
@@ -227,6 +302,15 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
         }
         list.get(position).IsSelected = true;
         serviceAdapter.notifyDataSetChanged();
+        if(position == selectedPosition)
+        {
+            return;
+        }
+        else
+        {
+            selectedPosition = position;
+            fetchGarages(service.GarageType);
+        }
     }
 
     @Override

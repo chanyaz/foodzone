@@ -428,30 +428,36 @@ public class SplashActivity extends AppCompatActivity implements IFragment, Goog
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
-        if(callbackManager!=null)
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode)
-        {
-            case Constants.LOCATION_CODE:
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        // All required changes were successfully made
-                        updateRequestLocation();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        // The user was asked to change settings, but chose not to
-                        splashFragment.updateUIinLocationFragment();
-                        break;
-                    default:
+        try {
 
-                        break;
-                }
-                break;
-            case 18101: //Utility.generateRequestCodes().get("GOOGLE_SIGN_IN")
-                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                parseGoogleResult(result);
-                break;
+            final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+            if (callbackManager != null)
+                callbackManager.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode) {
+                case Constants.LOCATION_CODE:
+                    switch (resultCode) {
+                        case Activity.RESULT_OK:
+                            // All required changes were successfully made
+                            updateRequestLocation();
+                            break;
+                        case Activity.RESULT_CANCELED:
+                            // The user was asked to change settings, but chose not to
+                            splashFragment.updateUIinLocationFragment();
+                            break;
+                        default:
+
+                            break;
+                    }
+                    break;
+                case 18101: //Utility.generateRequestCodes().get("GOOGLE_SIGN_IN")
+                    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                    parseGoogleResult(result);
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 

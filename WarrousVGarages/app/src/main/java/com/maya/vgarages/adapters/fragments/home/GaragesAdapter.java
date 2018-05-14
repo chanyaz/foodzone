@@ -149,6 +149,7 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 LocationViewHolder locationViewHolder = (LocationViewHolder) holder;
                 locationViewHolder.tvGarageName.setText(Utility.getCamelCase(list.get(position).DealerName));
+
                 locationViewHolder.tvDistance.setText(list.get(position).Distance + " km from you");
                 locationViewHolder.tvOpen.setText(!list.get(position).IsClosed ? "Open Now" : "Closed Now");
                 locationViewHolder.tvOpen.setTextColor(ContextCompat.getColor(context, !list.get(position).IsClosed ? R.color.colorPrimary : R.color.light_orange));
@@ -172,6 +173,7 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             } else if (type == 2) {
                 RecommendedViewHolder recommendedViewHolder = (RecommendedViewHolder) holder;
                 recommendedViewHolder.tvGarageName.setText(Utility.getCamelCase(list.get(position).DealerName));
+                recommendedViewHolder.tvShopType.setText(list.get(position).Types);
                 recommendedViewHolder.tvValue.setText("" + list.get(position).CustomerRating);
                 recommendedViewHolder.tvDistance.setText(list.get(position).Distance + " km from you");
                 recommendedViewHolder.tvOpen.setText(!list.get(position).IsClosed ? "Open Now" : "Closed Now");

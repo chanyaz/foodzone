@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/llHolder"
     android:elevation="1dp"
+    android:foreground="?android:attr/selectableItemBackground"
     android:background="@drawable/corner_radius_white_3"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.maya.vgarages.customviews.RoundedBorderImageView

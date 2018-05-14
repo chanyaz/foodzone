@@ -67,7 +67,7 @@ public class LoginFragment extends Fragment implements IFragment{
     String firstName = "Default";
     String lastName = "User";
     int type = 0;
-    String userName= null, userId = null, email = null;
+    String userName= null, userId = null, email = null, phone = null;
 
 
 
@@ -187,6 +187,7 @@ public class LoginFragment extends Fragment implements IFragment{
                                 userName  =  jwt.getClaim("UserName").asString();
                                 userId  =  jwt.getClaim("UserId").asString();
                                 email  =  jwt.getClaim("Email").asString();
+                                phone  =  jwt.getClaim("PhoneNumber").asString();
 
 
                                 Utility.setString(Utility.getSharedPreferences(),Constants.FIRST_NAME,firstName);
@@ -194,6 +195,7 @@ public class LoginFragment extends Fragment implements IFragment{
                                 Utility.setString(Utility.getSharedPreferences(),Constants.USER_NAME,firstName + " " + lastName);
                                 Utility.setString(Utility.getSharedPreferences(),Constants.USER_EMAIL,email);
                                 Utility.setString(Utility.getSharedPreferences(),Constants.USER_ID,userId);
+                                Utility.setString(Utility.getSharedPreferences(),Constants.USER_PHONE_NUMBER,phone);
                                 Utility.setString(Utility.getSharedPreferences(),Constants.USER_PHOTO_URL,Constants.AVATAR_IMAGE);
                                 Utility.setBoolen(Utility.getSharedPreferences(),Constants.LOGIN,true);
 

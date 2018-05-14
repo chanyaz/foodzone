@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.other.AddAddressFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+  <android.support.design.widget.CoordinatorLayout
+      android:id="@+id/coordinatorLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+          <RelativeLayout
+              android:elevation="2dp"
+              android:background="@color/colorPrimary"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+              <ImageView
+                  android:scaleType="fitXY"
+                  android:src="@drawable/world_map"
+                  android:layout_width="match_parent"
+                  android:layout_height="180dp" />
+              <ImageView
+                  android:tint="@color/white"
+                  android:layout_margin="10dp"
+                  android:src="@drawable/ic_left_arrow"
+                  android:layout_width="35dp"
+                  android:layout_height="35dp" />
+
+
+          </RelativeLayout>
+          <LinearLayout
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+          </LinearLayout>
+      </LinearLayout>
+
+  </android.support.design.widget.CoordinatorLayout>
+
+</FrameLayout>

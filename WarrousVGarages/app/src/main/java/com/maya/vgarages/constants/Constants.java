@@ -74,6 +74,8 @@ public class Constants
 
     public static final String USER_NAME = "user_name";
 
+    public static final String USER_PHONE_NUMBER = "user_phone_number";
+
     public static final String USER_PHOTO_URL = "user_photo_url";
 
     public static final String USER_ADDRESS = "user_address";
@@ -82,11 +84,25 @@ public class Constants
 
     public static final String USER_LOCALITY_ADDRESS = "user_locality_address";
 
+    public static final String USER_ADMIN_AREA = "user_admin_area";
+
+    public static final String USER_PIN_CODE = "user_pin_code";
+
+    public static final String USER_ADDRESS1 = "user_address1";
+
+    public static final String USER_ADDRESS2 = "user_address2";
+
     public static final String LOGIN = "login";
 
     public static final String CART_DATA = "cart_data";
 
     public static final String DEFAULT_CAR_DATA = "DEFAULT_CAR_DATA";
+
+    public static final String USER_FCM_TOKEN = "user_fcm_token";
+
+    public static final String AUTH_TOKEN = "auth_token";
+
+    public static final String CURRENT_USER_FCM_TOKEN = "current_user_fcm_token";
 
     public static final int IMAGE_PLACE_HOLDER = R.drawable.place_holder;
 
@@ -95,6 +111,8 @@ public class Constants
     public static final String SAMPLE_ERROR_IMAGE = "https://i.pinimg.com/originals/3e/3e/14/3e3e14d932098c3c3140c419daaa61c6.jpg";
 
     public static final String SAMPLE_CUSTOMER_PHONE_NUMBER = "1234567890";
+
+    public static final String SERIAL_PROJECT_ID = "509471007783";
 
     public static final int SUCCESS_RESULT = 0;
 
@@ -170,5 +188,53 @@ public class Constants
     //?userId=1&vehicleId=1";
 
     public static final String URL_USER_VEHICLES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/VehiclesByUseridGet";
+
+    public static final String URL_INSERT_USER_PNS = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/CustomerPNSInsert";
     //?userId=1";
+
+    public static final String URL_USER_CART_OPCODES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/CartOpcodesByUserIdGet";
+    //?userId=7";
+
+    public static final String URL_INSERT_CART_OPCODE = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/OpCodeCartSave";
+    //?opCodeId=6&userId=7&dealerId=13 ";
+
+    public static final String URL_DELETE_CART_OPCODE = URL  + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/CartOpcodesByUserIdDelete";
+    //?dealerId=13&userId=7&opCodeId=2";
+
+    public static final String URL_GET_DEALER_DETAILS = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GaragesDetailsByDealerIdGet";
+    //?dealerId=10"
+
+    public static final String URL_CREATE_APPOINTMENT = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Appointment/CreateAppointment";
+    //dealerId=1&opCodes=1,2
+    /*
+        {
+        "ServiceAppointmentId": 0,
+        "VehicleId": 38,
+        "ApptDate": "2018-05-09",
+        "ApptTime": "10:28:43",
+        "OdometerStatus": 453,
+        "OpCount": 2,
+        "ServiceAdvisorId": 1,
+        "IsWait": false,
+        "TransportationOptionId": 1,
+        "CustomerId": 7,
+        "PhoneNumber": "9440408107",
+        "YearId":485,
+        "AppointmentTypeId": 1
+        }
+     */
+
+    public static final String URL_USER_ADDRESS = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetUserAddress";
+    //?userId=7";
+
+    public static final String URL_SAVE_USER_ADDRESS = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/SaveUserAddress";
+    /*
+    Address1=HSR Layout
+    Address2=Bengaluru
+    City=Hydrabad
+    PinCode=587412
+    State=Karnataka
+    UserId=23
+    */
+
 }

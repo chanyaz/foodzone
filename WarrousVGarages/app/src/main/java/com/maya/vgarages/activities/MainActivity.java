@@ -1,28 +1,21 @@
 package com.maya.vgarages.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
+import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -41,13 +34,10 @@ import com.maya.vgarages.fragments.home.RemainderFragment;
 import com.maya.vgarages.fragments.home.SearchFragment;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.service.FetchAddressIntentService;
+import com.maya.vgarages.utilities.CommonApis;
 import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements IFragment {
     Location location = null;
 
     View headerLayout;
-    TextView tvUserName, tvAddress, tvLogout;
+    TextView tvUserName, tvAddress, tvAppointments, tvLogout, tvTransactions;
     ImageView imgUser;
 
 
@@ -103,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements IFragment {
 
     private void initialize()
     {
+
+
         mResultReceiver = new AddressResultReceiver(new Handler());
         if(getIntent().getParcelableExtra("Location")!=null)
         {
@@ -124,13 +116,37 @@ public class MainActivity extends AppCompatActivity implements IFragment {
         tvUserName =  headerLayout.findViewById(R.id.tvUserName);
         tvLogout =  headerLayout.findViewById(R.id.tvLogout);
         imgUser =  headerLayout.findViewById(R.id.imgUser);
+        tvAppointments =  headerLayout.findViewById(R.id.tvAppointments);
+        tvTransactions =  headerLayout.findViewById(R.id.tvTransactions);
 
 
         tvLogout.setOnClickListener(v -> {openLogoutDialog();});
+        tvAppointments.setOnClickListener(v -> {goToMyAppointments();});
+        tvTransactions.setOnClickListener(v -> {goToTransactions();});
 
         updateFields();
+
+        checkPNS();
     }
 
+    private void checkPNS()
+    {
+        if(Utility.getSharedPreferences().contains(Constants.USER_FCM_TOKEN))
+        {
+            if (Utility.getSharedPreferences().contains(Constants.CURRENT_USER_FCM_TOKEN))
+            {
+                if (Utility.getString(Utility.getSharedPreferences(), Constants.USER_FCM_TOKEN).equalsIgnoreCase(Utility.getString(Utility.getSharedPreferences(), Constants.CURRENT_USER_FCM_TOKEN)))
+                {
+                    return;
+                }
+                if (Utility.isNetworkAvailable(activity()))
+                    sendFcmToken(Utility.getString(Utility.getSharedPreferences(), Constants.USER_FCM_TOKEN));
+            } else {
+                if (Utility.isNetworkAvailable(activity()))
+                    sendFcmToken(Utility.getString(Utility.getSharedPreferences(), Constants.USER_FCM_TOKEN));
+            }
+        }
+    }
 
 
     private void startIntentService()
@@ -166,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements IFragment {
 
 
 
-    BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    BottomNavigationViewEx.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationViewEx.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item)
         {
@@ -310,5 +326,28 @@ public class MainActivity extends AppCompatActivity implements IFragment {
         }
 
     }
+
+    public void goToMyAppointments()
+    {
+        drawer.closeDrawers();
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,2224);
+        startActivity(intent);
+    }
+
+    public void goToTransactions()
+    {
+        drawer.closeDrawers();
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,2225);
+        startActivity(intent);
+    }
+
+    private void sendFcmToken(String fcmToken)
+    {
+        CommonApis.sendFcmToken(activity(),fcmToken);
+    }
+
+
 
 }

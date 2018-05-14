@@ -3,6 +3,7 @@ package com.maya.vgarages.application;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -18,7 +19,7 @@ import com.maya.vgarages.constants.Constants;
  * Created by Gokul Kalagara on 4/5/2018.
  */
 
-public class VGaragesApplication extends Application
+public class VGaragesApplication extends MultiDexApplication
 {
     public static final String TAG = VGaragesApplication.class.getSimpleName();
     private static VGaragesApplication mInstance;

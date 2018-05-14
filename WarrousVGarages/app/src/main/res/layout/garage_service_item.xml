@@ -94,7 +94,6 @@ dcjnddjc dvdvvfv "
             android:textAlignment="center"
             android:gravity="center"
             android:layout_gravity="right"
-            android:text="Add"
             android:layout_width="25dp"
             android:layout_height="25dp" >
 

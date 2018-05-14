@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.maya.vgarages.R;
+import com.maya.vgarages.activities.HelperActivity;
 import com.maya.vgarages.adapters.custom.EmptyDataAdapter;
 import com.maya.vgarages.adapters.fragments.garage.profile.GarageImagesAdapter;
 import com.maya.vgarages.adapters.fragments.garage.reviews.ReviewAdapter;
@@ -32,7 +33,9 @@ import com.maya.vgarages.apis.volley.VolleyHelperLayer;
 import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.fragments.garage.services.GarageServicesFragment;
 import com.maya.vgarages.fragments.profile.ProfileFragment;
+import com.maya.vgarages.interfaces.dialog.IAppointmentDetailsDialog;
 import com.maya.vgarages.interfaces.fragments.IFragment;
+import com.maya.vgarages.models.Appointment;
 import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.models.GarageMedia;
 import com.maya.vgarages.models.Review;
@@ -53,7 +56,7 @@ import butterknife.ButterKnife;
  * Use the {@link GarageProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GarageProfileFragment extends Fragment implements IFragment{
+public class GarageProfileFragment extends Fragment implements IFragment, IAppointmentDetailsDialog{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -112,14 +115,20 @@ public class GarageProfileFragment extends Fragment implements IFragment{
     @BindView(R.id.llCall)
     LinearLayout llCall;
 
+    @BindView(R.id.llBookmark)
+    LinearLayout llBookmark;
+
     @BindView(R.id.imgBookmark)
     ImageView imgBookmark;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-    Garage garage;
+    @BindView(R.id.tvBook)
+    TextView tvBook;
 
+    Garage garage;
+    IAppointmentDetailsDialog iAppointmentDetailsDialog;
     boolean isBookmark = true;
 
     LatLng myLocation = new LatLng(17.439091, 78.399097);
@@ -168,6 +177,7 @@ public class GarageProfileFragment extends Fragment implements IFragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_garage_profile, container, false);
+        iAppointmentDetailsDialog = this;
         ButterKnife.bind(this,view);
 
         initialize();
@@ -190,7 +200,7 @@ public class GarageProfileFragment extends Fragment implements IFragment{
 
         llNavigate.setOnClickListener(v -> {Utility.openGoogleNavigate(activity() ,  garage!=null ? garage.Latitude>0 ? new LatLng(garage.Latitude,garage.Longitude) : myLocation  : myLocation);});
 
-        imgBookmark.setOnClickListener(v ->
+        llBookmark.setOnClickListener(v ->
         {
             isBookmark = isBookmark? false: true;
             applyBookmark(isBookmark);
@@ -211,7 +221,12 @@ public class GarageProfileFragment extends Fragment implements IFragment{
                 showSnackBar(Constants.PLEASE_CHECK_INTERNET, 2);
             }
         }
+
+        tvBook.setOnClickListener(v -> {
+            ((HelperActivity) activity()).openAppointmentDialog(null,iAppointmentDetailsDialog);
+        });
     }
+
 
     private void updateUI()
     {
@@ -304,7 +319,7 @@ public class GarageProfileFragment extends Fragment implements IFragment{
         progressBar.setVisibility(View.VISIBLE);
 
         String URL = Constants.URL_ADD_REMOVE_BOOKMARK + "?userId="+Utility.getString(Utility.getSharedPreferences(),Constants.USER_ID)+
-                "&dealerId=" + garage.DealerId + "&isBookmark=" + (isBookmark ?  "1" : "0");
+                "&dealerId=" + garage.DealerId + "&isBookmark=" +  isBookmark;// (isBookmark ?  "1" : "0");
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         final Response.Listener<String> listener = new Response.Listener<String>()
         {
@@ -385,5 +400,10 @@ public class GarageProfileFragment extends Fragment implements IFragment{
     @Override
     public Activity activity() {
         return getActivity();
+    }
+
+    @Override
+    public void addAppointment(Appointment appointment) {
+
     }
 }

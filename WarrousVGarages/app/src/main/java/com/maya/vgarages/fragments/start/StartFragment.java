@@ -89,6 +89,8 @@ public class StartFragment extends Fragment  implements IFragment, GoogleApiClie
     @BindView(R.id.tvTerms)
     TextView tvTerms;
 
+    boolean isGoogle = false;
+
 
 
 
@@ -135,7 +137,14 @@ public class StartFragment extends Fragment  implements IFragment, GoogleApiClie
 
         initialize();
 
-        llGoogleSignIn.setOnClickListener(v -> {((SplashActivity) activity()).signInByGoogle();});
+        llGoogleSignIn.setOnClickListener(v -> {
+            if(!isGoogle)
+            {
+                showSnackBar("Google login disabled", 2);
+                return;
+            }
+            ((SplashActivity) activity()).signInByGoogle();
+        });
 
         tvSignIn.setOnClickListener(v -> {goToSignInFragment();});
 

@@ -29,9 +29,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <View
+                android:backgroundTint="@color/colorPrimary"
+                android:background="@drawable/corner_radius_white_3"
+                android:layout_width="match_parent"
+                android:layout_height="15dp">
+
+            </View>
+            <View
+                android:layout_marginTop="-5dp"
                 android:background="@color/colorPrimary"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="35dp">
 
             </View>
 
@@ -107,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <com.maya.vgarages.customviews.WSMediumTextView
-                        android:text="--/--/----"
+                        android:text="DD-MM-YYYY"
                         android:textSize="14sp"
                         android:id="@+id/tvDate"
                         android:padding="5dp"
@@ -152,7 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <com.maya.vgarages.customviews.WSMediumTextView
-                        android:text="--:--"
+                        android:text="HH:MM"
                         android:textSize="14sp"
                         android:id="@+id/tvTime"
                         android:padding="5dp"

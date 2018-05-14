@@ -148,7 +148,7 @@ public class AppointmentDetailsDialog extends Dialog
             {
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    String date = String.valueOf(monthOfYear+1) + "/" + String.valueOf(dayOfMonth) + "/"+ String.valueOf(year);
+                    String date = String.valueOf(dayOfMonth)+ "-" + String.valueOf(monthOfYear+1) + "-" + String.valueOf(year);
                     tvDate.setText(date);
                     pickDate = date;
                 }

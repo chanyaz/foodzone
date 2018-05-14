@@ -16,6 +16,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -99,8 +100,17 @@ public class Utility
 
     public static void deleteSharedPreferences()
     {
+        String fcmToken = "";
+        if(getSharedPreferences().contains(Constants.USER_FCM_TOKEN))
+        {
+            fcmToken = getString(getSharedPreferences(), Constants.USER_FCM_TOKEN);
+        }
+
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.clear().commit();
+
+        if(fcmToken.length()>0)
+            setString(getSharedPreferences(),Constants.USER_FCM_TOKEN,fcmToken);
     }
 
 
@@ -400,12 +410,21 @@ public class Utility
         try {
             String ret = "";
             String[] arr = s.split("T");
-            SimpleDateFormat dateFormat = new SimpleDateFormat(
-                    "yyyy-MM-dd");
-            Date parsedTimeStamp = dateFormat.parse(arr[0]);
 
-            Timestamp timestamp = new Timestamp(parsedTimeStamp.getTime());
-            return getTimeAgo(timestamp.getTime());
+            try {
+                String[] time = arr[1].replace(".", "Z").split("Z");
+                SimpleDateFormat dateFormat = new SimpleDateFormat(
+                        "yyyy-MM-dd hh:mm:ss");
+                Date parsedTimeStamp = dateFormat.parse(arr[0] + " " + time[0]);
+
+                Timestamp timestamp = new Timestamp(parsedTimeStamp.getTime());
+                return getTimeAgo(timestamp.getTime());
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return arr[0];
+            }
         }
         catch (Exception e)
         {
@@ -1093,6 +1112,11 @@ public class Utility
     {
         LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    public static String getPhoneUniqueId(Context context)
+    {
+        return  Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
 

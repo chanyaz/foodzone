@@ -116,13 +116,18 @@ public class FetchAddressIntentService extends IntentService
                         for(int i = 0; i <= address.getMaxAddressLineIndex(); i++)
                         {
                             addressFragments.add(address.getAddressLine(i));
+                            if(i==0 || i==1)
+                            Utility.setString(Utility.getSharedPreferences(), i==0 ? Constants.USER_ADDRESS1 : Constants.USER_ADDRESS2, "" + address.getAddressLine(i)); // city
                         }
 
-            addressFragments.add(address.getLocality());
-            addressFragments.add(address.getAdminArea());
-            addressFragments.add(address.getCountryName());
+            //addressFragments.add(address.getLocality());
+            //addressFragments.add(address.getAdminArea());
+            //addressFragments.add(address.getCountryName());
 
-            Utility.setString(Utility.getSharedPreferences(),Constants.USER_LOCALITY_ADDRESS,address.getLocality());
+            Utility.setString(Utility.getSharedPreferences(),Constants.USER_LOCALITY_ADDRESS,address.getLocality()); // city
+            Utility.setString(Utility.getSharedPreferences(),Constants.USER_PIN_CODE,address.getPostalCode()); // pin code
+            Utility.setString(Utility.getSharedPreferences(),Constants.USER_ADMIN_AREA,address.getAdminArea()); // state
+
             Utility.setString(Utility.getSharedPreferences(),Constants.USER_COMPLETE_ADDRESS,TextUtils.join(System.getProperty("line.separator"), addressFragments));
 
             Logger.d(TAG, "ADDRESS FOUND");
