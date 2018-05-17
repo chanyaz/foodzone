@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.maya.vgarages.R;
 import com.maya.vgarages.adapters.custom.SkeletonViewHolder;
 import com.maya.vgarages.interfaces.adapter.cart.ICheckoutAdapter;
+import com.maya.vgarages.models.Appointment;
 import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.models.GarageService;
 import com.maya.vgarages.utilities.Utility;
@@ -36,10 +37,12 @@ public class CheckoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     boolean isLoading = true;
     ICheckoutAdapter iCheckoutAdapter;
     Garage garage;
+    int editFlag = 1;
 
     public CheckoutAdapter(Garage garage, List<GarageService> list, ICheckoutAdapter iCheckoutAdapter, Context context, boolean isLoading) {
 
-        if(context==null) return;
+        if(context==null)
+            return;
 
         this.garage = garage;
         this.list = list;
@@ -47,6 +50,20 @@ public class CheckoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.isLoading = isLoading;
         this.iCheckoutAdapter = iCheckoutAdapter;
     }
+
+    public CheckoutAdapter(Garage garage, List<GarageService> list, Context context, boolean isLoading,int editFlag) {
+
+        if(context==null)
+            return;
+
+        this.garage = garage;
+        this.list = list;
+        this.context = context;
+        this.isLoading = isLoading;
+        this.editFlag = editFlag;
+    }
+
+
 
 
     @Override
@@ -91,7 +108,19 @@ public class CheckoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.tvPrice.setText("Rs. " + list.get(position-1).Price);
                 holder.progressBar.setVisibility(list.get(position-1).isPending ? View.VISIBLE : View.GONE);
                 holder.imgClose.setVisibility(list.get(position-1).isPending ? View.GONE : View.VISIBLE);
-                holder.imgClose.setOnClickListener(v -> iCheckoutAdapter.deleteItem(list.get(position-1), position-1));
+
+                if(editFlag==0)
+                {
+                    holder.imgClose.setVisibility(View.GONE);
+                }
+
+
+                holder.imgClose.setOnClickListener(v ->
+                        {
+                            if(iCheckoutAdapter!=null)
+                            iCheckoutAdapter.deleteItem(list.get(position - 1), position - 1);
+                        }
+                        );
 
                 if(position == list.size())
                 {

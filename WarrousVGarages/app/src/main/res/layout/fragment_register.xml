@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusable="false"
+    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.start.RegisterFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:layout_marginBottom="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ScrollView
+                    android:scrollbars="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RelativeLayout
+                            android:visibility="visible"
+                            android:elevation="2dp"
+                            android:background="@color/colorPrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp">
+                            <com.airbnb.lottie.LottieAnimationView
+                                android:layout_centerHorizontal="true"
+                                android:id="@+id/lottieAnimationView"
+                                android:layout_width="180dp"
+                                android:layout_height="180dp"
+                                app:lottie_autoPlay="true"
+                                app:lottie_loop="true"
+                                app:lottie_rawRes="@raw/world_locations" />
+
+
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:weightSum="2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.maya.vgarages.customviews.WSMediumTextView
+                                android:layout_weight="1"
+                                android:inputType="textPersonName"
+                                android:layout_marginLeft="20dp"
+                                android:textColor="@color/gray"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="First Name"
+                                android:textSize="13sp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                            <com.maya.vgarages.customviews.WSMediumTextView
+                                android:layout_weight="1"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/gray"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="Last Name"
+                                android:textSize="13sp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:weightSum="2"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <com.maya.vgarages.customviews.WSEditText
+                                android:layout_weight="1"
+                                android:hint=""
+                                android:inputType="textPersonName"
+                                android:id="@+id/etFirstName"
+                                android:textColor="@color/black"
+                                android:paddingLeft="15dp"
+                                android:textSize="15sp"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_marginLeft="15dp"
+                                android:backgroundTint="@color/app_background_color"
+                                android:background="@drawable/corner_radius_white_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp" />
+                            <com.maya.vgarages.customviews.WSEditText
+                                android:layout_weight="1"
+                                android:hint=""
+                                android:inputType="textPersonName"
+                                android:id="@+id/etLastName"
+                                android:textColor="@color/black"
+                                android:paddingLeft="15dp"
+                                android:textSize="15sp"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginRight="15dp"
+                                android:backgroundTint="@color/app_background_color"
+                                android:background="@drawable/corner_radius_white_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp" />
+                        </LinearLayout>
+                        <com.maya.vgarages.customviews.WSMediumTextView
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/gray"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="Email Address"
+                            android:textSize="13sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <com.maya.vgarages.customviews.WSEditText
+                            android:visibility="visible"
+                            android:hint=""
+                            android:id="@+id/etEmailAddress"
+                            android:textColor="@color/black"
+                            android:paddingLeft="15dp"
+                            android:textSize="15sp"
+                            android:inputType="textEmailAddress"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:backgroundTint="@color/app_background_color"
+                            android:background="@drawable/corner_radius_white_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp" />
+
+                        <com.maya.vgarages.customviews.WSMediumTextView
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/gray"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="5dp"
+                            android:textSize="13sp"
+                            android:text="Phone Number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.maya.vgarages.customviews.WSEditText
+                            android:textColor="@color/black"
+                            android:paddingLeft="15dp"
+                            android:textSize="15sp"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:id="@+id/etPhoneNumber"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:backgroundTint="@color/app_background_color"
+                            android:background="@drawable/corner_radius_white_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp" />
+
+                        <com.maya.vgarages.customviews.WSMediumTextView
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/gray"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="Password"
+                            android:textSize="13sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.maya.vgarages.customviews.WSEditText
+                            android:hint=""
+                            android:inputType="textPassword"
+                            android:id="@+id/etPassword"
+                            android:textColor="@color/black"
+                            android:paddingLeft="15dp"
+                            android:textSize="15sp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:backgroundTint="@color/app_background_color"
+                            android:background="@drawable/corner_radius_white_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp" />
+
+
+                        <com.maya.vgarages.customviews.WSMediumTextView
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/gray"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="Confirm Password"
+                            android:textSize="13sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.maya.vgarages.customviews.WSEditText
+                            android:hint=""
+                            android:inputType="textPassword"
+                            android:id="@+id/etConfirmPassword"
+                            android:textColor="@color/black"
+                            android:paddingLeft="15dp"
+                            android:textSize="15sp"
+                            android:layout_marginBottom="30dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:backgroundTint="@color/app_background_color"
+                            android:background="@drawable/corner_radius_white_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp" />
+
+
+
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </LinearLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:padding="5dp"
+            android:tint="@color/white"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_left_arrow"
+            android:layout_width="35dp"
+            android:layout_height="35dp" />
+        <com.maya.vgarages.customviews.WSSemiBoldTextView
+            android:id="@+id/tvRegister"
+            android:elevation="8dp"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="REGISTER"
+            android:background="@color/colorPrimary"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+    </RelativeLayout>
+</FrameLayout>

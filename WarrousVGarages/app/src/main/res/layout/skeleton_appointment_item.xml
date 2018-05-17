@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_margin="15dp"
+    android:background="@drawable/corner_radius_white_3"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_margin="15dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="0dip"
+            android:layout_marginRight="10dp"
+            android:text="145"
+            android:textColor="@color/hash_text_color"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="14dp" />
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="0dip"
+            android:tint="@color/hash_text_color"
+            android:src="@drawable/ic_more"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="0dip"
+            android:text="145"
+            android:textColor="@color/hash_text_color"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="14dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:background="@color/app_hash_pool"
+            android:layout_width="match_parent"
+            android:layout_height="1dp">
+        </View>
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="15dip"
+            android:elevation="3dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_centerVertical="true"
+            android:text="Pending"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:textColor="@color/light_orange"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_width="100dp"
+            android:layout_height="25dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="0dip"
+            android:backgroundTint="@color/hash_text_color"
+            android:src="@drawable/ic_date"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="0dip"
+            android:layout_marginLeft="10dp"
+            android:text="5/31/2018"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/hash_text_color"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            android:layout_marginLeft="10dp"
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="0dip"
+            android:backgroundTint="@color/hash_text_color"
+            android:src="@drawable/ic_timer"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+        <com.omjoonkim.skeletonloadingview.SkeletonLoadingView
+            app:baseColor="#fffbfbfb"
+            app:deepColor="#fff2f2f2"
+            app:duration="1500"
+            app:interval="1000"
+            app:progressLength="120.0dip"
+            app:radius="0dip"
+            android:layout_marginLeft="10dp"
+            android:text="15:48"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_weight="1"
+            android:textColor="@color/hash_text_color"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
+    </LinearLayout>
+</LinearLayout>

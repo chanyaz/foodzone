@@ -41,6 +41,8 @@ public class SplashFragment extends Fragment implements IFragment{
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
 
+    public int value  = 0;
+
 
     public SplashFragment() {
         // Required empty public constructor
@@ -80,7 +82,7 @@ public class SplashFragment extends Fragment implements IFragment{
         View view = inflater.inflate(R.layout.fragment_splash, container, false);
         ButterKnife.bind(this,view);
         //getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,StartFragment.newInstance(null,null)).addToBackStack(null).commit();
-        setUpChildFragment(generateFragmentKey());
+        setUpChildFragment(value = generateFragmentKey());
         return view;
     }
 
@@ -103,8 +105,14 @@ public class SplashFragment extends Fragment implements IFragment{
         }
         if(fragment!=null)
         {
-            if(value!=103)
-            getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commitAllowingStateLoss();
+            if(value == 101 || value == 102)
+            {
+                if(getChildFragmentManager().getBackStackEntryCount()>1)
+                {
+                    getChildFragmentManager().popBackStack();
+                }
+                getChildFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).commit();
+            }
             else
             {
                 getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).addToBackStack(null).commit();

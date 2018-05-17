@@ -38,6 +38,7 @@ import com.maya.vgarages.interfaces.adapter.cart.ICheckoutAdapter;
 import com.maya.vgarages.interfaces.dialog.IAppointmentDetailsDialog;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.models.Appointment;
+import com.maya.vgarages.models.Cart;
 import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.models.GarageService;
 import com.maya.vgarages.models.Vehicle;
@@ -72,6 +73,7 @@ public class CheckOutFragment extends Fragment implements IFragment , ICheckoutA
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
@@ -395,7 +397,7 @@ public class CheckOutFragment extends Fragment implements IFragment , ICheckoutA
         Type type = new TypeToken<Vehicle>(){}.getType();
         Vehicle vehicle = gson.fromJson(Utility.getString(Utility.getSharedPreferences(),Constants.DEFAULT_CAR_DATA),type);
         final ProgressDialog progressDialog = Utility.generateProgressDialog(activity());
-        String URL = Constants.URL_CREATE_APPOINTMENT + "?dealerId="+garage.DealerId+ "&opCodes="+((HelperActivity) activity()).generateCartOpCodes();
+        String URL = Constants.URL_CREATE_APPOINTMENT;
         JSONObject input = new JSONObject();
         try
         {
@@ -412,6 +414,8 @@ public class CheckOutFragment extends Fragment implements IFragment , ICheckoutA
             input.put("CustomerId", Utility.getString(Utility.getSharedPreferences(),Constants.USER_ID));
             input.put("PhoneNumber", Utility.getString(Utility.getSharedPreferences(),Constants.USER_PHONE_NUMBER));
             input.put("YearId", vehicle.MakeModelYearId);
+            input.put("dealerId", garage.DealerId);
+            input.put("opCodes", ((HelperActivity) activity()).generateCartOpCodes());
             input.put("AppointmentTypeId", appointment.pickUpType? 1: 2);
 
         }
@@ -438,6 +442,7 @@ public class CheckOutFragment extends Fragment implements IFragment , ICheckoutA
                         saveAddress(Utility.getString(Utility.getSharedPreferences(),Constants.USER_COMPLETE_ADDRESS).equalsIgnoreCase(appointment.address));
                         updateProceedToPay();
                         Utility.closeProgressDialog(progressDialog);
+                        ((HelperActivity) activity()).showSuccessAppointmentStatus();
                     }
                 }
                 ,

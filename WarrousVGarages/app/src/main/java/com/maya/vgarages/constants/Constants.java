@@ -24,6 +24,8 @@ public class Constants
 
     public static final String ERROR= "Error";
 
+    public static final String REJECTED = "Rejected";
+
     public static final String INVALID_OPERATION = "Invalid Operation";
 
     public static final int SECOND_MILLIS = 1000;
@@ -236,5 +238,11 @@ public class Constants
     State=Karnataka
     UserId=23
     */
+
+    public static final String URL_APPOINTMENT_DETAILS = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Appointment/GetAppointmentInfo";
+    //?serviceAppointmentId=44"
+
+    public static final String URL_USER_APPOINTMENTS = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Appointment/AppointmentsByUserIdGet";
+    //?userId=7";
 
 }

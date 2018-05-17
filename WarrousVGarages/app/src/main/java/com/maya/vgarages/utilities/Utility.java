@@ -389,7 +389,7 @@ public class Utility
         }
     }
 
-    public static String makeJSDateReadable1(String s)
+    public static String makeJSDateReadableOther(String s)
     {
         try {
             String ret = "";

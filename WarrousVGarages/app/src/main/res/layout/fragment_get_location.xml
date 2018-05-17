@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.start.GetLocationFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content" />
 
         <RelativeLayout
+            android:visibility="gone"
             android:layout_margin="10dp"
             android:layout_width="60dp"
             android:layout_height="60dp">
@@ -45,6 +47,15 @@
                 android:layout_height="match_parent" />
 
         </RelativeLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/location_fetch" />
 
 
         <com.maya.vgarages.customviews.WSMediumTextView

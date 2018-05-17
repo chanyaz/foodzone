@@ -23,6 +23,12 @@ public class GarageService
     public int OpCodeUserCartId;
     public String UniqueCode;
 
+    //appointment
+    public int ServiceAppointmentId;
+    public boolean IsOpcodeAddedByAdmin;
+    public boolean IsConsumerAccepted;
+
+
 
     public boolean isAdded = false;
     public boolean isPending = false;

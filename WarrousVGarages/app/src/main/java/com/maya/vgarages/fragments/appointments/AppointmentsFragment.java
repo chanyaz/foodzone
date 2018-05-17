@@ -5,12 +5,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -20,13 +20,12 @@ import com.google.gson.reflect.TypeToken;
 import com.maya.vgarages.R;
 import com.maya.vgarages.activities.HelperActivity;
 import com.maya.vgarages.adapters.custom.EmptyDataAdapter;
-import com.maya.vgarages.adapters.fragments.cart.CheckoutAdapter;
-import com.maya.vgarages.adapters.fragments.garage.reviews.ReviewAdapter;
+import com.maya.vgarages.adapters.fragments.appointments.AppointmentsAdapter;
 import com.maya.vgarages.apis.volley.VolleyHelperLayer;
 import com.maya.vgarages.constants.Constants;
+import com.maya.vgarages.interfaces.adapter.appointments.IAppointmentsAdapter;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.models.Appointment;
-import com.maya.vgarages.models.Garage;
 import com.maya.vgarages.models.Review;
 import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
@@ -39,10 +38,10 @@ import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AppointmentsOverviewFragment#newInstance} factory method to
+ * Use the {@link AppointmentsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AppointmentsOverviewFragment extends Fragment implements IFragment{
+public class AppointmentsFragment extends Fragment implements IFragment, IAppointmentsAdapter{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -52,27 +51,22 @@ public class AppointmentsOverviewFragment extends Fragment implements IFragment{
     private String mParam1;
     private String mParam2;
 
+
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
-
-    @BindView(R.id.tvDate)
-    TextView tvDate;
-
-    @BindView(R.id.tvTime)
-    TextView tvTime;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    @BindView(R.id.tvStatus)
-    TextView tvStatus;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
-    Appointment appointment;
-    Garage garage;
+    IAppointmentsAdapter iAppointmentsAdapter;
+    List<Appointment> list;
 
 
 
-    public AppointmentsOverviewFragment() {
+    public AppointmentsFragment() {
         // Required empty public constructor
     }
 
@@ -82,25 +76,14 @@ public class AppointmentsOverviewFragment extends Fragment implements IFragment{
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AppointmentsOverviewFragment.
+     * @return A new instance of fragment AppointmentsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AppointmentsOverviewFragment newInstance(String param1, String param2) {
-        AppointmentsOverviewFragment fragment = new AppointmentsOverviewFragment();
+    public static AppointmentsFragment newInstance(String param1, String param2) {
+        AppointmentsFragment fragment = new AppointmentsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static AppointmentsOverviewFragment newInstance(Appointment appointment) {
-        AppointmentsOverviewFragment fragment = new AppointmentsOverviewFragment();
-        Bundle args = new Bundle();
-        Gson gson = new Gson();
-        Type type = new TypeToken<Appointment>() {
-        }.getType();
-        args.putString("Appointment", gson.toJson(appointment,type));
         fragment.setArguments(args);
         return fragment;
     }
@@ -118,8 +101,9 @@ public class AppointmentsOverviewFragment extends Fragment implements IFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_appointments_overview, container, false);
+        View view = inflater.inflate(R.layout.fragment_appointments, container, false);
         ButterKnife.bind(this,view);
+        iAppointmentsAdapter = this;
 
         initialize();
         return view;
@@ -127,21 +111,22 @@ public class AppointmentsOverviewFragment extends Fragment implements IFragment{
 
     private void initialize()
     {
-        if(getArguments().getString("Appointment")==null)
-        {
-            return;
-        }
-        Gson gson = new Gson();
-        Type type = new TypeToken<Appointment>() {
-        }.getType();
-        appointment = gson.fromJson(getArguments().getString("Appointment"), type);
-        tvDate.setText(Utility.makeJSDateReadableOther(appointment.ApptDate));
-        tvTime.setText(appointment.ApptTime);
-        tvStatus.setText(appointment.AppointmentStatusType);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
-        if(Utility.isNetworkAvailable(activity()))
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            if(Utility.isNetworkAvailable(getActivity()))
+            {
+                fetchUserAppointments();
+            }
+            else
+            {
+                showSnackBar(Constants.PLEASE_CHECK_INTERNET,2);
+            }
+        });
+
+        if(Utility.isNetworkAvailable(getActivity()))
         {
-            fetchAppointDetails();
+            fetchUserAppointments();
         }
         else
         {
@@ -150,34 +135,23 @@ public class AppointmentsOverviewFragment extends Fragment implements IFragment{
 
     }
 
-    private void fetchAppointDetails()
+    private void fetchUserAppointments()
     {
-        recyclerView.setAdapter(new CheckoutAdapter(null,null,activity(),true,0));
-        String URL = Constants.URL_APPOINTMENT_DETAILS + "?serviceAppointmentId=" + appointment.ServiceAppointmentId;
+        recyclerView.setAdapter(new AppointmentsAdapter(null,iAppointmentsAdapter,activity(),true));
+        String URL = Constants.URL_USER_APPOINTMENTS + "?userId=" + Utility.getString(Utility.getSharedPreferences(),Constants.USER_ID);
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>()
         {
             @Override
             public void onResponse(String response) {
                 Logger.d("[response]", response);
-
                 Gson gson = new Gson();
-                Type type = new TypeToken<Appointment>() {
+                Type type = new TypeToken<List<Appointment>>() {
                 }.getType();
-                appointment = gson.fromJson(response, type);
-                if(appointment!=null && appointment.ICustomerOpcodes.size()>0)
+                list = gson.fromJson(response, type);
+                if(list!=null && list.size()>0)
                 {
-                    garage = new Garage();
-                    garage.DealerId = appointment.DealerId;
-                    garage.DealerName = appointment.DealerName;
-                    garage.ImageUrl = appointment.ImageUrl;
-                    garage.Address1 = "Selected " + appointment.ICustomerOpcodes.size() + " Services";
-                    garage.Address2 = "";
-                    recyclerView.setAdapter(new CheckoutAdapter(garage,appointment.ICustomerOpcodes,activity(),false,0));
-
-                    tvDate.setText(Utility.makeJSDateReadableOther(appointment.ApptDate));
-                    tvTime.setText(appointment.ApptTime);
-                    tvStatus.setText(appointment.AppointmentStatusType);
+                    recyclerView.setAdapter(new AppointmentsAdapter(list,iAppointmentsAdapter,activity(),false));
                 }
                 else
                 {
@@ -197,6 +171,8 @@ public class AppointmentsOverviewFragment extends Fragment implements IFragment{
             }
         };
         volleyHelperLayer.startHandlerVolley(URL,null,listener,errorListener, Request.Priority.NORMAL,Constants.GET_REQUEST);
+
+
     }
 
     @Override
@@ -205,12 +181,19 @@ public class AppointmentsOverviewFragment extends Fragment implements IFragment{
     }
 
     @Override
-    public void showSnackBar(String snackBarText, int type) {
+    public void showSnackBar(String snackBarText, int type)
+    {
         Utility.showSnackBar(activity(),coordinatorLayout,snackBarText,type);
     }
 
     @Override
     public Activity activity() {
         return getActivity();
+    }
+
+    @Override
+    public void onItemClick(Appointment appointment, int position)
+    {
+        ((HelperActivity) activity()).openAppointmentDetails(appointment);
     }
 }

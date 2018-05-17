@@ -36,6 +36,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.maya.vgarages.R;
+import com.maya.vgarages.activities.HelperActivity;
 import com.maya.vgarages.activities.SplashActivity;
 import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.interfaces.fragments.IFragment;
@@ -147,8 +148,16 @@ public class StartFragment extends Fragment  implements IFragment, GoogleApiClie
         });
 
         tvSignIn.setOnClickListener(v -> {goToSignInFragment();});
+        tvSignUp.setOnClickListener(v -> {goToSignUp();});
 
         return view;
+    }
+
+    private void goToSignUp()
+    {
+        Intent intent = new Intent(activity(), HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,1000);
+        startActivity(intent);
     }
 
     private void initialize()

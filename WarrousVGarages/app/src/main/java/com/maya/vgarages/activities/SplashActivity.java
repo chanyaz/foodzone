@@ -83,6 +83,7 @@ public class SplashActivity extends AppCompatActivity implements IFragment, Goog
     public FacebookCallback<LoginResult> callback;
 
     private GoogleSignInOptions gso;
+
     //google api client
     private GoogleApiClient mGoogleApiClientGoogle;
 
@@ -211,9 +212,12 @@ public class SplashActivity extends AppCompatActivity implements IFragment, Goog
     @Override
     public void onBackPressed() {
         try {
-            if (splashFragment.getChildFragmentManager().getBackStackEntryCount() > 1) {
+            if (splashFragment.getChildFragmentManager().getBackStackEntryCount() > 1)
+            {
                 splashFragment.getChildFragmentManager().popBackStack();
-            } else {
+            }
+            else
+            {
                 super.onBackPressed();
             }
         } catch (Exception e) {

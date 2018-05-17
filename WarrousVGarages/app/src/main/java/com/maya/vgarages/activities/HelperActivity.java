@@ -30,7 +30,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.maya.vgarages.R;
-import com.maya.vgarages.fragments.appointments.AppointmentsOverviewFragment;
 import com.maya.vgarages.apis.volley.VolleyHelperLayer;
 import com.maya.vgarages.constants.Constants;
 import com.maya.vgarages.customviews.BadgeDrawable;
@@ -39,9 +38,14 @@ import com.maya.vgarages.dialogs.checkout.AppointmentDetailsDialog;
 import com.maya.vgarages.dialogs.garage.AddReviewDialog;
 import com.maya.vgarages.dialogs.garage.ToPickVehicle;
 import com.maya.vgarages.dialogs.vehicle.AddVehicleDialog;
+import com.maya.vgarages.fragments.appointments.AppointmentStatusFragment;
+import com.maya.vgarages.fragments.appointments.AppointmentsFragment;
+import com.maya.vgarages.fragments.appointments.AppointmentsOverviewFragment;
 import com.maya.vgarages.fragments.cart.checkout.CheckOutFragment;
 import com.maya.vgarages.fragments.garage.overview.GarageOverviewFragment;
+import com.maya.vgarages.fragments.other.AddAddressFragment;
 import com.maya.vgarages.fragments.profile.ProfileFragment;
+import com.maya.vgarages.fragments.start.RegisterFragment;
 import com.maya.vgarages.fragments.transactions.TransactionsFragment;
 import com.maya.vgarages.fragments.vehicle.add.AddVehicleFragment;
 import com.maya.vgarages.interfaces.activities.IActivity;
@@ -63,6 +67,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -108,6 +113,7 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
 
     IAddReviewDialog iAddReviewDialog;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -145,6 +151,8 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
 
         Checkout.preload(getApplicationContext());
 
+        //Utility.generateProgressDialog(activity());
+
 
     }
 
@@ -164,6 +172,10 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
         Fragment fragment = null;
         switch (fragmentKey)
         {
+            case 1000: // Register
+                fragment =  RegisterFragment.newInstance(null,null);
+                toolbar.setVisibility(View.GONE);
+                break;
             case 1111: // account
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
@@ -198,7 +210,7 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
                 changeTitle("");
                 break;
             case 2224:
-                fragment =  AppointmentsOverviewFragment.newInstance(null,null);
+                fragment =  AppointmentsFragment.newInstance(null,null);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
                     toolbar.setElevation(1);
@@ -212,6 +224,10 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
                     toolbar.setElevation(1);
                 }
                 changeTitle("Transactions");
+                break;
+            case 2226:
+                fragment =  AddAddressFragment.newInstance(null,null);
+                toolbar.setVisibility(View.GONE);
                 break;
         }
         if(fragment!=null)
@@ -260,6 +276,18 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
         llClose.setVisibility(View.GONE);
         frameLayoutBottom.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottom, CheckOutFragment.newInstance(cartGarage,appointment)).commit();
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    public void openAppointmentDetails(Appointment appointment)
+    {
+        if(appointment == null)
+        {
+            return;
+        }
+        llClose.setVisibility(View.GONE);
+        frameLayoutBottom.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutBottom, AppointmentsOverviewFragment.newInstance(appointment)).commit();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
@@ -427,6 +455,19 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
         layoutParams.width = dialogWindowWidth;
         layoutParams.height = dialogWindowHeight;
         dialog.getWindow().setAttributes(layoutParams);
+
+    }
+
+
+    public void showSuccessAppointmentStatus()
+    {
+        if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+        {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
+        hideMenuOption(R.id.menu_cart);
+        hideMenuOption(R.id.menu_add_review);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,AppointmentStatusFragment.newInstance(null,null)).commit();
 
     }
 

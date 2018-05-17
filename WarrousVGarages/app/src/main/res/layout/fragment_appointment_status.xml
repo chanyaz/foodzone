@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.appointments.AppointmentStatusFragment">
+
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_gravity="center"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/success" />
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/lottieAnimationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.maya.vgarages.customviews.WSMediumTextView
+            android:text="Appointment scheduled"
+            android:textColor="@color/normal_text_color"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+            <View
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/colorPrimary"
+                android:background="@drawable/corner_radius_white_3"
+                android:layout_width="50dp"
+                android:layout_height="2dp">
+
+            </View>
+
+            <com.maya.vgarages.customviews.WSSemiBoldTextView
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="55dp"
+                android:elevation="8dp"
+                android:id="@+id/tvGoToHome"
+                android:backgroundTint="@color/white"
+                android:layout_width="120dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:background="@drawable/corner_radius_primary_30"
+                android:text="Go to Home"
+                android:layout_height="30dp" />
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+    </ScrollView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+</FrameLayout>

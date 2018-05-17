@@ -1,4 +1,4 @@
-package com.maya.vgarages.fragments.other;
+package com.maya.vgarages.fragments.appointments;
 
 
 import android.app.Activity;
@@ -8,10 +8,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.maya.vgarages.R;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.utilities.Utility;
@@ -21,10 +20,10 @@ import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddAddressFragment#newInstance} factory method to
+ * Use the {@link AppointmentStatusFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddAddressFragment extends Fragment implements IFragment{
+public class AppointmentStatusFragment extends Fragment implements IFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,30 +36,14 @@ public class AddAddressFragment extends Fragment implements IFragment{
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
 
-    @BindView(R.id.imgBack)
-    ImageView imgBack;
+    @BindView(R.id.lottieAnimationView)
+    LottieAnimationView lottieAnimationView;
 
-    @BindView(R.id.etAddress1)
-    EditText etAddress1;
-
-    @BindView(R.id.etAddress2)
-    EditText etAddress2;
-
-    @BindView(R.id.etCity)
-    EditText etCity;
-
-    @BindView(R.id.etState)
-    EditText etState;
+    @BindView(R.id.tvGoToHome)
+    TextView tvGoToHome;
 
 
-    @BindView(R.id.etZipCode)
-    EditText etZipCode;
-
-    @BindView(R.id.tvSaveAddress)
-    TextView tvSaveAddress;
-
-
-    public AddAddressFragment() {
+    public AppointmentStatusFragment() {
         // Required empty public constructor
     }
 
@@ -70,11 +53,11 @@ public class AddAddressFragment extends Fragment implements IFragment{
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddAddressFragment.
+     * @return A new instance of fragment AppointmentStatusFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddAddressFragment newInstance(String param1, String param2) {
-        AddAddressFragment fragment = new AddAddressFragment();
+    public static AppointmentStatusFragment newInstance(String param1, String param2) {
+        AppointmentStatusFragment fragment = new AppointmentStatusFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -95,17 +78,16 @@ public class AddAddressFragment extends Fragment implements IFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_address, container, false);
+        View view = inflater.inflate(R.layout.fragment_appointment_status, container, false);
         ButterKnife.bind(this,view);
+
 
         initialize();
         return view;
     }
 
-    private void initialize()
-    {
-        imgBack.setOnClickListener(v -> {activity().onBackPressed();});
-        tvSaveAddress.setOnClickListener(v -> {activity().onBackPressed();});
+    private void initialize() {
+        tvGoToHome.setOnClickListener(v -> {activity().onBackPressed();});
     }
 
     @Override

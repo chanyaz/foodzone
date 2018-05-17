@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements IFragment {
         tvLogout.setOnClickListener(v -> {openLogoutDialog();});
         tvAppointments.setOnClickListener(v -> {goToMyAppointments();});
         tvTransactions.setOnClickListener(v -> {goToTransactions();});
+        tvAddress.setOnClickListener(v -> {goToUserAddress();});
 
         updateFields();
 
@@ -329,18 +330,43 @@ public class MainActivity extends AppCompatActivity implements IFragment {
 
     public void goToMyAppointments()
     {
-        drawer.closeDrawers();
         Intent intent = new Intent(activity(),HelperActivity.class);
         intent.putExtra(Constants.FRAGMENT_KEY,2224);
         startActivity(intent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawer.closeDrawers();
+            }
+        },200);
     }
 
     public void goToTransactions()
     {
-        drawer.closeDrawers();
+
         Intent intent = new Intent(activity(),HelperActivity.class);
         intent.putExtra(Constants.FRAGMENT_KEY,2225);
         startActivity(intent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawer.closeDrawers();
+            }
+        },200);
+    }
+
+    public void goToUserAddress()
+    {
+
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,2226);
+        startActivity(intent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawer.closeDrawers();
+            }
+        },200);
     }
 
     private void sendFcmToken(String fcmToken)
