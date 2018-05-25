@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
+    android:background="@color/app_background_color"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.maya.vgarages.fragments.profile.ProfileFragment">
@@ -25,37 +25,46 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:orientation="vertical">
+          <ScrollView
+              android:scrollbars="none"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
 
           <LinearLayout
               android:id="@+id/llProfile"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+          <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@color/white"
-              android:orientation="vertical">
+              android:orientation="horizontal">
 
               <com.maya.vgarages.customviews.RoundedImageView
                   android:id="@+id/imgUser"
-                  android:layout_width="90dp"
-                  android:layout_height="90dp"
+                  android:layout_width="70dp"
+                  android:layout_height="70dp"
                   android:layout_gravity="center"
-                  android:layout_marginTop="20dp"
+                  android:layout_margin="15dp"
                   android:gravity="center"
-                  app:siRadius="50dp"
+                  app:siRadius="25dp"
                   app:siBorderColor="@color/white"
                   app:siBorderWidth="2dp" />
 
               <LinearLayout
-                  android:layout_width="wrap_content"
+                  android:layout_weight="1"
+                  android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center"
                   android:layout_margin="5dp"
-                  android:gravity="center"
+                  android:gravity="center_vertical"
                   android:orientation="vertical">
 
                   <com.maya.vgarages.customviews.SFSemiBoldTextView
                       android:maxLines="1"
-                      android:layout_marginLeft="40dp"
-                      android:layout_marginRight="40dp"
+                      android:layout_marginLeft="0dp"
+                      android:layout_marginRight="20dp"
                       android:ellipsize="end"
                       android:layout_width="wrap_content"
                       android:id="@+id/tvUserName"
@@ -66,20 +75,43 @@
 
                   <com.maya.vgarages.customviews.MediumTextView
                       android:maxLines="1"
-                      android:layout_marginLeft="40dp"
-                      android:layout_marginRight="40dp"
+                      android:layout_marginLeft="0dp"
+                      android:layout_marginRight="20dp"
                       android:ellipsize="end"
                       android:id="@+id/tvAddress"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:layout_marginBottom="15dp"
                       android:layout_marginTop="10dp"
                       android:text="Male, Hyderabad, TS"
                       android:textColor="@color/hash_text_color"
-                      android:textSize="14sp" />
+                      android:textSize="13sp" />
+
+                  <com.maya.vgarages.customviews.WSSemiBoldTextView
+                      android:visibility="gone"
+                      android:maxLines="1"
+                      android:layout_marginLeft="0dp"
+                      android:layout_marginRight="20dp"
+                      android:ellipsize="end"
+                      android:layout_width="150dp"
+                      android:layout_height="25dp"
+                      android:gravity="center"
+                      android:backgroundTint="@color/app_snack_bar_true"
+                      android:background="@drawable/black_border"
+                      android:layout_marginTop="10dp"
+                      android:text="MY APPOINTMENTS"
+                      android:textColor="@color/app_snack_bar_true"
+                      android:textSize="12sp" />
 
 
               </LinearLayout>
+              <com.maya.vgarages.customviews.WSSemiBoldTextView
+                  android:visibility="gone"
+                  android:layout_margin="15sp"
+                  android:textSize="14sp"
+                  android:textColor="@color/light_orange"
+                  android:layout_width="wrap_content"
+                  android:text="EDIT"
+                  android:layout_height="wrap_content" />
 
 
           </LinearLayout>
@@ -89,7 +121,94 @@
               android:layout_height="1dp">
 
           </View>
+            <com.maya.vgarages.customviews.WSSemiBoldTextView
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:id="@+id/tvAppointments"
+                android:drawableRight="@drawable/ic_chevron_right"
+                android:drawableTint="@color/light_gray"
+                android:paddingRight="15dp"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:textColor="@color/normal_text_color"
+                android:paddingLeft="15dp"
+                android:layout_width="match_parent"
+                android:text="MY APPOINTMENTS"
+                android:layout_height="60dp" />
+              <View
+                  android:background="@color/app_background_color"
+                  android:layout_width="match_parent"
+                  android:layout_height="1dp">
+
+              </View>
+              <com.maya.vgarages.customviews.WSSemiBoldTextView
+                  android:background="@color/white"
+                  android:foreground="?attr/selectableItemBackgroundBorderless"
+                  android:id="@+id/tvVehicles"
+                  android:drawableRight="@drawable/ic_chevron_right"
+                  android:drawableTint="@color/light_gray"
+                  android:paddingRight="15dp"
+                  android:gravity="center_vertical"
+                  android:textSize="14sp"
+                  android:textColor="@color/normal_text_color"
+                  android:paddingLeft="15dp"
+                  android:layout_width="match_parent"
+                  android:text="MY VEHICLES"
+                  android:layout_height="60dp" />
+
+              <View
+                  android:background="@color/app_background_color"
+                  android:layout_width="match_parent"
+                  android:layout_height="25dp">
+
+              </View>
+
+              <com.maya.vgarages.customviews.WSSemiBoldTextView
+                  android:background="@color/white"
+                  android:foreground="?attr/selectableItemBackgroundBorderless"
+                  android:id="@+id/tvHelp"
+                  android:drawableRight="@drawable/ic_chevron_right"
+                  android:drawableTint="@color/light_gray"
+                  android:paddingRight="15dp"
+                  android:gravity="center_vertical"
+                  android:textSize="14sp"
+                  android:textColor="@color/normal_text_color"
+                  android:paddingLeft="15dp"
+                  android:layout_width="match_parent"
+                  android:text="FAQ'S  &amp;  HELP"
+                  android:layout_height="60dp" />
+
+              <View
+                  android:background="@color/app_background_color"
+                  android:layout_width="match_parent"
+                  android:layout_height="25dp">
+
+              </View>
+              <com.maya.vgarages.customviews.WSSemiBoldTextView
+                  android:background="@color/white"
+                  android:foreground="?attr/selectableItemBackgroundBorderless"
+                  android:id="@+id/tvLogout"
+                  android:drawableRight="@drawable/ic_logout"
+                  android:drawableTint="@color/light_gray"
+                  android:paddingRight="15dp"
+                  android:gravity="center_vertical"
+                  android:textSize="14sp"
+                  android:textColor="@color/normal_text_color"
+                  android:paddingLeft="15dp"
+                  android:layout_width="match_parent"
+                  android:text="LOGOUT"
+                  android:layout_height="60dp" />
+
+          </LinearLayout>
+          </ScrollView>
+          <View
+              android:background="@color/app_background_color"
+              android:layout_width="match_parent"
+              android:layout_height="1dp">
+
+          </View>
          <FrameLayout
+             android:background="@color/white"
              android:id="@+id/frameLayout"
              android:layout_width="match_parent"
              android:layout_height="match_parent">

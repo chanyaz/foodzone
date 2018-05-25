@@ -71,6 +71,7 @@ public class UserVehiclesFragment extends Fragment implements IFragment, IVehicl
     TextView tvTitle;
 
     boolean isSelected = false;
+    int flag = 0;
 
     List<Vehicle> list;
 
@@ -100,10 +101,11 @@ public class UserVehiclesFragment extends Fragment implements IFragment, IVehicl
         return fragment;
     }
 
-    public static UserVehiclesFragment newInstance(boolean isSelected) {
+    public static UserVehiclesFragment newInstance(boolean isSelected,int flag) {
         UserVehiclesFragment fragment = new UserVehiclesFragment();
         Bundle args = new Bundle();
         args.putBoolean("isSelected", isSelected);
+        args.putInt("flag", flag);
         fragment.setArguments(args);
         return fragment;
     }
@@ -133,11 +135,12 @@ public class UserVehiclesFragment extends Fragment implements IFragment, IVehicl
 
     private void initialize()
     {
-        if(!getArguments().getBoolean("isSelected",true))
-        {
-            isSelected = true;
-        }
-        tvTitle.setText(isSelected? "Pick vehicle" : "User Vehicles");
+
+        isSelected = getArguments().getBoolean("isSelected",true);
+        flag = getArguments().getInt("flag");
+
+        tvTitle.setText("PICK VEHICLE");
+        tvTitle.setVisibility(flag == 1 ? View.VISIBLE: View.GONE);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             swipeRefreshLayout.setRefreshing(false);
             if(Utility.isNetworkAvailable(activity()))
@@ -177,7 +180,7 @@ public class UserVehiclesFragment extends Fragment implements IFragment, IVehicl
                 list = gson.fromJson(response, type);
                 if(list!=null && list.size()>0)
                 {
-                    recyclerView.setAdapter(vehicleAdapter = new VehicleAdapter(list,iVehicleAdapter,activity(),!isSelected,false));
+                    recyclerView.setAdapter(vehicleAdapter = new VehicleAdapter(list,iVehicleAdapter,activity(),flag == 1? false : true ,false));
                     updateVehicles();
                 }
                 else

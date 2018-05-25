@@ -23,8 +23,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:popupMenuStyle">@style/CVPopupMenu.PopupMenu</item>
-        <item name="android:itemTextAppearance">@style/CVPopupMenu.TextAppearance</item>
+        <item name="android:popupMenuStyle">@style/GMPopupMenu.PopupMenu</item>
+        <item name="android:itemTextAppearance">@style/GMPopupMenu.TextAppearance</item>
     </style>
     <style name="SplashTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/app_background</item>
@@ -51,13 +51,12 @@
     </style>
 
 
-    <style name="CVPopupMenu.PopupMenu" parent="@android:style/Widget.Holo.Light.PopupMenu">
-        <item name="android:popupBackground">#CC000000</item>
-        <item name="android:dropDownHorizontalOffset">-9dp</item>
-        <item name="android:dropDownVerticalOffset">-12dp</item>
+    <style name="GMPopupMenu.PopupMenu" parent="@android:style/Widget.Holo.Light.PopupMenu">
+       <item name="android:popupBackground">@drawable/light_black_corner_3</item>
+        <item name="android:dropDownHorizontalOffset">-6dp</item>
     </style>
 
-    <style name="CVPopupMenu.TextAppearance" parent="@android:style/Widget.Holo.Light.TextView">
+    <style name="GMPopupMenu.TextAppearance" parent="@android:style/Widget.Holo.Light.TextView">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>
     </style>

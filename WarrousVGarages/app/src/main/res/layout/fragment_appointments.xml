@@ -10,6 +10,11 @@
      android:id="@+id/coordinatorLayout"
      android:layout_width="match_parent"
      android:layout_height="match_parent">
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+
 
      <LinearLayout
          android:orientation="vertical"
@@ -29,6 +34,16 @@
          </android.support.v4.widget.SwipeRefreshLayout>
 
      </LinearLayout>
+
+         <ProgressBar
+             android:visibility="gone"
+             android:layout_alignParentTop="true"
+             style="?android:progressBarStyleHorizontal"
+             android:indeterminate="true"
+             android:id="@+id/progressBar"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" />
+     </RelativeLayout>
 
  </android.support.design.widget.CoordinatorLayout>
 

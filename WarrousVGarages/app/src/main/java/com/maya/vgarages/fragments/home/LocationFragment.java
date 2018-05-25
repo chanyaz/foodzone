@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,6 +21,8 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -57,9 +60,12 @@ import com.maya.vgarages.adapters.fragments.home.GaragesAdapter;
 import com.maya.vgarages.adapters.fragments.home.ServiceAdapter;
 import com.maya.vgarages.apis.volley.VolleyHelperLayer;
 import com.maya.vgarages.constants.Constants;
+import com.maya.vgarages.dialogs.home.VGarageServicesDialog;
 import com.maya.vgarages.interfaces.adapter.home.IGaragesAdapter;
+import com.maya.vgarages.interfaces.dialog.IVGarageServicesDialog;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.models.Garage;
+import com.maya.vgarages.models.Service;
 import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
 import com.squareup.picasso.Callback;
@@ -78,7 +84,9 @@ import butterknife.ButterKnife;
  * Use the {@link LocationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LocationFragment extends Fragment implements IFragment, OnMapReadyCallback, IGaragesAdapter,GoogleMap.OnMarkerClickListener{
+public class LocationFragment extends Fragment implements IFragment,
+        OnMapReadyCallback, IGaragesAdapter,GoogleMap.OnMarkerClickListener, IVGarageServicesDialog
+{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -150,9 +158,22 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
     @BindView(R.id.rlLocation)
     RelativeLayout rlLocation;
 
+
     List<Garage> listRecommended;
 
+    @BindView(R.id.rlChange)
+    RelativeLayout rlChange;
+
+    @BindView(R.id.tvType)
+    TextView tvType;
+
+    IVGarageServicesDialog ivGarageServicesDialog;
+
     LatLng myLocation = new LatLng(17.439091, 78.399097);
+
+    List<Service> serviceList;
+    int servicePrevious = 0;
+
 
     public LocationFragment() {
         // Required empty public constructor
@@ -200,6 +221,7 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_location, container, false);
         iGaragesAdapter = this;
+        ivGarageServicesDialog = this;
         ButterKnife.bind(this,view);
 
         mapView.onCreate(savedInstanceState);
@@ -233,6 +255,43 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
         {
             showSnackBar(Constants.PLEASE_CHECK_INTERNET,2);
         }
+
+        rlChange.setOnClickListener(v -> {
+            openPickGarageTypeDialog();
+        });
+
+        if(Utility.getSharedPreferences().contains(Constants.VGARAGE_SERVICES)) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<Service>>(){}.getType();
+            serviceList = gson.fromJson(Utility.getString(Utility.getSharedPreferences(),Constants.VGARAGE_SERVICES),type);
+        }
+    }
+
+    private void openPickGarageTypeDialog()
+    {
+        if(Utility.getSharedPreferences().contains(Constants.VGARAGE_SERVICES))
+        {
+            VGarageServicesDialog dialog = new VGarageServicesDialog(activity(),serviceList,ivGarageServicesDialog);
+            dialog.setCancelable(true);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            dialog.show();
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+            int displayWidth = displayMetrics.widthPixels;
+            int displayHeight = displayMetrics.heightPixels;
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(dialog.getWindow().getAttributes());
+            layoutParams.width = displayWidth;
+            layoutParams.height = displayHeight;
+            dialog.getWindow().setAttributes(layoutParams);
+        }
+        else
+        {
+            showSnackBar("No data found",2);
+        }
     }
 
     @Override
@@ -242,7 +301,7 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
 
     @Override
     public void showSnackBar(String snackBarText, int type) {
-
+        Utility.showSnackBar(activity(),coordinatorLayout,snackBarText,type);
     }
 
     @Override
@@ -292,7 +351,7 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
 //        }
 
         if(Utility.isNetworkAvailable(activity()))
-        fetchGarages();
+        fetchGarages("All");
         else
         {
             showSnackBar(Constants.PLEASE_CHECK_INTERNET,2);
@@ -302,10 +361,20 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
     }
 
 
-    private void fetchGarages()
+    private void fetchGarages(String type)
     {
+        googleMap.clear();
+        MarkerOptions marker2 = new MarkerOptions();
+        marker2.title("you");
+        marker2.icon(getBitmapDescriptor(R.drawable.user_marker,75,75));
+        marker2.anchor(.5f, .5f);
+        marker2.position(myLocation);
+        //marker2.rotation((float) bearingBetweenLocations(latLng,new LatLng(17.439042, 78.399146)));
+        markerYou = googleMap.addMarker(marker2);
+        markerYou.setTag(143914);
+        zoomToPosition(myLocation,11);
         progressBar.setVisibility(View.VISIBLE);
-        String URL = Constants.URL_GET_GARAGES_LIST_BY_TYPE + "?latitude="+myLocation.latitude+"&longitude="+myLocation.longitude+"&GarageType=ALL&pagecount=1" ;
+        String URL = Constants.URL_GET_GARAGES_LIST_BY_TYPE + "?latitude="+myLocation.latitude+"&longitude="+myLocation.longitude+"&GarageType="+type+"&pagecount=1" ;
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>()
         {
@@ -394,7 +463,7 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
             imgBack.setColorFilter(ContextCompat.getColor(activity(), focus ? R.color.colorPrimary : R.color.light_gray));
 
             Picasso.with(activity())
-                    .load(garage.ImageUrl)
+                    .load(garage.ImageUrl.trim().length() > 5 ? garage.ImageUrl.trim() : Constants.SAMPLE_ERROR_IMAGE)
                     .into(imgGarage, new Callback() {
                         @Override
                         public void onSuccess() {
@@ -462,25 +531,29 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
         imgBack.setColorFilter(ContextCompat.getColor(activity(),focus ? R.color.colorPrimary : R.color.light_gray));
 
         Picasso.with(activity())
-                .load(garage.ImageUrl)
+                .load(garage.ImageUrl.trim().length()>5 ? garage.ImageUrl.trim() : Constants.SAMPLE_ERROR_IMAGE)
                 .into(imgGarage, new Callback() {
                     @Override
                     public void onSuccess()
                     {
 
+                        try {
 
-                        DisplayMetrics displayMetrics = new DisplayMetrics();
-                        activity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
-                        view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
-                        view.buildDrawingCache();
-                        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-
-                        Canvas canvas = new Canvas(bitmap);
-                        view.draw(canvas);
-
-                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
+                            DisplayMetrics displayMetrics = new DisplayMetrics();
+                            activity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                            view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+                            view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+                            view.buildDrawingCache();
+                            Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(bitmap);
+                            view.draw(canvas);
+                            marker.setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
@@ -573,10 +646,10 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
         double h2 = SphericalUtil.computeHeading(c, p2);
 
         //Calculate positions of points on circle border and add them to polyline options
-        int numpoints = 100;
-        double step = (h2 -h1) / numpoints;
+        int numPoints = 100;
+        double step = (h2 -h1) / numPoints;
 
-        for (int i=0; i < numpoints; i++) {
+        for (int i=0; i < numPoints; i++) {
             LatLng pi = SphericalUtil.computeOffset(c, r, h1 + i * step);
             options.add(pi);
         }
@@ -591,6 +664,7 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
     @Override
     public boolean onMarkerClick(Marker marker)
     {
+
         if(marker.getTag()!=null)
         {
 
@@ -616,7 +690,7 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
             }
             catch (Exception e)
             {
-
+                e.printStackTrace();
             }
 
 
@@ -713,5 +787,21 @@ public class LocationFragment extends Fragment implements IFragment, OnMapReadyC
     }
 
 
+    @Override
+    public void garageTypeChanged(Service service, int position)
+    {
+        if(servicePrevious != position)
+        {
+            serviceList.get(servicePrevious).IsSelected = false;
+            serviceList.get(position).IsSelected = true;
+            servicePrevious = position;
 
+            tvType.setText(service.GarageType);
+            recyclerView.setVisibility(service.GarageType.equals("All") ? View.VISIBLE : View.GONE);
+            llGarage.setVisibility(View.GONE);
+            previous = -1;
+            markerList = new ArrayList<>();
+            fetchGarages(service.GarageType);
+        }
+    }
 }

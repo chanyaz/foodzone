@@ -2,6 +2,7 @@ package com.maya.vgarages.fragments.profile;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,9 +38,6 @@ public class ProfileFragment extends Fragment implements IFragment{
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
@@ -58,9 +57,26 @@ public class ProfileFragment extends Fragment implements IFragment{
     @BindView(R.id.llProfile)
     LinearLayout llProfile;
 
+    @BindView(R.id.tvVehicles)
+    TextView tvVehicles;
+
+    @BindView(R.id.tvHelp)
+    TextView tvHelp;
+
+    @BindView(R.id.tvAppointments)
+    TextView tvAppointments;
+
+    @BindView(R.id.tvLogout)
+    TextView tvLogout;
+
+    @BindView(R.id.frameLayout)
+    FrameLayout frameLayout;
+
     UserVehiclesFragment userVehiclesFragment;
 
     boolean isProfile = true;
+    boolean isVehicle = true;
+    int flag = 0;
 
 
 
@@ -69,28 +85,14 @@ public class ProfileFragment extends Fragment implements IFragment{
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    public static ProfileFragment newInstance(boolean isProfile) {
+
+    public static ProfileFragment newInstance(boolean isProfile,boolean isVehicle,int flag) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putBoolean("isProfile", isProfile);
+        args.putBoolean("isVehicle", isVehicle);
+        args.putInt("flag", flag);
         fragment.setArguments(args);
         return fragment;
     }
@@ -98,10 +100,6 @@ public class ProfileFragment extends Fragment implements IFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -118,10 +116,14 @@ public class ProfileFragment extends Fragment implements IFragment{
 
     private void initialize()
     {
-        if(!getArguments().getBoolean("isProfile",true))
-        {
-            isProfile = false;
-        }
+
+        isProfile = getArguments().getBoolean("isProfile",true);
+
+        isVehicle = getArguments().getBoolean("isVehicle",true);
+
+        flag = getArguments().getInt("flag");
+
+
         llProfile.setVisibility(isProfile?View.VISIBLE:View.GONE);
         tvUserName.setText(Utility.getCamelCase(Utility.getString(Utility.getSharedPreferences(), Constants.USER_NAME)));
         Picasso.with(activity())
@@ -136,11 +138,44 @@ public class ProfileFragment extends Fragment implements IFragment{
         {
             tvAddress.setText("");
         }
-        getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,userVehiclesFragment = UserVehiclesFragment.newInstance(isProfile)).commit();
+        getChildFragmentManager().beginTransaction().replace(R.id.frameLayout,userVehiclesFragment = UserVehiclesFragment.newInstance(isProfile,flag)).commit();
+
+
+        tvAppointments.setOnClickListener(v -> {goToAppointments();});
+        tvVehicles.setOnClickListener(v -> {goToVehicles();});
+        tvHelp.setOnClickListener(v -> {goToHelp();});
+        tvLogout.setOnClickListener(v -> {((HelperActivity) activity()).openLogoutDialog();});
 
         fab.setOnClickListener(v -> {
             ((HelperActivity) activity()).openAddVehicle();
         });
+
+        if( isVehicle == false)
+        {
+            fab.setVisibility(View.GONE);
+            frameLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void goToVehicles()
+    {
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,2228);
+        startActivity(intent);
+    }
+
+    private void goToHelp()
+    {
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,2229);
+        startActivity(intent);
+    }
+
+    private void goToAppointments()
+    {
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,2224);
+        startActivity(intent);
     }
 
 

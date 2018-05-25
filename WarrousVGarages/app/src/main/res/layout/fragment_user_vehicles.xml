@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:id="@+id/tvTitle"
+                    android:textSize="15sp"
                     android:text="User Vehicles"
                     android:textColor="@color/light_orange" />
 

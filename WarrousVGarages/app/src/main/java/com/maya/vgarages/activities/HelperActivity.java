@@ -37,6 +37,7 @@ import com.maya.vgarages.dialogs.cart.ReplaceCartDialog;
 import com.maya.vgarages.dialogs.checkout.AppointmentDetailsDialog;
 import com.maya.vgarages.dialogs.garage.AddReviewDialog;
 import com.maya.vgarages.dialogs.garage.ToPickVehicle;
+import com.maya.vgarages.dialogs.options.LogoutDialog;
 import com.maya.vgarages.dialogs.vehicle.AddVehicleDialog;
 import com.maya.vgarages.fragments.appointments.AppointmentStatusFragment;
 import com.maya.vgarages.fragments.appointments.AppointmentsFragment;
@@ -44,7 +45,10 @@ import com.maya.vgarages.fragments.appointments.AppointmentsOverviewFragment;
 import com.maya.vgarages.fragments.cart.checkout.CheckOutFragment;
 import com.maya.vgarages.fragments.garage.overview.GarageOverviewFragment;
 import com.maya.vgarages.fragments.other.AddAddressFragment;
+import com.maya.vgarages.fragments.other.ContactUsFragment;
+import com.maya.vgarages.fragments.other.HelpFragment;
 import com.maya.vgarages.fragments.profile.ProfileFragment;
+import com.maya.vgarages.fragments.start.ForgotPasswordFragment;
 import com.maya.vgarages.fragments.start.RegisterFragment;
 import com.maya.vgarages.fragments.transactions.TransactionsFragment;
 import com.maya.vgarages.fragments.vehicle.add.AddVehicleFragment;
@@ -67,7 +71,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -176,12 +179,18 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
                 fragment =  RegisterFragment.newInstance(null,null);
                 toolbar.setVisibility(View.GONE);
                 break;
+
+            case 1001: // Forgot Password
+                fragment =  ForgotPasswordFragment.newInstance(null,null);
+                toolbar.setVisibility(View.GONE);
+                break;
+
             case 1111: // account
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
                     toolbar.setElevation(0);
                 }
-                fragment = ProfileFragment.newInstance(null,null);
+                fragment = ProfileFragment.newInstance(true,false,1);
                 changeTitle("Account");
                 break;
             case 2222: // garage overview
@@ -202,7 +211,7 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
             break;
 
             case 2223: // user vehicles
-                fragment =  ProfileFragment.newInstance(false);
+                fragment =  ProfileFragment.newInstance(false,true,1);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
                     toolbar.setElevation(1);
@@ -228,6 +237,30 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
             case 2226:
                 fragment =  AddAddressFragment.newInstance(null,null);
                 toolbar.setVisibility(View.GONE);
+                break;
+            case 2227:
+                fragment =  ContactUsFragment.newInstance(null,null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    toolbar.setElevation(1);
+                }
+                changeTitle("Contact US");
+                break;
+            case 2228:
+                fragment =  ProfileFragment.newInstance(false,true,0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    toolbar.setElevation(1);
+                }
+                changeTitle("My Vehicles");
+                break;
+            case 2229: // help
+                fragment = HelpFragment.newInstance(null,null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    toolbar.setElevation(1);
+                }
+                changeTitle("Help");
                 break;
         }
         if(fragment!=null)
@@ -771,13 +804,12 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
                 Type type = new TypeToken<List<GarageService>>() {
                 }.getType();
                 cartGarageServices = gson.fromJson(response, type);
-                updateCart(cartGarageServices.size());
                 if(cartGarageServices!=null && cartGarageServices.size()>0)
                 {
+                    updateCart(cartGarageServices.size());
                     fetchDealerById(cartGarageServices.get(0).DealerId);
                     refreshGarageServices();
                 }
-
                 Utility.closeProgressDialog(progressDialog);
 
             }
@@ -811,6 +843,7 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
                 }.getType();
                 List<Garage> garages = gson.fromJson(response, type);
                 cartGarage = garages.get(0);
+                refreshGarageServices();
                 Utility.closeProgressDialog(progressDialog);
             }
         };
@@ -828,11 +861,6 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
     }
 
 
-
-    public void saveUserAddress(String address)
-    {
-
-    }
 
     public void fetchUserAddress()
     {
@@ -875,6 +903,18 @@ public class HelperActivity extends AppCompatActivity implements IActivity, Paym
         }
 
         return result;
+    }
+
+    public void openLogoutDialog()
+    {
+        DisplayMetrics metrics = activity().getResources().getDisplayMetrics();
+        int width = (int) (metrics.widthPixels * 0.85);
+        LogoutDialog dialog = new LogoutDialog(activity());
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+        dialog.getWindow().setLayout(width, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
 

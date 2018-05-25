@@ -1,5 +1,6 @@
 package com.maya.vgarages.activities;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,23 +10,30 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.maps.model.LatLng;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.maya.vgarages.R;
 import com.maya.vgarages.constants.Constants;
+import com.maya.vgarages.dialogs.appointments.DeleteConfirmDialog;
 import com.maya.vgarages.dialogs.options.LogoutDialog;
 import com.maya.vgarages.fragments.home.HomeFragment;
 import com.maya.vgarages.fragments.home.LocationFragment;
@@ -56,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements IFragment {
     @BindView(R.id.toolbar)
     android.support.v7.widget.Toolbar toolbar;
 
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
+
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
@@ -71,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements IFragment {
     Location location = null;
 
     View headerLayout;
-    TextView tvUserName, tvAddress, tvAppointments, tvLogout, tvTransactions;
+    TextView tvUserName, tvAddress, tvAppointments, tvLogout, tvTransactions, tvContactUs;
     ImageView imgUser;
 
 
@@ -88,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements IFragment {
     private void setUpFragment()
     {
         changeTitle("Garages List");
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, HomeFragment.newInstance(null,null)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, HomeFragment.newInstance(new LatLng(location.getLatitude(), location.getLongitude()))).commit();
     }
 
     private void initialize()
@@ -118,17 +129,21 @@ public class MainActivity extends AppCompatActivity implements IFragment {
         imgUser =  headerLayout.findViewById(R.id.imgUser);
         tvAppointments =  headerLayout.findViewById(R.id.tvAppointments);
         tvTransactions =  headerLayout.findViewById(R.id.tvTransactions);
+        tvContactUs =  headerLayout.findViewById(R.id.tvContactUs);
 
 
         tvLogout.setOnClickListener(v -> {openLogoutDialog();});
         tvAppointments.setOnClickListener(v -> {goToMyAppointments();});
         tvTransactions.setOnClickListener(v -> {goToTransactions();});
         tvAddress.setOnClickListener(v -> {goToUserAddress();});
+        tvContactUs.setOnClickListener(v -> {goToContactUs();});
 
         updateFields();
 
         checkPNS();
     }
+
+
 
     private void checkPNS()
     {
@@ -238,6 +253,10 @@ public class MainActivity extends AppCompatActivity implements IFragment {
             }
             if(fragment!=null)
             {
+//                if(getSupportFragmentManager().getBackStackEntryCount()>1)
+//                {
+//                    getSupportFragmentManager().popBackStack();
+//                }
                 getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
             }
             return false;
@@ -248,12 +267,14 @@ public class MainActivity extends AppCompatActivity implements IFragment {
     private void openLogoutDialog()
     {
         drawer.closeDrawers();
+        DisplayMetrics metrics = activity().getResources().getDisplayMetrics();
+        int width = (int) (metrics.widthPixels * 0.85);
         LogoutDialog dialog = new LogoutDialog(activity());
         dialog.setCancelable(true);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
-
+        dialog.getWindow().setLayout(width, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
 
@@ -282,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements IFragment {
     {
         Intent intent = new Intent(activity(),HelperActivity.class);
         intent.putExtra(Constants.FRAGMENT_KEY,1111);
-        startActivity(intent);
+        startActivityForResult(intent,Utility.generateRequestCodes().get("LOGOUT"));
     }
 
     @Override
@@ -369,11 +390,105 @@ public class MainActivity extends AppCompatActivity implements IFragment {
         },200);
     }
 
+    private void goToContactUs()
+    {
+        Intent intent = new Intent(activity(),HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,2227);
+        startActivity(intent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawer.closeDrawers();
+            }
+        },200);
+    }
+
     private void sendFcmToken(String fcmToken)
     {
         CommonApis.sendFcmToken(activity(),fcmToken);
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        if(getSupportFragmentManager().getBackStackEntryCount()>1)
+//        {
+//            getSupportFragmentManager().popBackStack();
+//        }
+//        else
+//        {
+//            super.onBackPressed();
+//        }
+    }
 
+
+    public void hideToolbar()
+    {
+//        if(toolbar.getHeight() == View.VISIBLE) {
+            appBarLayout.animate().translationY(-appBarLayout.getHeight()).setInterpolator(new AccelerateInterpolator(10)).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    appBarLayout.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            //toolbar.setVisibility(View.GONE);
+        //}
+    }
+
+    public void showToolbar()
+    {
+//        if(toolbar.getVisibility() == View.GONE)
+//        {
+            appBarLayout.animate().translationY(0).setInterpolator(new DecelerateInterpolator(10)).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    appBarLayout.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            //toolbar.setVisibility(View.VISIBLE);
+        //}
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == Utility.generateRequestCodes().get("LOGOUT"))
+        {
+            if(data!=null)
+            {
+                finish();
+            }
+        }
+    }
 }

@@ -56,9 +56,12 @@ public class GarageImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     {
         if(!isLoading) {
             ViewHolder holder = (ViewHolder)viewHolder;
-            Picasso.with(context)
-                    .load(list.get(position) != null && list.get(position).length() > 0 ? list.get(position) : Constants.SAMPLE_ERROR_IMAGE)
-                    .into(holder.imgGarage);
+            if(list.get(position)!=null && list.get(position).trim().length()>5)
+            {
+                Picasso.with(context)
+                        .load(list.get(position) != null && list.get(position).length() > 0 ? list.get(position) : Constants.SAMPLE_ERROR_IMAGE)
+                        .into(holder.imgGarage);
+            }
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(list.size() > 1 ? width - Utility.dpSize(context, 100) : width - Utility.dpSize(context, 30), LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(

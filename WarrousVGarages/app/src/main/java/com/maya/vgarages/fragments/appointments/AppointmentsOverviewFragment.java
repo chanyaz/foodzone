@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -138,6 +139,12 @@ public class AppointmentsOverviewFragment extends Fragment implements IFragment{
         tvDate.setText(Utility.makeJSDateReadableOther(appointment.ApptDate));
         tvTime.setText(appointment.ApptTime);
         tvStatus.setText(appointment.AppointmentStatusType);
+        tvStatus.setTextColor(ContextCompat.getColor(activity(),
+                 appointment.AppointmentStatusType.equalsIgnoreCase(Constants.REJECTED)
+                ? R.color.badge_color1
+                : appointment.AppointmentStatusType.equalsIgnoreCase(Constants.ACCEPTED)
+                ? R.color.app_snack_bar_true : R.color.light_primary));
+
         recyclerView.setLayoutManager(new LinearLayoutManager(activity()));
         if(Utility.isNetworkAvailable(activity()))
         {
@@ -171,13 +178,18 @@ public class AppointmentsOverviewFragment extends Fragment implements IFragment{
                     garage.DealerId = appointment.DealerId;
                     garage.DealerName = appointment.DealerName;
                     garage.ImageUrl = appointment.ImageUrl;
-                    garage.Address1 = "Selected " + appointment.ICustomerOpcodes.size() + " Services";
+                    garage.Address1 =  appointment.Make + " " +appointment.Model + " " + appointment.Year;
                     garage.Address2 = "";
                     recyclerView.setAdapter(new CheckoutAdapter(garage,appointment.ICustomerOpcodes,activity(),false,0));
 
                     tvDate.setText(Utility.makeJSDateReadableOther(appointment.ApptDate));
                     tvTime.setText(appointment.ApptTime);
                     tvStatus.setText(appointment.AppointmentStatusType);
+                    tvStatus.setTextColor(ContextCompat.getColor(activity(),
+                            appointment.AppointmentStatusType.equalsIgnoreCase(Constants.REJECTED)
+                            ? R.color.badge_color1
+                            : appointment.AppointmentStatusType.equalsIgnoreCase(Constants.ACCEPTED)
+                            ? R.color.app_snack_bar_true : R.color.light_primary));
                 }
                 else
                 {

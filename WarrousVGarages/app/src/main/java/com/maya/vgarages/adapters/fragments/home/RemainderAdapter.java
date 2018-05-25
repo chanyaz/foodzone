@@ -80,9 +80,11 @@ public class RemainderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.tvPriceRange3.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 2 ? R.color.colorPrimary : R.color.light_new_gray));
             holder.tvPriceRange4.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 1 ? R.color.colorPrimary : R.color.light_new_gray));
 
-            Picasso.with(context)
-                    .load(list.get(position).ImageUrl)
-                    .into(holder.imgGarage);
+            if(list.get(position).ImageUrl!=null && list.get(position).ImageUrl.trim().length()>5) {
+                Picasso.with(context)
+                        .load(list.get(position).ImageUrl)
+                        .into(holder.imgGarage);
+            }
 
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);

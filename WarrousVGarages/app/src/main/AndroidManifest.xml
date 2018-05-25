@@ -73,7 +73,7 @@
             android:screenOrientation="portrait" />
 
         <activity android:name=".activities.HelperActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar1"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:windowSoftInputMode="adjustResize"

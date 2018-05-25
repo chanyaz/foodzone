@@ -5,7 +5,7 @@
     <item
         app:iconTint="@color/icon_color"
         android:id="@+id/menu_profile"
-        android:icon="@drawable/user_profile_icon"
+        android:icon="@drawable/user_account"
         android:title="Profile"
         app:showAsAction="always|withText"/>
 </menu>

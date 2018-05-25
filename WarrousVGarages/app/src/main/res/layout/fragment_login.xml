@@ -39,7 +39,7 @@
                 android:textColorHint="@color/hash_text_color"
                 android:hint="Enter Username"
                 android:inputType="textEmailAddress"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/corner_radius_white_3"
                 android:layout_width="match_parent"
@@ -75,6 +75,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Login"
                 android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:background="@drawable/corner_radius_fb_3"
                 android:layout_width="match_parent"
                 android:layout_height="46dp" />
@@ -88,8 +89,18 @@
 
                 <com.maya.vgarages.customviews.WSRegularTextView
                     android:textSize="12sp"
+                    android:layout_marginRight="10dp"
                     android:textColor="@color/hash_text_color"
-                    android:text="Not Already Register ?"
+                    android:text="Not Register ?"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.maya.vgarages.customviews.WSSemiBoldTextView
+                    android:id="@+id/tvSignUp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:text="Sign-Up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <com.maya.vgarages.customviews.WSRegularTextView
@@ -97,14 +108,53 @@
                     android:layout_marginRight="10dp"
                     android:textColor="@color/hash_text_color"
                     android:textSize="12sp"
-                    android:text="New"
+                    android:text="or"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <com.maya.vgarages.customviews.WSSemiBoldTextView
-                    android:id="@+id/tvSignUp"
+                    android:id="@+id/tvForgetPassword"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
-                    android:text="Sign-Up"
+                    android:text="Forgot Password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.maya.vgarages.customviews.WSRegularTextView
+                    android:textSize="12sp"
+                    android:textColor="@color/hash_text_color"
+                    android:text="I agree to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <com.maya.vgarages.customviews.WSSemiBoldTextView
+                    android:id="@+id/tvPrivacyPolicy"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="12sp"
+                    android:text="Privacy Policy"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <com.maya.vgarages.customviews.WSRegularTextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/hash_text_color"
+                    android:textSize="12sp"
+                    android:text="and"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <com.maya.vgarages.customviews.WSSemiBoldTextView
+                    android:id="@+id/tvTerms"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:text="Terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

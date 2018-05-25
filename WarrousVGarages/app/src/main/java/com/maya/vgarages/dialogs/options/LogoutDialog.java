@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.maya.vgarages.R;
+import com.maya.vgarages.activities.MainActivity;
 import com.maya.vgarages.activities.SplashActivity;
 import com.maya.vgarages.utilities.Utility;
 
@@ -43,9 +44,14 @@ public class LogoutDialog extends Dialog
         tvYes.setOnClickListener(click ->
         {
             dismiss();
+            Utility.clearPicassoImageDiskCache(activity);
             Utility.deleteSharedPreferences();
             Intent intent = new Intent(activity, SplashActivity.class);
             activity.startActivity(intent);
+
+            Intent returnData = new Intent(activity,MainActivity.class);
+            returnData.putExtra("data","1");
+            activity.setResult(Activity.RESULT_OK,returnData);
             activity.finish();
         });
 

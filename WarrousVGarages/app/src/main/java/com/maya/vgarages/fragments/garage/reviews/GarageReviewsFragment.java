@@ -139,7 +139,7 @@ public class GarageReviewsFragment extends Fragment implements IFragment {
     public void fetchReviews()
     {
         recyclerView.setAdapter(new ReviewAdapter(Utility.generateReviews(),activity(),true));
-        String URL = Constants.URL_GET_REVIEW_OF_GARAGES + "?dealerId="+garage.DealerId+"&pageCount=1";
+        String URL = Constants.URL_GET_REVIEW_OF_GARAGES + "?dealerId="+garage.DealerId;
         VolleyHelperLayer volleyHelperLayer = new VolleyHelperLayer();
         Response.Listener<String> listener = new Response.Listener<String>()
         {

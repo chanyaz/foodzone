@@ -42,6 +42,7 @@ import com.maya.vgarages.models.Service;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.DateFormatSymbols;
@@ -595,6 +596,7 @@ public class Utility
         hashMap.put("REQUEST_LOCATION_PERMISSION",18103);
         hashMap.put("ADD_VEHICLE",18104);
         hashMap.put("CHANGE_VEHICLE",18105);
+        hashMap.put("LOGOUT",18106);
         return hashMap;
     }
 
@@ -1117,6 +1119,29 @@ public class Utility
     public static String getPhoneUniqueId(Context context)
     {
         return  Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+
+    public static boolean clearPicassoImageDiskCache(Context context)
+    {
+        File cache = new File(context.getApplicationContext().getCacheDir(), "picasso-cache");
+        if (cache.exists() && cache.isDirectory()) {
+            return deleteDir(cache);
+        }
+        return false;
+    }
+
+    private static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
     }
 
 

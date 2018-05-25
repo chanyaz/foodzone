@@ -111,9 +111,12 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             {
                 ViewHolder viewHolder = (ViewHolder) holder;
 
-                Picasso.with(context)
-                        .load(list.get(position).ImageUrl)
-                        .into(viewHolder.imgGarage);
+                if(list.get(position).ImageUrl!=null && list.get(position).ImageUrl.trim().length()>5)
+                {
+                    Picasso.with(context)
+                            .load(list.get(position).ImageUrl)
+                            .into(viewHolder.imgGarage);
+                }
 
                 viewHolder.tvShopType.setText(list.get(position).Types);
                 viewHolder.tvGarageName.setText(Utility.getCamelCase(list.get(position).DealerName));
@@ -155,10 +158,12 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 locationViewHolder.tvOpen.setTextColor(ContextCompat.getColor(context, !list.get(position).IsClosed ? R.color.colorPrimary : R.color.light_orange));
                 locationViewHolder.tvValue.setText("" + list.get(position).CustomerRating);
 
-
-                Picasso.with(context)
+                if(list.get(position).ImageUrl!=null && list.get(position).ImageUrl.trim().length()>5)
+                {
+                    Picasso.with(context)
                             .load(list.get(position).ImageUrl)
                             .into(locationViewHolder.imgGarage);
+                }
 
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -183,10 +188,11 @@ public class GaragesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 recommendedViewHolder.tvPriceRange3.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 2 ? R.color.colorPrimary : R.color.light_new_gray));
                 recommendedViewHolder.tvPriceRange4.setTextColor(ContextCompat.getColor(context, list.get(position).DealerRating >= 1 ? R.color.colorPrimary : R.color.light_new_gray));
 
-
-                Picasso.with(context)
+                if(list.get(position).ImageUrl!=null && list.get(position).ImageUrl.trim().length()>5) {
+                    Picasso.with(context)
                             .load(list.get(position).ImageUrl)
                             .into(recommendedViewHolder.imgGarage);
+                }
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.setMargins(

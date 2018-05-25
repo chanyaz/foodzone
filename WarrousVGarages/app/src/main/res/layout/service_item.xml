@@ -11,7 +11,6 @@
     android:layout_height="match_parent">
     <ImageView
         android:padding="3dp"
-        android:tint="@color/hash_text_color"
         android:scaleType="centerCrop"
         android:src="@drawable/oil_change"
         android:id="@+id/imgService"

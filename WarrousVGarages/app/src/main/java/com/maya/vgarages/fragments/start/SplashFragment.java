@@ -100,7 +100,8 @@ public class SplashFragment extends Fragment implements IFragment{
                 fragment = getLocationFragment;
                 break;
             case 103:
-                fragment = StartFragment.newInstance(null,null);
+                //fragment = StartFragment.newInstance(null,null);
+                fragment = LoginFragment.newInstance(null,null);
                 break;
         }
         if(fragment!=null)

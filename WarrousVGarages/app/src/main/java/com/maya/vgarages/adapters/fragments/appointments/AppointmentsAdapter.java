@@ -70,7 +70,12 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.tvEstimatedCost.setText("Rs. " + appointmentList.get(position).TotalPrice);
             holder.tvStatus.setText(appointmentList.get(position).AppointmentStatusType.toUpperCase());
 
-            DrawableCompat.setTint(holder.tvStatus.getBackground(),ContextCompat.getColor(context,appointmentList.get(position).AppointmentStatusType.equalsIgnoreCase(Constants.REJECTED) ? R.color.badge_color1 : R.color.light_primary));
+            DrawableCompat.setTint(holder.tvStatus.getBackground(),ContextCompat.getColor(context,
+                    appointmentList.get(position).AppointmentStatusType.equalsIgnoreCase(Constants.REJECTED)
+                            ? R.color.badge_color1
+                            : appointmentList.get(position).AppointmentStatusType.equalsIgnoreCase(Constants.ACCEPTED)
+                            ? R.color.app_snack_bar_true : R.color.light_primary)
+            );
 
 
 
@@ -83,6 +88,10 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             );
 
             holder.itemView.setLayoutParams(params);
+
+            holder.imgOptions.setOnClickListener(v -> {
+                if(iAppointmentsAdapter!=null) iAppointmentsAdapter.openOptions(appointmentList.get(position),position,v);
+            });
 
             holder.itemView.setOnClickListener(v -> {
                 if(iAppointmentsAdapter!=null) iAppointmentsAdapter.onItemClick(appointmentList.get(position),position);

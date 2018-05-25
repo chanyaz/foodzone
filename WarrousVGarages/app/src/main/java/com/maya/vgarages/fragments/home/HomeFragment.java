@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.maya.vgarages.R;
 import com.maya.vgarages.activities.HelperActivity;
+import com.maya.vgarages.activities.MainActivity;
 import com.maya.vgarages.adapters.custom.EmptyDataAdapter;
 import com.maya.vgarages.adapters.fragments.home.GaragesAdapter;
 import com.maya.vgarages.adapters.fragments.home.ServiceAdapter;
@@ -69,6 +71,9 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
 
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.nestedScrollView)
+    NestedScrollView nestedScrollView;
 
     List<Service> list;
     List<Garage> garageList;
@@ -172,6 +177,25 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
                 showSnackBar(Constants.PLEASE_CHECK_INTERNET,2);
             }
         });
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
+            {
+//                if (scrollY - oldScrollY >= 10) //scroll down
+//                {
+//                    ((MainActivity) activity()).hideToolbar();
+//                }
+//                else if (scrollY - oldScrollY <= 10) //scroll up
+//                {
+//                    ((MainActivity) activity()).showToolbar();
+//                }
+//                else
+//                {
+//
+//                }
+            }
+        });
     }
 
     private void fetchGarages(String value)
@@ -229,6 +253,8 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
                 list = new ArrayList<>();
                 list.add(new Service("All",R.drawable.all,true));
                 list.addAll(gson.fromJson(response, type));
+
+                Utility.setString(Utility.getSharedPreferences(),Constants.VGARAGE_SERVICES,gson.toJson(list,type));
                 isDoneService = true;
                 reflectItems();
 
@@ -321,4 +347,6 @@ public class HomeFragment extends Fragment implements IFragment, IServiceAdapter
         intent.putExtra("Garage",garage);
         startActivity(intent);
     }
+
+
 }

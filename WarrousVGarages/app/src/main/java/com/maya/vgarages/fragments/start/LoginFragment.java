@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.auth0.android.jwt.DecodeException;
 import com.auth0.android.jwt.JWT;
 import com.maya.vgarages.R;
+import com.maya.vgarages.activities.HelperActivity;
 import com.maya.vgarages.activities.SplashActivity;
 import com.maya.vgarages.apis.volley.VolleyHelperLayer;
 import com.maya.vgarages.constants.Constants;
@@ -63,6 +64,9 @@ public class LoginFragment extends Fragment implements IFragment{
 
     @BindView(R.id.tvSignUp)
     TextView tvSignUp;
+
+    @BindView(R.id.tvForgetPassword)
+    TextView tvForgetPassword;
 
     String firstName = "Default";
     String lastName = "User";
@@ -118,8 +122,23 @@ public class LoginFragment extends Fragment implements IFragment{
 
         etUsername.setText("jacobpaul.kuchipudi@gmail.com");
         etPassword.setText("Anu@123456");
-        tvSignUp.setOnClickListener(v -> {goToStartFragment();});
+        tvSignUp.setOnClickListener(v -> {goToSignUp();});
         tvLogin.setOnClickListener(v -> {doLogin();});
+        tvForgetPassword.setOnClickListener(v -> {goToForgotPassword();});
+    }
+
+    private void goToForgotPassword()
+    {
+        Intent intent = new Intent(activity(), HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,1001);
+        startActivity(intent);
+    }
+
+    private void goToSignUp()
+    {
+        Intent intent = new Intent(activity(), HelperActivity.class);
+        intent.putExtra(Constants.FRAGMENT_KEY,1000);
+        startActivity(intent);
     }
 
     private void doLogin()

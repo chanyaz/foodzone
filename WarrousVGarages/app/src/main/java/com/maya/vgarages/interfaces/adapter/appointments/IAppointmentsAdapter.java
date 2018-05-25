@@ -1,5 +1,7 @@
 package com.maya.vgarages.interfaces.adapter.appointments;
 
+import android.view.View;
+
 import com.maya.vgarages.models.Appointment;
 
 /**
@@ -8,4 +10,5 @@ import com.maya.vgarages.models.Appointment;
 public interface IAppointmentsAdapter
 {
     public void onItemClick(Appointment appointment,int position);
+    public void openOptions(Appointment appointment,int position,View view);
 }

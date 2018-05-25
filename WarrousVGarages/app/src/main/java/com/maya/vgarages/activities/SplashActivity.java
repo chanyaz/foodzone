@@ -58,6 +58,9 @@ import com.maya.vgarages.fragments.start.StartFragment;
 import com.maya.vgarages.interfaces.fragments.IFragment;
 import com.maya.vgarages.utilities.Logger;
 import com.maya.vgarages.utilities.Utility;
+import com.squareup.picasso.Cache;
+import com.squareup.picasso.LruCache;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,9 +94,6 @@ public class SplashActivity extends AppCompatActivity implements IFragment, Goog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Intent intent = new Intent(activity(),MainActivity.class);
-//        startActivity(intent);
-//        finish();
 
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);

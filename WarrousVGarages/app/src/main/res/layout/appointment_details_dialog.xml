@@ -101,7 +101,7 @@
 
                 <com.maya.vgarages.customviews.WSMediumTextView
                     android:text="Date"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:layout_weight="1"
                     android:textColor="@color/light_new_gray"
                     android:layout_width="match_parent"
@@ -146,7 +146,7 @@
 
                 <com.maya.vgarages.customviews.WSMediumTextView
                     android:text="Time"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:layout_weight="1"
                     android:textColor="@color/light_new_gray"
                     android:layout_width="match_parent"
@@ -181,8 +181,8 @@
             </LinearLayout>
 
             <com.maya.vgarages.customviews.WSMediumTextView
-                android:text="PickUp Type"
-                android:textSize="16sp"
+                android:text="Pick Up Type"
+                android:textSize="15sp"
                 android:layout_margin="15dp"
                 android:layout_weight="1"
                 android:textColor="@color/light_new_gray"
@@ -238,7 +238,7 @@
 
                     <com.maya.vgarages.customviews.WSMediumTextView
                         android:text="Address"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:layout_weight="1"
                         android:textColor="@color/light_new_gray"
                         android:layout_width="match_parent"

@@ -12,6 +12,7 @@
         android:layout_marginBottom="15dp"
         android:layout_marginRight="25dp"
         android:textSize="16sp"
+        android:id="@+id/tvTitle"
         android:textColor="@color/normal_text_color"
         android:text="Replace cart item?"
         android:layout_width="wrap_content"
@@ -39,7 +40,7 @@
             android:id="@+id/tvNo"
             android:textSize="15sp"
             android:gravity="center"
-            android:textColor="@color/light_orange"
+            android:textColor="@color/light_new_gray"
             android:text="NO"
             android:layout_width="40dp"
             android:layout_height="25dp" />

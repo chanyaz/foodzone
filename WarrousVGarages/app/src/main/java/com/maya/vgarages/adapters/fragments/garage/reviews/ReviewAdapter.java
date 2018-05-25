@@ -58,15 +58,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if(!isLoading)
         {
             ViewHolder holder = (ViewHolder) viewHolder;
-            holder.tvUserName.setText(Utility.getCamelCase(list.get(position).FullName));
-            holder.tvRatting.setText(list.get(position).Rating + "/10");
+            holder.tvUserName.setText(Utility.getCamelCase(list.get(position).UserName));
+            holder.tvRatting.setText(list.get(position).CommentsCount + " comments");
             holder.tvReviewContent.setText(list.get(position).Review);
-            holder.tvTimeAgo.setText(Utility.makeDateToAgo(list.get(position).CreatedDt));
+            holder.tvTimeAgo.setText(Utility.makeDateToAgo(list.get(position).ReviewDate));
 
-
-            Picasso.with(context)
-                    .load(list.get(position).ImageUrl)
-                    .into(holder.imgUser);
+            if(list.get(position).ProfileImageUrl!=null && list.get(position).ProfileImageUrl.trim().length()>5) {
+                Picasso.with(context)
+                        .load(list.get(position).ProfileImageUrl)
+                        .into(holder.imgUser);
+            }
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(

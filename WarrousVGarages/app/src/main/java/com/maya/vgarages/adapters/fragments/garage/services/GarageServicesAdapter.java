@@ -87,9 +87,11 @@ public class GarageServicesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 );
             }
 
-            Picasso.with(context)
-                    .load(list.get(position).ImageUrl)
-                    .into(holder.imgGarageService);
+            if(list.get(position).ImageUrl!=null && list.get(position).ImageUrl.trim().length()>5) {
+                Picasso.with(context)
+                        .load(list.get(position).ImageUrl)
+                        .into(holder.imgGarageService);
+            }
 
             holder.imgAction.setVisibility(list.get(position).isPending ? View.GONE: View.VISIBLE);
             holder.progressBar.setVisibility(list.get(position).isPending ? View.VISIBLE: View.GONE);

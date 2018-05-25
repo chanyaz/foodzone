@@ -26,6 +26,8 @@ public class Constants
 
     public static final String REJECTED = "Rejected";
 
+    public static final String ACCEPTED = "Accepted";
+
     public static final String INVALID_OPERATION = "Invalid Operation";
 
     public static final int SECOND_MILLIS = 1000;
@@ -100,6 +102,8 @@ public class Constants
 
     public static final String DEFAULT_CAR_DATA = "DEFAULT_CAR_DATA";
 
+    public static final String VGARAGE_SERVICES = "vgarage_services";
+
     public static final String USER_FCM_TOKEN = "user_fcm_token";
 
     public static final String AUTH_TOKEN = "auth_token";
@@ -144,7 +148,10 @@ public class Constants
     public static final String URL_GET_USER_BOOKMARK_GARAGES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/BookmarksByUserIdGet";
     //?userId=3 &pageCount=1 &latitude=17.473042 &longitude=78.562382";
 
-    public static final String URL_GET_REVIEW_OF_GARAGES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/ReviewsByDealerIdGet";
+    public static final String URL_GET_REVIEW_OF_GARAGES = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Appointment/GetDealerReviews";
+    //warrous.ms.vgarage/warrous.ms.vgarage.api/api/Appointment/GetDealerReviews
+    // ?dealerId=
+    //warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/ReviewsByDealerIdGet
     //?dealerId=1&pageCount=1";
 
     public static final String URL_FOR_SEARCH_GARAGES = URL + "/warrous.ms.vgarage/warrous.ms.vgarage.api/api/Garage/GetGaragesByLatLongnsearchparm";
@@ -245,4 +252,9 @@ public class Constants
     public static final String URL_USER_APPOINTMENTS = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Appointment/AppointmentsByUserIdGet";
     //?userId=7";
 
+    public static final String URL_CANCEL_APPOINTMENT = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Appointment/AppointmentByServiceAppointmentIdUpdate";
+    //?serviceAppointmentId=' + serviceAppointmentId + '&appointmentType=' + 'Rejected'+ '&rejectReason=' + 'User Cancelled'";
+
+    public static final String URL_RESCHEDULE_APPOINTMENT = URL + "warrous.ms.vgarage/warrous.ms.vgarage.api/api/Appointment/AppointmentByDatetimeUpdate";
+    //?serviceAppointmentId=' + serviceAppointmentId + '&apptDate=' + apptDate + '&apptTime=' + apptTime'
 }

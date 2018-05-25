@@ -170,6 +170,7 @@
 
 
         <com.maya.vgarages.customviews.SFSemiBoldTextView
+            android:visibility="gone"
             android:id="@+id/tvTransactions"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
@@ -181,6 +182,7 @@
             android:layout_height="wrap_content" />
 
         <View
+            android:visibility="gone"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="25dp"
@@ -193,12 +195,14 @@
 
 
         <com.maya.vgarages.customviews.SFSemiBoldTextView
+            android:id="@+id/tvContactUs"
             android:layout_marginTop="15dp"
+            android:gravity="center"
             android:layout_marginBottom="15dp"
             android:textSize="16sp"
             android:textColor="@color/light_new_gray"
             android:text="Contact Us"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <View
